@@ -1,5 +1,5 @@
 package com.capgemini.complaintsmanagementsystem.controller;
 
-public class ComplainstController {
+public class ComplaintsController {
 
 }
