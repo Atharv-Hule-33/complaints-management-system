@@ -12,74 +12,54 @@ public class AuditLog {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long LogID;
-	private Long ComplaintID;
-	private Long UserID;
-	private String ActionTaken; 
-	private LocalDateTime Timestamp;
-	
+	private Long logID;
+	private Long complaintID;
+	private Long userID;
+	private String actionTaken; 
+	private LocalDateTime timestamp;
 	public AuditLog() {
 	}
-
 	public AuditLog(Long logID, Long complaintID, Long userID, String actionTaken, LocalDateTime timestamp) {
-		LogID = logID;
-		ComplaintID = complaintID;
-		UserID = userID;
-		ActionTaken = actionTaken;
-		Timestamp = timestamp;
+		this.logID = logID;
+		this.complaintID = complaintID;
+		this.userID = userID;
+		this.actionTaken = actionTaken;
+		this.timestamp = timestamp;
 	}
-
-	public AuditLog(Long complaintID, Long userID, String actionTaken, LocalDateTime timestamp) {
-		ComplaintID = complaintID;
-		UserID = userID;
-		ActionTaken = actionTaken;
-		Timestamp = timestamp;
-	}
-
 	public Long getLogID() {
-		return LogID;
+		return logID;
 	}
-
 	public void setLogID(Long logID) {
-		LogID = logID;
+		this.logID = logID;
 	}
-
 	public Long getComplaintID() {
-		return ComplaintID;
+		return complaintID;
 	}
-
 	public void setComplaintID(Long complaintID) {
-		ComplaintID = complaintID;
+		this.complaintID = complaintID;
 	}
-
 	public Long getUserID() {
-		return UserID;
+		return userID;
 	}
-
 	public void setUserID(Long userID) {
-		UserID = userID;
+		this.userID = userID;
 	}
-
 	public String getActionTaken() {
-		return ActionTaken;
+		return actionTaken;
 	}
-
 	public void setActionTaken(String actionTaken) {
-		ActionTaken = actionTaken;
+		this.actionTaken = actionTaken;
 	}
-
 	public LocalDateTime getTimestamp() {
-		return Timestamp;
+		return timestamp;
 	}
-
 	public void setTimestamp(LocalDateTime timestamp) {
-		Timestamp = timestamp;
+		this.timestamp = timestamp;
 	}
-
 	@Override
 	public String toString() {
-		return "AuditLog : [LogID=" + LogID + ", ComplaintID=" + ComplaintID + ", UserID=" + UserID + ", ActionTaken="
-				+ ActionTaken + ", Timestamp=" + Timestamp + "]";
+		return "AuditLog [logID=" + logID + ", complaintID=" + complaintID + ", userID=" + userID + ", actionTaken="
+				+ actionTaken + ", timestamp=" + timestamp + "]";
 	}
 	
 }
