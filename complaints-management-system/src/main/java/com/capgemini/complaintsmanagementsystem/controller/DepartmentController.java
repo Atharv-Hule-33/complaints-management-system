@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.complaintsmanagementsystem.entity.Department;
 import com.capgemini.complaintsmanagementsystem.service.DepartmentService;
+
+import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -41,9 +44,13 @@ public class DepartmentController {
 	        return ResponseEntity.status(HttpStatus.OK).body(department);
 	    }
 
-	    // Create a new candidate
+	   
 	    @PostMapping
-	    public ResponseEntity<Department> createDepartment(@RequestBody Department department) {
+	    public ResponseEntity<Department> createDepartment(@Valid @RequestBody Department department, BindingResult result) {
+	    	if (result.hasErrors()) {
+				throw new IllegalArgumentException("Invalid Data Found!!");
+			}
+
 	    	Department saved = departmentService.createDepartment(department);
 	        return ResponseEntity.status(HttpStatus.CREATED)
 	                .location(URI.create("/api/departments/" + saved.getDepartmentId()))
@@ -52,14 +59,14 @@ public class DepartmentController {
 
 	   
 	    @PutMapping("/{id}")
-	    public ResponseEntity<Department> updateDepartment(@PathVariable Long id, @RequestBody Department updatedDepartment) {
+	    public ResponseEntity<Department> updateDepartment(@PathVariable Long id, @Valid @RequestBody Department updatedDepartment) {
 	    	Department updated = departmentService.updateDepartment(id, updatedDepartment);
 	        return ResponseEntity.status(HttpStatus.OK).body(updated);
 	    }
 	   
 	    
 
-	    // Delete a candidate by ID
+	 
 	    @DeleteMapping("/{id}")
 	    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
 	        departmentService.deleteDepartment(id);
