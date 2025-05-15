@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 import com.capgemini.complaintsmanagementsystem.controller.ComplaintTypeController;
 import com.capgemini.complaintsmanagementsystem.entity.ComplaintSeverity;
@@ -69,9 +70,12 @@ public class ComplaintTypeControllerTest {
 
 	@Test
 	public void createComplaintTypeTest() {
+		BindingResult bindingResult = mock(BindingResult.class);
+		when(bindingResult.hasErrors()).thenReturn(false);
 		when(complaintTypeService.createComplaintType(complaintType1)).thenReturn(complaintType1);
 
-		ResponseEntity<ComplaintType> response = complaintTypeController.createComplaintType(complaintType1);
+		ResponseEntity<ComplaintType> response = complaintTypeController.createComplaintType(complaintType1,
+				bindingResult);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(1L, response.getBody().getComplaintTypeId());
@@ -80,6 +84,9 @@ public class ComplaintTypeControllerTest {
 
 	@Test
 	public void updateComplaintTypeTest() {
+		BindingResult bindingResult = mock(BindingResult.class);
+		when(bindingResult.hasErrors()).thenReturn(false);
+
 		ComplaintType updatedDetails = new ComplaintType();
 		updatedDetails.setComplaintType("Updated Doctor Issue");
 		updatedDetails.setComplaintSeverity(ComplaintSeverity.MEDIUM);
@@ -90,7 +97,8 @@ public class ComplaintTypeControllerTest {
 
 		when(complaintTypeService.updateComplaintType(1L, updatedDetails)).thenReturn(expectedType);
 
-		ResponseEntity<ComplaintType> response = complaintTypeController.updateComplaintType(1L, updatedDetails);
+		ResponseEntity<ComplaintType> response = complaintTypeController.updateComplaintType(1L, updatedDetails,
+				bindingResult);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals("Updated Doctor Issue", response.getBody().getComplaintType());
 		assertEquals(ComplaintSeverity.MEDIUM, response.getBody().getComplaintSeverity());

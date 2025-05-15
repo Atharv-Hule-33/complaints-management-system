@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.capgemini.complaintsmanagementsystem.entity.ComplaintSeverity;
 import com.capgemini.complaintsmanagementsystem.entity.ComplaintType;
+import com.capgemini.complaintsmanagementsystem.exception.ComplaintTypeNotFoundException;
 import com.capgemini.complaintsmanagementsystem.repository.ComplaintTypeRepository;
 
 @Service
@@ -26,9 +27,9 @@ public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 	}
 
 	@Override
-	public ComplaintType getComplaintTypeById(Long id) {
-		Optional<ComplaintType> optionalComplaintType = complaintTypeRepository.findById(id);
-		return optionalComplaintType.orElseThrow(() -> new RuntimeException("ComplaintType not found with id: " + id));
+	public ComplaintType getComplaintTypeById(Long complaintTypeId) {
+		Optional<ComplaintType> optionalComplaintType = complaintTypeRepository.findById(complaintTypeId);
+		return optionalComplaintType.orElseThrow(() -> new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId));
 	}
 
 	@Override
@@ -37,16 +38,16 @@ public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 	}
 
 	@Override
-	public ComplaintType updateComplaintType(Long id, ComplaintType complaintTypeDetails) {
-		ComplaintType complaintType = getComplaintTypeById(id);
+	public ComplaintType updateComplaintType(Long complaintTypeId, ComplaintType complaintTypeDetails) {
+		ComplaintType complaintType = complaintTypeRepository.findById(complaintTypeId).orElseThrow(() -> new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId));
 		complaintType.setComplaintType(complaintTypeDetails.getComplaintType());
 		complaintType.setComplaintSeverity(complaintTypeDetails.getComplaintSeverity());
 		return complaintTypeRepository.save(complaintType);
 	}
 
 	@Override
-	public void deleteComplaintType(Long id) {
-		ComplaintType complaintType = getComplaintTypeById(id);
+	public void deleteComplaintType(Long complaintTypeId) {
+		ComplaintType complaintType = getComplaintTypeById(complaintTypeId);
 		complaintTypeRepository.delete(complaintType);
 
 	}
