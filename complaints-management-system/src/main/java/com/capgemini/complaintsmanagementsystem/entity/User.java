@@ -16,29 +16,38 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	
-	@NotBlank
+	@NotBlank(message = "UserName cannot be blank")
 	private String userName;
 	
-	@NotBlank
+	@NotBlank(message = "Email should be valid and can not be blank")
 	private String userEmail;
 	
 	@Column(name = "user_password")
-	@NotBlank
+	@NotBlank(message = "password can not be blank")
 	private String userPassword;
 	
-	@NotNull
+	@NotNull(message = "phone number can not be blank")
 	private String userPhone;
 	
-	@NotBlank
+	@NotBlank(message = "usertype can not be blank")
 	private String userType;
 	
 	public User() {
 	}
 
-	public User(Long userId,String userName, String userEmail, String userPassword,
-			String userPhone, String userType) {
-		super();
+	
+	public User(Long userId,String userName,String userEmail,String userPassword,String userPhone,String userType) {
 		this.userId = userId;
+		this.userName = userName;
+		this.userEmail = userEmail;
+		this.userPassword = userPassword;
+		this.userPhone = userPhone;
+		this.userType = userType;
+	}
+
+
+	public User(String userName, String userEmail, String userPassword,
+			String userPhone, String userType) {
 		this.userName = userName;
 		this.userEmail = userEmail;
 		this.userPassword = userPassword;
