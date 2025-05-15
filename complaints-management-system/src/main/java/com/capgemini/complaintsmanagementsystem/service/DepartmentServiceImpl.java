@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.complaintsmanagementsystem.entity.Department;
+import com.capgemini.complaintsmanagementsystem.exception.DepartmentNotFoundException;
 import com.capgemini.complaintsmanagementsystem.repository.DepartmentRepository;
 
 
@@ -27,7 +28,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public Department getDepartmentById(Long departmentId) {
-         return departmentRepository.findById(departmentId).orElseThrow(()->new RuntimeException("Department not found with ID: " + departmentId));
+         return departmentRepository.findById(departmentId).orElseThrow(()->new DepartmentNotFoundException("Department not found with ID: " + departmentId));
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Override
 	public Department updateDepartment(Long departmentId, Department updatedDepartment) {
 		Department existing = departmentRepository.findById(departmentId)
-	                .orElseThrow(() -> new RuntimeException("Department not found with ID: " + departmentId));
+	                .orElseThrow(() -> new DepartmentNotFoundException("Department not found with ID: " + departmentId));
 		existing.setDepartmentName(updatedDepartment.getDepartmentName());
         existing.setDepartmentContact(updatedDepartment.getDepartmentContact());
         
