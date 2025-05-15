@@ -8,7 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 @Entity
 @Table(name = "audit_log")
@@ -20,15 +22,20 @@ public class AuditLog {
 	private Long logId;
 	
 	@Column(name = "complaint_id", nullable = false)
+	@NotNull(message = "complaintId can not be blank")
 	private Long complaintId;
 	
 	@Column(name = "user_id", nullable = false)
+	@NotNull(message = "userId can not be blank")
 	private Long userId;
 	
 	@Column(name = "action_taken", nullable = false)
+	@NotBlank(message = "Actions cannot be blank")
 	private String actionTaken;
 	
 	@Column(name = "audit_log_timestamp", nullable = false)
+	@NotNull(message = "auditLogTimestamp can not be blank")
+	@PastOrPresent(message = "Timestamp cannot be in the future")
 	private LocalDateTime auditLogTimestamp;
 
 	public AuditLog() {

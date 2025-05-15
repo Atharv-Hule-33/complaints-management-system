@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.complaintsmanagementsystem.entity.AuditLog;
+import com.capgemini.complaintsmanagementsystem.exception.AuditLogNotFoundException;
 import com.capgemini.complaintsmanagementsystem.repository.AuditLogRepository;
 
 @Service
@@ -31,7 +32,7 @@ public class AuditLogServiceImp implements AuditLogService{
 	
 	@Override
 	public AuditLog getAuditLogById(long id) {
-		return auditLogRepository.findById(id).orElseThrow(() -> new RuntimeException("No log with ID : " + id));
+		return auditLogRepository.findById(id).orElseThrow(() -> new  AuditLogNotFoundException("No log with ID : " + id));
 	}
 	
 	@Override
