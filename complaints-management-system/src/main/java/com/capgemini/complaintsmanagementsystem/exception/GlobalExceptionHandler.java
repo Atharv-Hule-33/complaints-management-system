@@ -19,7 +19,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<Object> handleEmployeeNotFound(UserNotFoundException ex) {
+	public ResponseEntity<Object> handleUserNotFound(UserNotFoundException ex) {
+		Map<String, Object> errorDetails = new HashMap<>();
+		errorDetails.put("timestamp", LocalDateTime.now());
+		errorDetails.put("message", ex.getMessage());
+		errorDetails.put("status", HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(DepartmentNotFoundException.class)
+	public ResponseEntity<Object> handleDepartmentNotFound(DepartmentNotFoundException ex) {
 		Map<String, Object> errorDetails = new HashMap<>();
 		errorDetails.put("timestamp", LocalDateTime.now());
 		errorDetails.put("message", ex.getMessage());

@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 import com.capgemini.complaintsmanagementsystem.controller.DepartmentController;
 import com.capgemini.complaintsmanagementsystem.entity.Department;
@@ -69,13 +70,15 @@ class DepartmentControllerTest {
 
     @Test
     public void createDepartment_ShouldReturnCreatedDepartment() {
+        BindingResult bindingResult =mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
         
         Department newDepartment = new Department(null, "Finance", "finance@company.com");
         Department savedDepartment = new Department(3L, "Finance", "finance@company.com");
         when(departmentService.createDepartment(newDepartment)).thenReturn(savedDepartment);
 
         
-        ResponseEntity<Department> response = departmentController.createDepartment(newDepartment);
+        ResponseEntity<Department> response = departmentController.createDepartment(newDepartment,bindingResult);
 
        
         assertEquals(3L, response.getBody().getDepartmentId());
@@ -87,7 +90,9 @@ class DepartmentControllerTest {
 
     @Test
     public void updateDepartment_ShouldReturnUpdatedDepartment() {
-        
+    	 BindingResult bindingResult =mock(BindingResult.class);
+         when(bindingResult.hasErrors()).thenReturn(false);
+         
         Department updatedDetails = new Department(null, "IT Updated", "it-updated@company.com");
         Department expectedDepartment = new Department(1L, "IT Updated", "it-updated@company.com");
         when(departmentService.updateDepartment(1L, updatedDetails)).thenReturn(expectedDepartment);
