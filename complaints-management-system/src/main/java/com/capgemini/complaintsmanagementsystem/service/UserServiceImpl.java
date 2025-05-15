@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.complaintsmanagementsystem.entity.User;
+import com.capgemini.complaintsmanagementsystem.exception.UserNotFoundException;
 import com.capgemini.complaintsmanagementsystem.repository.UserRepository;
 
 @Service
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User getUserById(Long userId) {
-		return userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
+		return userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User with id " + userId + " is not found"));
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User updateUser(Long userId, User user) {
-		User existing = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
+		User existing = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User with id " + userId + " is not found"));
 		existing.setUserName(user.getUserName());
 		existing.setUserEmail(user.getUserEmail());
 		existing.setUserPassword(user.getUserPassword());
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void deleteUser(Long userId) {
 		if(!userRepository.existsById(userId)) {
-			throw new RuntimeException("User with id" + userId + "not found");
+			throw new UserNotFoundException("User with id " + userId + " is not found");
 		}
 		userRepository.deleteById(userId);
 		
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User patchUser(Long userId, User user) {
 		User existing = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("User with id" + userId + "not found"));
+				.orElseThrow(() -> new UserNotFoundException("User with id " + userId + " is not found"));
 		if (user.getUserId() != null) {
 			existing.setUserId(user.getUserId());
 		}

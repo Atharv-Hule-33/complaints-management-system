@@ -27,6 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 	
+
 	@ExceptionHandler(AuditLogNotFoundException.class)
 	public ResponseEntity<Object> handleAuditLogNotFound(AuditLogNotFoundException ex) {
 		Map<String, Object> errorDetails = new HashMap<>();
@@ -35,8 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		errorDetails.put("status", HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
-	
-	
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -51,6 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		errorDetails.put("errors", fieldErrors);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
+
 	
 	@ExceptionHandler(ComplaintTypeNotFoundException.class)
 	public ResponseEntity<Object> handleComplaintTypeNotFound(ComplaintTypeNotFoundException ex) {
@@ -60,6 +61,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		errorDetails.put("details", ex.getMessage());
 		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
 
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
