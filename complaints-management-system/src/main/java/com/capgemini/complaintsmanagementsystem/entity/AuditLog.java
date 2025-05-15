@@ -2,6 +2,8 @@ package com.capgemini.complaintsmanagementsystem.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,6 +39,7 @@ public class AuditLog {
 	
 	@Column(name = "audit_log_timestamp", nullable = false)
 	@NotNull(message = "auditLogTimestamp can not be blank")
+    @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
 	@PastOrPresent(message = "Timestamp cannot be in the future")
 	private LocalDateTime auditLogTimestamp;
 
