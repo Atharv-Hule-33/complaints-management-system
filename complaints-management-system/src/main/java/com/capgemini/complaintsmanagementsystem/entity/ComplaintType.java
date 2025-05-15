@@ -32,6 +32,12 @@ public class ComplaintType {
 	public ComplaintType() {
 	}
 
+	public ComplaintType(Long complaintTypeId ,String complaintType, ComplaintSeverity complaintSeverity) {
+		this.complaintTypeId=complaintTypeId;
+		this.complaintType = complaintType;
+		this.complaintSeverity = complaintSeverity;
+	}
+	
 	public ComplaintType(String complaintType, ComplaintSeverity complaintSeverity) {
 		this.complaintType = complaintType;
 		this.complaintSeverity = complaintSeverity;

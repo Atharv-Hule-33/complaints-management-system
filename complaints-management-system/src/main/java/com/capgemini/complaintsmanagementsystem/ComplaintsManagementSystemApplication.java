@@ -9,5 +9,4 @@ public class ComplaintsManagementSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ComplaintsManagementSystemApplication.class, args);
 	}
-
 }
