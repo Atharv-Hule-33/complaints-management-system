@@ -51,7 +51,10 @@ public class UserController {
 	}
 
 	@PutMapping("/{userId}")
-	public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User user) {
+	public ResponseEntity<User> updateUser(@Valid @PathVariable Long userId, @RequestBody User user, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException("Invalid Data Found!!");
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, user));
 	}
 
