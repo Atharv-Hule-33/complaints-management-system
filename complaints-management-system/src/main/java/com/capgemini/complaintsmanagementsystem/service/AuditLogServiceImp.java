@@ -32,7 +32,9 @@ public class AuditLogServiceImp implements AuditLogService{
 	
 	@Override
 	public AuditLog getAuditLogById(long id) {
+
 		return auditLogRepository.findById(id).orElseThrow(() -> new  AuditLogNotFoundException("No log with ID : " + id));
+
 	}
 	
 	@Override
