@@ -28,7 +28,7 @@ public class Complaint {
     @NotBlank(message = "Enter the description")
     @Column(name = "complaint_description")
     private String complaintDescription;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
     @Column(name = "complaint_filed_date")
     private LocalDateTime complaintFiledDate;
     @NotBlank(message = "Enter the status")
@@ -46,6 +46,12 @@ public class Complaint {
         this.complaintDescription = complaintDescription;
         this.complaintFiledDate = complaintFiledDate;
         this.complaintStatus = complaintStatus;
+    }
+
+
+    public Complaint(Long complaintId, String complaintDescription) {
+        this.complaintId = complaintId;
+        this.complaintDescription = complaintDescription;
     }
 
     public Long getComplaintId() {

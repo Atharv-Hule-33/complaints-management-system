@@ -22,28 +22,28 @@ public class ComplaintController {
 
 
     @GetMapping
-    ResponseEntity<List<Complaint>> getAll(){
+    public ResponseEntity<List<Complaint>> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(complaintService.getAllComplaint());
 
     }
 
     @GetMapping("/{complaintId}")
-    ResponseEntity<Complaint> getById(@PathVariable Long complaintId){
+     public ResponseEntity<Complaint> getById(@PathVariable Long complaintId){
         return ResponseEntity.status(HttpStatus.OK).body(complaintService.getComplaintById(complaintId));
     }
 
     @PostMapping
-    ResponseEntity<Complaint> addComplaint(@RequestBody Complaint complaint){
+    public ResponseEntity<Complaint> addComplaint(@RequestBody Complaint complaint){
         return ResponseEntity.status(HttpStatus.CREATED).body(complaintService.addComplaint(complaint));
     }
 
     @PutMapping("/{complaintId}")
-    ResponseEntity<Complaint> uodateComplaint(@RequestBody Complaint complaint, @PathVariable Long complaintId){
+    public ResponseEntity<Complaint> uodateComplaint(@RequestBody Complaint complaint, @PathVariable Long complaintId){
         return ResponseEntity.status(HttpStatus.CREATED).body(complaintService.updateComplaint(complaint,complaintId));
     }
 
     @DeleteMapping("/{complaintId}")
-    ResponseEntity<Void> deleteComplaint(@PathVariable Long complaintId){
+    public ResponseEntity<Void> deleteComplaint(@PathVariable Long complaintId){
         complaintService.deleteComplaint(complaintId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
