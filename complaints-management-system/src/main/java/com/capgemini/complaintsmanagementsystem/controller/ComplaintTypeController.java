@@ -27,28 +27,28 @@ public class ComplaintTypeController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ComplaintType> getComplaintTypeById(@PathVariable Long id) {
-		return ResponseEntity.ok(complaintTypeService.getComplaintTypeById(id));
+		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getComplaintTypeById(id));
 	}
 
 	@PostMapping
 	public ResponseEntity<ComplaintType> createComplaintType(@RequestBody ComplaintType complaintType) {
-		return ResponseEntity.ok(complaintTypeService.createComplaintType(complaintType));
+		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.createComplaintType(complaintType));
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ComplaintType> updateComplaintType(@PathVariable Long id,
 			@RequestBody ComplaintType complaintTypeDetails) {
-		return ResponseEntity.ok(complaintTypeService.updateComplaintType(id, complaintTypeDetails));
+		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.updateComplaintType(id, complaintTypeDetails));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteComplaintType(@PathVariable Long id) {
 		complaintTypeService.deleteComplaintType(id);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@GetMapping("/severity/{severity}")
 	public ResponseEntity<List<ComplaintType>> getComplaintTypesBySeverity(@PathVariable ComplaintSeverity severity) {
-		return ResponseEntity.ok(complaintTypeService.getComplaintTypesBySeverity(severity));
+		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getComplaintTypesBySeverity(severity));
 	}
 }
