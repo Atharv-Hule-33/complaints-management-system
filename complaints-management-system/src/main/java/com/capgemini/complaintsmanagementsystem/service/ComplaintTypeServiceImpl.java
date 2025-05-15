@@ -11,7 +11,10 @@ import com.capgemini.complaintsmanagementsystem.entity.ComplaintType;
 import com.capgemini.complaintsmanagementsystem.exception.ComplaintTypeNotFoundException;
 import com.capgemini.complaintsmanagementsystem.repository.ComplaintTypeRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 
 	private final ComplaintTypeRepository complaintTypeRepository;
@@ -23,23 +26,34 @@ public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 
 	@Override
 	public List<ComplaintType> getAllComplaintTypes() {
+		log.debug("Fetching all complaint types from the repository");
 		return complaintTypeRepository.findAll();
 	}
 
 	@Override
 	public ComplaintType getComplaintTypeById(Long complaintTypeId) {
+		log.debug("Fetching complaint type by ID: {}", complaintTypeId);
 		Optional<ComplaintType> optionalComplaintType = complaintTypeRepository.findById(complaintTypeId);
-		return optionalComplaintType.orElseThrow(() -> new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId));
+		return optionalComplaintType.orElseThrow(() -> {
+			log.warn("While getting Complaint Type not found with ID: {}", complaintTypeId);
+			return new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId);
+		});
 	}
 
 	@Override
 	public ComplaintType createComplaintType(ComplaintType complaintType) {
+		log.debug("Saving new complaint type to the repository");
 		return complaintTypeRepository.save(complaintType);
 	}
 
 	@Override
 	public ComplaintType updateComplaintType(Long complaintTypeId, ComplaintType complaintTypeDetails) {
-		ComplaintType complaintType = complaintTypeRepository.findById(complaintTypeId).orElseThrow(() -> new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId));
+		ComplaintType complaintType = complaintTypeRepository.findById(complaintTypeId).orElseThrow(() -> {
+			log.warn("while updating Complaint Type not found with ID: {}", complaintTypeId);
+			return new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId);
+		});
+
+		log.debug("Updating new complaint type from the repository");
 		complaintType.setComplaintType(complaintTypeDetails.getComplaintType());
 		complaintType.setComplaintSeverity(complaintTypeDetails.getComplaintSeverity());
 		return complaintTypeRepository.save(complaintType);
@@ -47,14 +61,19 @@ public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 
 	@Override
 	public void deleteComplaintType(Long complaintTypeId) {
-		ComplaintType complaintType = getComplaintTypeById(complaintTypeId);
+		log.debug("Deleting complaint type by ID: {}", complaintTypeId);
+		ComplaintType complaintType = complaintTypeRepository.findById(complaintTypeId).orElseThrow(()->{
+			log.warn("while deleting Complaint Type not found with ID: {}", complaintTypeId);
+			return new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId);
+		});
 		complaintTypeRepository.delete(complaintType);
 
 	}
 
 	@Override
 	public List<ComplaintType> getComplaintTypesBySeverity(ComplaintSeverity severity) {
-		 return complaintTypeRepository.findByComplaintSeverity(severity);
+		log.debug("Getting complaint type by Severity: {}", severity);
+		return complaintTypeRepository.findByComplaintSeverity(severity);
 	}
 
 }

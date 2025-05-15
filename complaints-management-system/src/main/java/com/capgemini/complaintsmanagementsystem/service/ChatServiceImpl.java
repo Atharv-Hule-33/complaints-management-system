@@ -11,7 +11,10 @@ import com.capgemini.complaintsmanagementsystem.Dto.ChatMessageDTO;
 import com.capgemini.complaintsmanagementsystem.entity.Chat;
 import com.capgemini.complaintsmanagementsystem.repository.ChatRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ChatServiceImpl implements ChatService {
 
 	private final ChatRepository chatRepository;
@@ -25,12 +28,13 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public List<Chat> getChatHistoryByComplaintId(Long complaintId) {
+		log.debug("Getting chat history by complaint id: {}", complaintId);
 		return chatRepository.findByComplaintIdOrderByChatTimestampAsc(complaintId);
 	}
 
 	@Override
 	public List<Chat> getChatHistoryBetweenUsers(String sender, String receiver) {
-
+		log.debug("Getting chat history between users: {}", sender,receiver);
 		List<Chat> sentMessages = chatRepository.findByChatSenderAndChatReceiver(sender, receiver);
 		List<Chat> receivedMessages = chatRepository.findByChatSenderAndChatReceiver(receiver, sender);
 
@@ -53,6 +57,7 @@ public class ChatServiceImpl implements ChatService {
 
 	    Chat savedChat = chatRepository.save(chat);
 	    messagingTemplate.convertAndSend("/topic/chat/" + chatMessageDTO.getReceiver(), chatMessageDTO);
+		log.debug("Saving chat for complaint id: {}", chatMessageDTO.getComplaintId());
 	    return savedChat;
 	}
 

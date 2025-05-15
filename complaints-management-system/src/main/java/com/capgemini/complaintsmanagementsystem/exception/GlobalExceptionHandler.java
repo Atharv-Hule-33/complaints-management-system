@@ -61,14 +61,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(ComplaintTypeNotFoundException.class)
-	public ResponseEntity<Object> handleComplaintTypeNotFound(ComplaintTypeNotFoundException ex) {
-		Map<String, Object> errorDetails = new HashMap<>();
-		errorDetails.put("timestamp", LocalDateTime.now());
-		errorDetails.put("message", "Unexpected error occurred");
-		errorDetails.put("details", ex.getMessage());
-		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
 
 	
 	@ExceptionHandler(ComplaintTypeNotFoundException.class)
