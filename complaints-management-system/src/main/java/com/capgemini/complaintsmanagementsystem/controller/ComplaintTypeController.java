@@ -6,8 +6,12 @@ import com.capgemini.complaintsmanagementsystem.entity.ComplaintSeverity;
 import com.capgemini.complaintsmanagementsystem.entity.ComplaintType;
 import com.capgemini.complaintsmanagementsystem.service.ComplaintTypeService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+
 import java.util.List;
 
 @RestController
@@ -31,13 +35,19 @@ public class ComplaintTypeController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ComplaintType> createComplaintType(@RequestBody ComplaintType complaintType) {
+	public ResponseEntity<ComplaintType> createComplaintType(@Valid @RequestBody ComplaintType complaintType, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException("Invalid Data Found!!");
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.createComplaintType(complaintType));
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ComplaintType> updateComplaintType(@PathVariable Long id,
-			@RequestBody ComplaintType complaintTypeDetails) {
+			@Valid @RequestBody ComplaintType complaintTypeDetails, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException("Invalid Data Found!!");
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.updateComplaintType(id, complaintTypeDetails));
 	}
 
