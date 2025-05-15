@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = ComplaintsManagementSystemApplication.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-class ComplaintServiceIntegrationTest {
+public class ComplaintServiceIntegrationTest {
     ComplaintService complaintService;
 
     @Autowired
@@ -27,7 +27,7 @@ class ComplaintServiceIntegrationTest {
     @Test
     @DisplayName("Should save and retrieve an Employee")
     void testSaveAndRetrieveComplaint() {
-        Complaint complaint = new Complaint();
+        Complaint complaint = new Complaint(1L, "cleaning");
         Complaint savedComplaint = complaintService.addComplaint(complaint);
 
         Optional<Complaint> retrievedComplaint = Optional.ofNullable(complaintService.getComplaintById(savedComplaint.getComplaintId()));

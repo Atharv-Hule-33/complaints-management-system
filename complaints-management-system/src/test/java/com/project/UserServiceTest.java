@@ -63,6 +63,18 @@ public class UserServiceTest {
 //        verify(userService).addUser(any(User.class));
 //    }
 
+
+//    @Test
+//    void testUpdateUser() {
+//        when(userService.updateUser(eq(1L), any(User.class))).thenReturn(sampleUser);
+//
+//        ResponseEntity<User> response = userController.updateUser(1L, sampleUser);
+//
+//        assertEquals(200, response.getStatusCodeValue());
+//        assertEquals("John Doe", response.getBody().getUserName());
+//        verify(userService).updateUser(eq(1L), any(User.class));
+//    }
+
     @Test
     void testUpdateUser() {
         when(userService.updateUser(eq(1L), any(User.class))).thenReturn(sampleUser);
@@ -73,6 +85,7 @@ public class UserServiceTest {
         assertEquals("John Doe", response.getBody().getUserName());
         verify(userService).updateUser(eq(1L), any(User.class));
     }
+
 
     @Test
     void testPatchUser() {

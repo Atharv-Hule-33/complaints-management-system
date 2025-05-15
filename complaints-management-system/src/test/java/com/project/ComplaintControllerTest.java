@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -72,9 +73,10 @@ class ComplaintControllerTest {
     @Test
     @Description("should add complaints")
     void addComplaint() {
+    	BindingResult bindingResult=mock(BindingResult.class);
         when(complaintService.addComplaint(complaint1)).thenReturn(complaint1);
 
-        ResponseEntity<Complaint> response = complaintController.addComplaint(complaint1);
+        ResponseEntity<Complaint> response = complaintController.addComplaint(complaint1,bindingResult);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(complaint1, response.getBody());
@@ -84,6 +86,7 @@ class ComplaintControllerTest {
     @Test
     @Description("should update complaints")
     void updateComplaint() {
+    	BindingResult bindingResult=mock(BindingResult.class);
         Long complaintId = 1L;
         Complaint updatedComplaint = new Complaint();
         updatedComplaint.setComplaintId(complaintId);
@@ -91,7 +94,7 @@ class ComplaintControllerTest {
 
         when(complaintService.updateComplaint(updatedComplaint, complaintId)).thenReturn(updatedComplaint);
 
-        ResponseEntity<Complaint> response = complaintController.uodateComplaint(updatedComplaint, complaintId);
+        ResponseEntity<Complaint> response = complaintController.uodateComplaint(updatedComplaint, complaintId,bindingResult);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(updatedComplaint, response.getBody());
