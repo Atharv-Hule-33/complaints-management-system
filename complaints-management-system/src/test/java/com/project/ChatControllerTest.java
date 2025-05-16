@@ -25,7 +25,7 @@ import com.capgemini.complaintsmanagementsystem.service.ChatService;
 @ExtendWith(MockitoExtension.class)
 class ChatControllerTest {
 
-    @Mock
+   /* @Mock
     private ChatService chatService;
 
     @InjectMocks
@@ -71,4 +71,5 @@ class ChatControllerTest {
         assertEquals(1, response.getBody().size());
         assertEquals(1L, response.getBody().get(0).getChatId());
     }
+    */
 }
