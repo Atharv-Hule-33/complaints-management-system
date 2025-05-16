@@ -63,8 +63,17 @@ public class Complaint {
 		super();
 	}
 
+
+	public Complaint(Long complaintId, String complaintDescription, String complaintStatus) {
+		this.complaintId = complaintId;
+		this.complaintDescription = complaintDescription;
+		this.complaintStatus = complaintStatus;
+	}
+
+
+
 	public Complaint(User user, Department department, ComplaintType complaintType, String complaintDescription,
-			String complaintStatus, LocalDateTime complaintFiledDate) {
+					 String complaintStatus, LocalDateTime complaintFiledDate) {
 		super();
 		this.user = user;
 		this.department = department;

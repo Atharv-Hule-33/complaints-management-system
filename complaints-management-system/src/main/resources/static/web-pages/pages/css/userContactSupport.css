@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f5f7fb;
+  overflow-x: hidden;
+}
+
+.contact-card {
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-icon {
+  font-size: 2rem;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  color: white;
+}
+
+.icon-phone {
+  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+}
+
+.icon-email {
+  background: linear-gradient(135deg, #36b9cc 0%, #1a8a98 100%);
+}
+
+.icon-chat {
+  background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%);
+}
+
+.faq-body {
+  display: none;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.faq-header {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.faq-item {
+  margin-bottom: 15px;
+}
