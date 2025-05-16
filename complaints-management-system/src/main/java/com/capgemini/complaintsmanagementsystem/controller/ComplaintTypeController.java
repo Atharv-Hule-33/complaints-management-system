@@ -32,7 +32,7 @@ public class ComplaintTypeController {
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getAllComplaintTypes());
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/{complaintTypeId}")
 	public ResponseEntity<ComplaintType> getComplaintTypeById(@PathVariable Long complaintTypeId) {
 		log.debug("Complaint type fetched: {}", complaintTypeId); 
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getComplaintTypeById(complaintTypeId));
@@ -47,7 +47,7 @@ public class ComplaintTypeController {
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.createComplaintType(complaintType));
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{complaintTypeId}")
 	public ResponseEntity<ComplaintType> updateComplaintType(@PathVariable Long complaintTypeId,
 			@Valid @RequestBody ComplaintType complaintTypeDetails, BindingResult result) {
 		if (result.hasErrors()) {
@@ -57,7 +57,7 @@ public class ComplaintTypeController {
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.updateComplaintType(complaintTypeId, complaintTypeDetails));
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{complaintTypeId}")
 	public ResponseEntity<Void> deleteComplaintType(@PathVariable Long complaintTypeId) {
 		complaintTypeService.deleteComplaintType(complaintTypeId);
 		log.debug("Deleted complaint type with ID: {}",complaintTypeId);
