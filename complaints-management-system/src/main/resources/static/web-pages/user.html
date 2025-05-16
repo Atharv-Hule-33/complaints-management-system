@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hospital Complaint Management System - User Panel</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="pages/css/user.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3><i class="fas fa-hospital-alt"></i> Patient Portal</h3>
+      </div>
+
+      <ul class="list-unstyled components">
+        <li>
+          <a href="#" class="active">
+            <i class="fas fa-home"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="fileComplaintLink">
+            <i class="fas fa-edit"></i>
+            <span class="menu-text">File Complaint</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="myComplaintsLink">
+            <i class="fas fa-clipboard-list"></i>
+            <span class="menu-text">My Complaints</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="trackComplaintLink">
+            <i class="fas fa-search"></i>
+            <span class="menu-text">Track Complaint</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="contactLink">
+            <i class="fas fa-phone-alt"></i>
+            <span class="menu-text">Contact Support</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-user-cog"></i>
+            <span class="menu-text">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="content">
+      <!-- Top Navbar -->
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <div class="ms-auto d-flex align-items-center">
+            <!-- User Profile Dropdown -->
+            <div class="dropdown user-profile">
+              <a
+                href="#"
+                class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                id="dropdownUser"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img src="images/user-png.webp" alt="User" />
+                <span class="d-none d-sm-inline mx-2"></span>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow"
+                aria-labelledby="dropdownUser"
+              >
+                <li>
+                  <a class="dropdown-item logoutLink" href="#"
+                    ><i class="fas fa-sign-out-alt me-2"></i> Log Out</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Dashboard Content -->
+      <div class="container-fluid p-4" id="page-content"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="pages/js/user.js"></script>
+  </body>
+</html>

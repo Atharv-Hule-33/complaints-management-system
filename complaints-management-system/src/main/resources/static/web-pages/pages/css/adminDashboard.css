@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f5f7fb;
+  overflow-x: hidden;
+}
+#page-content {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+  font-weight: 600;
+}
+
+.stat-card {
+  border-radius: 10px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.bg-primary-gradient {
+  background: linear-gradient(45deg, #4e73df, #2e59d9);
+}
+.bg-success-gradient {
+  background: linear-gradient(45deg, #1cc88a, #13855c);
+}
+.bg-warning-gradient {
+  background: linear-gradient(45deg, #f6c23e, #dda20a);
+}
+.bg-danger-gradient {
+  background: linear-gradient(45deg, #e74a3b, #be2617);
+}
+
+.stat-icon {
+  background: rgba(255, 255, 255, 0.2);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.stat-icon i {
+  font-size: 28px;
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.table thead th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+.table td,
+.table th {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+.badge {
+  padding: 6px 10px;
+  font-weight: 500;
+  font-size: 11px;
+}
