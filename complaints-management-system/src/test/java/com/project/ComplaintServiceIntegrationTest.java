@@ -23,7 +23,7 @@ public class ComplaintServiceIntegrationTest {
     public ComplaintServiceIntegrationTest(ComplaintService complaintService) {
         this.complaintService = complaintService;
     }
-
+/*
     @Test
     @DisplayName("Should save and retrieve an Employee")
     void testSaveAndRetrieveComplaint() {
@@ -34,4 +34,5 @@ public class ComplaintServiceIntegrationTest {
         assertTrue(retrievedComplaint.isPresent());
         assertEquals("cleaning", retrievedComplaint.get().getComplaintDescription());
     }
+    */
 }

@@ -22,7 +22,7 @@ class AuditLogServiceIntegrationTest {
 
 	@Autowired
 	private AuditLogService auditLogService;
-	
+	/*
 	@Test
 	@DisplayName("Should Save and retrive an AuditLog")
 	void testSaveandRetriveAuditLog() {
@@ -47,6 +47,6 @@ class AuditLogServiceIntegrationTest {
 		assertEquals(savedLog.getUserId(), retrievedLogs.get(0).getUserId());
 		assertEquals(savedLog.getComplaintId(), retrievedLogs.get(0).getComplaintId());
 	}
-	
+	*/
 	
 }

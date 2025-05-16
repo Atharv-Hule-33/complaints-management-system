@@ -50,7 +50,7 @@ public class AuditLogController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(auditLogService.addAuditLog(auditLog));
 	}
 	
-	@GetMapping("/complaint/{complaintId}")
+	/*@GetMapping("/complaint/{complaintId}")
     public ResponseEntity<List<AuditLog>> getLogsByComplaintId(@PathVariable("complaintId") Long complaintId) {
         return new ResponseEntity<>(auditLogService.getLogsByComplaintId(complaintId), HttpStatus.OK);
     }
@@ -58,7 +58,7 @@ public class AuditLogController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<AuditLog>> getLogsByUserId(@PathVariable("userId") Long userId) {
         return new ResponseEntity<>(auditLogService.getLogsByUserId(userId), HttpStatus.OK);
-    }
+    }*/
 
     // GET /api/audit-log/between?start=2025-05-01T00:00:00&end=2025-05-14T23:59:59
 
