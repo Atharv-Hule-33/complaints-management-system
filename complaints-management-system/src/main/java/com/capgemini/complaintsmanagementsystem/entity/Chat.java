@@ -8,6 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "chat")
@@ -18,18 +21,24 @@ public class Chat {
     @Column(name = "chat_id")
     private Long chatId;
     
+    @NotNull(message = "Complaint ID cannot be null")
     @Column(name = "complaint_id")
     private Long complaintId;
     
+    @NotBlank(message = "Sender cannot be empty")
     @Column(name = "chat_sender")
     private String chatSender;
     
+    @NotBlank(message = "Receiver cannot be empty")
     @Column(name = "chat_receiver")
     private String chatReceiver;
     
+    @NotBlank(message = "Message cannot be empty")
+    @Size(min = 1, max = 1000, message = "Message must be between 1 and 1000 characters")
     @Column(name = "chat_message", columnDefinition = "TEXT")
     private String chatMessage;
     
+    @NotNull(message = "Timestamp cannot be null")
     @Column(name = "chat_timestamp")
     private LocalDateTime chatTimestamp;
 
