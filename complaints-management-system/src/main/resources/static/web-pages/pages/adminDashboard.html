@@ -141,8 +141,10 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/moment"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+
 <script>
     // script.js
     apiUrl = "http://localhost:8080/api/dashboard";
@@ -235,7 +237,9 @@
                     x: {
                         type: 'time',
                         time: {
+
                             format: 'YYYY-MM-DDTHH:mm:ss',
+
                             unit: 'day'
                         }
                     },
