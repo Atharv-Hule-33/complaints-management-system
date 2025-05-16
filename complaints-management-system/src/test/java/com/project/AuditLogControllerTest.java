@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,11 +35,12 @@ import org.springframework.http.ResponseEntity;
 
 import com.capgemini.complaintsmanagementsystem.controller.AuditLogController;
 import com.capgemini.complaintsmanagementsystem.entity.AuditLog;
+import com.capgemini.complaintsmanagementsystem.entity.Complaint;
+import com.capgemini.complaintsmanagementsystem.entity.User;
 import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
 
 
-@SpringBootTest(classes = ComplaintsManagementSystemApplication.class)
-
+@ExtendWith(MockitoExtension.class)
  class AuditLogControllerTest {
 	
 	@Mock
@@ -47,15 +48,26 @@ import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
 	
 	@InjectMocks
 	private AuditLogController auditLogController;
-/*
+	
+	private static AuditLog buildLog(Long complaintId, Long userId, String action) {
+        Complaint complaint = new Complaint();
+        complaint.setComplaintId(complaintId);
+
+        User user = new User();
+        user.setUserId(userId);
+
+        return new AuditLog(
+                complaint,
+                user,
+                action,
+                LocalDateTime.now()
+        );
+    }
+
     @Test
     @DisplayName("Get All the Audit Log's")
     void testGetAllAuditLog() {
-        AuditLog log = new AuditLog();
-        log.setComplaintId(1L);
-        log.setUserId(1L);
-        log.setActionTaken("Created complaint");
-        log.setAuditLogTimestamp(LocalDateTime.now());
+        AuditLog log = buildLog(1L, 1L, "Created complaint");
 
         List<AuditLog> mockList = Arrays.asList(log);
         when(auditLogService.getAllAuditLog()).thenReturn(mockList);
@@ -65,36 +77,28 @@ import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
         assertEquals("Created complaint", response.getBody().get(0).getActionTaken());
-        assertEquals(1L, response.getBody().get(0).getComplaintId());
-        assertEquals(1L, response.getBody().get(0).getUserId());
+        assertEquals(1L, response.getBody().get(0).getComplaint().getComplaintId());
+        assertEquals(1L, response.getBody().get(0).getUser().getUserId());
         }
 
     @Test
     @DisplayName("Get Audit Log by id")
     void testGetAuditLogById() {
-    	AuditLog log = new AuditLog();
-    	log.setComplaintId(1L);
-        log.setUserId(1L);
-        log.setActionTaken("Created complaint");
-        log.setAuditLogTimestamp(LocalDateTime.now());
+        AuditLog log = buildLog(1L, 1L, "Created complaint");
     
         when(auditLogService.getAuditLogById(1L)).thenReturn(log);
         
         ResponseEntity<AuditLog> response = auditLogController.getAuditLogById(1L);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Created complaint", response.getBody().getActionTaken());
-        assertEquals(1L, response.getBody().getComplaintId());
-        assertEquals(1L, response.getBody().getUserId());
+        assertEquals(1L, response.getBody().getComplaint().getComplaintId());
+        assertEquals(1L, response.getBody().getUser().getUserId());
     }
     
     @Test
     @DisplayName("Post Audit Log")
     void testAddAuditLog() {
-    	AuditLog log = new AuditLog();
-    	log.setComplaintId(1L);
-        log.setUserId(1L);
-        log.setActionTaken("Created complaint");
-        log.setAuditLogTimestamp(LocalDateTime.now());
+        AuditLog log = buildLog(1L, 1L, "Created complaint");
     
 
         BindingResult bindingResult = mock(BindingResult.class);
@@ -105,15 +109,13 @@ import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
        
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals("Created complaint", response.getBody().getActionTaken());
-        assertEquals(1L, response.getBody().getComplaintId());
-        assertEquals(1L, response.getBody().getUserId());
+        assertEquals(1L, response.getBody().getComplaint().getComplaintId());
+        assertEquals(1L, response.getBody().getUser().getUserId());
     }
     
     @Test
     void testGetLogsByComplaintId() {
-        AuditLog log = new AuditLog();
-        log.setComplaintId(1L);
-        log.setActionTaken("Resolved complaint");
+        AuditLog log = buildLog(1L, 1L, "Created complaint");
         when(auditLogService.getLogsByComplaintId(1L)).thenReturn(Arrays.asList(log));
 
         ResponseEntity<List<AuditLog>> response = auditLogController.getLogsByComplaintId(1L);
@@ -124,7 +126,7 @@ import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
     @Test
     void testGetLogsByUserId() {
         AuditLog log = new AuditLog();
-        log.setUserId(2L);
+        log.setUser(null);
         log.setActionTaken("Viewed history");
         when(auditLogService.getLogsByUserId(2L)).thenReturn(Arrays.asList(log));
 
@@ -132,7 +134,7 @@ import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Viewed history", response.getBody().get(0).getActionTaken());
     }
-*/
+
     @Test
     void testGetLogsBetween() {
         LocalDateTime start = LocalDateTime.now().minusDays(5);
