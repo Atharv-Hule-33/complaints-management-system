@@ -23,7 +23,7 @@ public class Complaint {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	@Column(name = "complaint_id")
-	private Long complaintId;
+	private Long complaintId;	
 
 	@NotNull(message = "User is required")
 	@ManyToOne
