@@ -14,7 +14,10 @@ import com.capgemini.complaintsmanagementsystem.exception.ChatSenderNotFoundExce
 import com.capgemini.complaintsmanagementsystem.exception.InvalidChatRequestException;
 import com.capgemini.complaintsmanagementsystem.repository.ChatRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ChatServiceImpl implements ChatService {
 
 	private final ChatRepository chatRepository;
@@ -28,6 +31,7 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public List<Chat> getChatHistoryByComplaintId(Long complaintId) {
+
 		if (complaintId == null) {
 	        throw new InvalidChatRequestException("Complaint ID cannot be null");
 	    }
@@ -35,12 +39,15 @@ public class ChatServiceImpl implements ChatService {
 	    if (chatHistory.isEmpty()) {
 	        throw new ChatNotFoundException("No chat history found for complaint ID: " + complaintId);
 	    }
+    log.debug("Getting chat history by complaint id: {}", complaintId);
 	    return chatHistory;
+
+		
 	}
 
 	@Override
 	public List<Chat> getChatHistoryBetweenUsers(String sender, String receiver) {
-
+		log.debug("Getting chat history between users: {}", sender,receiver);
 		List<Chat> sentMessages = chatRepository.findByChatSenderAndChatReceiver(sender, receiver);
 		List<Chat> receivedMessages = chatRepository.findByChatSenderAndChatReceiver(receiver, sender);
 
@@ -53,6 +60,7 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public Chat saveAndSendMessage(ChatMessageDTO chatMessageDTO) {
+
 		Chat chat = new Chat();
 
 		chat.setComplaintId(chatMessageDTO.getComplaintId());
@@ -91,7 +99,20 @@ public class ChatServiceImpl implements ChatService {
 			return messages;
 		}
 
-		return messages;
+		
+	    Chat chat = new Chat();
+	   
+	    chat.setComplaintId(chatMessageDTO.getComplaintId());
+	    chat.setChatSender(chatMessageDTO.getSender());
+	    chat.setChatReceiver(chatMessageDTO.getReceiver());
+	    chat.setChatMessage(chatMessageDTO.getMessage());
+	    chat.setChatTimestamp(LocalDateTime.now());
+
+	    Chat savedChat = chatRepository.save(chat);
+	    messagingTemplate.convertAndSend("/topic/chat/" + chatMessageDTO.getReceiver(), chatMessageDTO);
+		log.debug("Saving chat for complaint id: {}", chatMessageDTO.getComplaintId());
+	    return savedChat;
+
 	}
 
 	@Override

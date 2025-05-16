@@ -21,26 +21,34 @@ import com.capgemini.complaintsmanagementsystem.entity.Department;
 import com.capgemini.complaintsmanagementsystem.service.DepartmentService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = "*")
+@Slf4j
 @RestController
-@RequestMapping("/api/Departments")
+@RequestMapping("/api/departments")
+
+
 public class DepartmentController {
 	 private final DepartmentService departmentService;
 
 	    @Autowired
-	    public DepartmentController(DepartmentService departmentService) {
+	    public DepartmentController(DepartmentService departmentService) {		
+	 
 	        this.departmentService = departmentService;
 	    }
         
 	    @GetMapping
 	    public ResponseEntity<List<Department>> getAllDepartments() {
 	        List<Department> departments = departmentService.getAllDepartments();
+	        log.debug("Returning {} departments", departments.size());
 	        return ResponseEntity.status(HttpStatus.OK).body(departments);
 	    }
 	    @GetMapping("/{id}")
 	    public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
 	    	Department department = departmentService.getDepartmentById(id);
+	    	log.debug("Department fetched: {}", department);
 	        return ResponseEntity.status(HttpStatus.OK).body(department);
 	    }
 
@@ -52,6 +60,7 @@ public class DepartmentController {
 			}
 
 	    	Department saved = departmentService.createDepartment(department);
+	    	log.debug("Department created with ID: {}", saved.getDepartmentId());
 	        return ResponseEntity.status(HttpStatus.CREATED)
 	                .location(URI.create("/api/departments/" + saved.getDepartmentId()))
 	                .body(saved);
@@ -70,6 +79,7 @@ public class DepartmentController {
 	    @DeleteMapping("/{id}")
 	    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
 	        departmentService.deleteDepartment(id);
+	        log.info("Deartment with ID {} successfully deleted", id);
 	        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	    }
 
