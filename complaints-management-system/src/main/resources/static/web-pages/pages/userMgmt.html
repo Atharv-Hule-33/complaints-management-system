@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .strength {
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      .strength.weak {
+        color: red;
+      }
+      .strength.medium {
+        color: orange;
+      }
+      .strength.strong {
+        color: green;
+      }
+    </style>
+  </head>
+  <body class="container my-5">
+    <h2 class="mb-4">User Management</h2>
+
+    <!-- User Form -->
+    <form id="userForm" class="mb-4" novalidate>
+      <div class="mb-3">
+        <input type="hidden" id="userId" />
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" class="form-control" id="name" required />
+        <div class="invalid-feedback">Name is required.</div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" class="form-control" id="email" required />
+        <div class="invalid-feedback">Please enter a valid email address.</div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" class="form-control" id="password" required />
+        <div class="invalid-feedback">Password is required.</div>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="phone"
+          pattern="[0-9]{10}"
+          required
+        />
+        <div class="invalid-feedback">Enter a valid 10-digit phone number.</div>
+      </div>
+      <div class="mb-3">
+        <label for="userType" class="form-label">User Type:</label>
+        <select class="form-select" id="userType" required>
+          <option value="" selected>Select Role</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+        <div class="invalid-feedback">Please select a role.</div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="submitUserBtn">
+        Add User
+      </button>
+    </form>
+
+    <!-- Users Table -->
+    <h4 class="mb-3">User Records</h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>UserID</th>
+          <th>Name<i class="bi bi-arrow-down-up"></i></th>
+          <th>Email<i class="bi bi-arrow-down-up"></i></th>
+          <th>Phone<i class="bi bi-arrow-down-up"></i></th>
+          <th>Role<i class="bi bi-arrow-down-up"></i></th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody"></tbody>
+    </table>
+
+    <!-- User Complaints View -->
+    <!-- <h4 class="mt-5 mb-3">Complaints Filed by Selected User</h4>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Complaint ID</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Update Status</th>
+        </tr>
+      </thead>
+      <tbody id="userComplaintsBody"></tbody>
+    </table> -->
+
+    <script src="js/userMgmt.js"></script>
+  </body>
+</html>

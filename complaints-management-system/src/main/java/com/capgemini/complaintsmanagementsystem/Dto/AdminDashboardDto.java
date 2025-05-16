@@ -16,6 +16,9 @@ public class AdminDashboardDto {
     private Long numberOfUsers;
     private Long numberOfComplaints;
 
+    public AdminDashboardDto() {
+    }
+
     public AdminDashboardDto(Map<LocalDateTime, Long> complainCountByDate, Map<ComplaintSeverity, Long> complainCountBySeverity, Long filedComplaints, Long inProgressComplaints, Long resolvedComplaints, Long closedComplaints, Long numberOfDepartments, Long numberOfUsers, Long numberOfComplaints) {
         this.complaintsCountByDate = complainCountByDate;
         this.complaintsCountBySeverity = complainCountBySeverity;

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Settings</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f7fb;
+        overflow-x: hidden;
+      }
+    </style>
+  </head>
+  <body class="container my-5">
+    <div class="card">
+      <div class="card-header bg-white">
+        <h5 class="mb-0"><i class="fas fa-user-cog me-2"></i>User Settings</h5>
+      </div>
+      <div class="card-body">
+        <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="profile-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#profile"
+              type="button"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="true"
+            >
+              <i class="fas fa-user settings-icon"></i> Profile
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="security-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#security"
+              type="button"
+              role="tab"
+              aria-controls="security"
+              aria-selected="false"
+            >
+              <i class="fas fa-lock settings-icon"></i> Security
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="settingsTabContent">
+          <!-- Profile Settings -->
+          <div
+            class="tab-pane fade show active"
+            id="profile"
+            role="tabpanel"
+            aria-labelledby="profile-tab"
+          >
+            <form id="profileForm">
+              <div class="row mb-3 mt-4">
+                <div class="col-md-6">
+                  <label for="fullName" class="form-label">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fullName"
+                    placeholder="Your full name"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    placeholder="Your email address"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="phone" class="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    placeholder="Your phone number"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="userType" class="form-label">User Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="userType"
+                    value="Patient"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-outline-secondary me-md-2">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Save Profile
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Security Settings -->
+          <div
+            class="tab-pane fade"
+            id="security"
+            role="tabpanel"
+            aria-labelledby="security-tab"
+          >
+            <form id="securityForm">
+              <div class="mb-3 mt-4">
+                <label for="currentPassword" class="form-label"
+                  >Current Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="currentPassword"
+                  placeholder="Enter your current password"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="newPassword" class="form-label">New Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newPassword"
+                  placeholder="Enter new password"
+                />
+                <div class="form-text">
+                  Password must be at least 8 characters long and include
+                  uppercase, lowercase, numbers, and special characters.
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="confirmPassword" class="form-label"
+                  >Confirm Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                  placeholder="Confirm new password"
+                />
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-outline-secondary me-md-2">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Update Password
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/userSettings.js"></script>
+  </body>
+</html>

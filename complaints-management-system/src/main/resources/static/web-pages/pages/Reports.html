@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .status-pending {
+        color: #ff9800;
+        font-weight: 500;
+      }
+      .status-resolved {
+        color: #4caf50;
+        font-weight: 500;
+      }
+      .status-in-progress {
+        color: #2196f3;
+        font-weight: 500;
+      }
+      .status-closed {
+        color: #f44336;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body class="container my-5">
+    <h2 class="mb-4">Reports</h2>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <label for="status-filter" class="form-label">Status:</label>
+        <select class="form-select" id="status-filter">
+          <option value="" selected>All Statuses</option>
+          <option value="Filed">Filed</option>
+          <option value="In-Progress">In Progress</option>
+          <option value="Resolved">Resolved</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label for="department-filter" class="form-label">Department:</label>
+        <select class="form-select" id="department-filter">
+          <option value="" selected>All Departments</option>
+        </select>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label for="complaint-type-filter" class="form-label"
+          >Complaint Type:</label
+        >
+        <select class="form-select" id="complaint-type-filter">
+          <option value="" selected>All Types</option>
+        </select>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label for="month-filter" class="form-label">Month:</label>
+        <input type="month" class="form-control" id="month-filter" />
+      </div>
+    </div>
+
+    <div class="d-flex mb-4">
+      <button id="apply-filters" class="btn btn-primary me-2">
+        Apply Filters
+      </button>
+      <button id="reset-filters" class="btn btn-outline-secondary me-2">
+        Reset Filters
+      </button>
+      <button id="export-pdf" class="btn btn-success">
+        <i class="bi bi-file-earmark-pdf"></i> Export to PDF
+      </button>
+    </div>
+
+    <!-- Complaints Table -->
+    <h4 class="mb-3">Complaint Records</h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User <i class="bi bi-arrow-down-up"></i></th>
+          <th>Department <i class="bi bi-arrow-down-up"></i></th>
+          <th>Complaint Type <i class="bi bi-arrow-down-up"></i></th>
+          <th>Description</th>
+          <th>Date Filed <i class="bi bi-arrow-down-up"></i></th>
+          <th>Status <i class="bi bi-arrow-down-up"></i></th>
+        </tr>
+      </thead>
+      <tbody id="complaints-data">
+        <tr>
+          <td colspan="7" class="text-center">Loading complaints...</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script src="js/complaintsDashboard.js"></script>
+  </body>
+</html>
