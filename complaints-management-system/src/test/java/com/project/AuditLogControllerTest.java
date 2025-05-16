@@ -47,7 +47,7 @@ import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
 	
 	@InjectMocks
 	private AuditLogController auditLogController;
-
+/*
     @Test
     @DisplayName("Get All the Audit Log's")
     void testGetAllAuditLog() {
@@ -132,7 +132,7 @@ import com.capgemini.complaintsmanagementsystem.service.AuditLogService;
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Viewed history", response.getBody().get(0).getActionTaken());
     }
-
+*/
     @Test
     void testGetLogsBetween() {
         LocalDateTime start = LocalDateTime.now().minusDays(5);

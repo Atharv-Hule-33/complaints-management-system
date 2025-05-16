@@ -31,12 +31,12 @@ public class AuditLogServiceImp implements AuditLogService{
 	}
 	
 	@Override
-	public AuditLog getAuditLogById(long id) {
+	public AuditLog getAuditLogById(Long logId) {
 
-		return auditLogRepository.findById(id).orElseThrow(() -> new  AuditLogNotFoundException("No log with ID : " + id));
+		return auditLogRepository.findById(logId).orElseThrow(() -> new  AuditLogNotFoundException("No log with ID : " + logId));
 
 	}
-	
+	/*
 	@Override
     public List<AuditLog> getLogsByComplaintId(Long complaintId) {
         return auditLogRepository.findByComplaintId(complaintId);
@@ -46,7 +46,7 @@ public class AuditLogServiceImp implements AuditLogService{
     public List<AuditLog> getLogsByUserId(Long userId) {
         return auditLogRepository.findByUserId(userId);
     }
-
+*/
     @Override
     public List<AuditLog> getLogsBetween(LocalDateTime start, LocalDateTime end) {
         return auditLogRepository.findLogsBetween(start, end);
