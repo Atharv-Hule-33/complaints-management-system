@@ -60,6 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		errorDetails.put("errors", fieldErrors);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
+	
 
 	
 	@ExceptionHandler(ComplaintTypeNotFoundException.class)
