@@ -27,12 +27,11 @@ import com.capgemini.complaintsmanagementsystem.entity.Chat;
 import com.capgemini.complaintsmanagementsystem.service.ChatService;
 
 
-@RestController
+
 
 import jakarta.validation.Valid;
 
-@Controller
-
+@RestController
 @RequestMapping("/api/chat")
 public class ChatController {
 
