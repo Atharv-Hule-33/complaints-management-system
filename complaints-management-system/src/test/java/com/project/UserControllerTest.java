@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,7 +33,7 @@ import com.capgemini.complaintsmanagementsystem.entity.User;
 import com.capgemini.complaintsmanagementsystem.service.UserService;
 
 
-
+@Nested
 class UserControllerTest {
 	
 
