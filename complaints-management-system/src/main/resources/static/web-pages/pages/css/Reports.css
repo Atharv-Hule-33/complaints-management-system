@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f5f7fb;
+  overflow-x: hidden;
+}
+.report-card {
+  transition: all 0.3s ease;
+}
+.report-card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+.stats-card {
+  border-left: 4px solid;
+}
+.custom-tab-content {
+  display: none;
+}
+.custom-tab-content.active {
+  display: block;
+}
+.navbar-brand {
+  font-weight: bold;
+}
+.nav-link.active {
+  font-weight: bold;
+  background-color: #f8f9fa !important;
+}
+.btn-export {
+  background-color: #28a745;
+  color: white;
+}
+#reportResultsCard {
+  display: none;
+  margin-top: 20px;
+}
+
+#reportResultsCard .card-title {
+  font-weight: bold;
+}
