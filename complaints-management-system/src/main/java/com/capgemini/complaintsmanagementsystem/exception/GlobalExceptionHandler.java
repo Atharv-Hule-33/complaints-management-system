@@ -27,6 +27,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(ChatNotFoundException.class)
+	public ResponseEntity<Object> handleChatNotFound(ChatNotFoundException ex) {
+		Map<String, Object> errorDetails = new HashMap<>();
+		errorDetails.put("timestamp", LocalDateTime.now());
+		errorDetails.put("message", ex.getMessage());
+		errorDetails.put("status", HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(ChatSenderNotFoundException.class)
+	public ResponseEntity<Object> handleChatSenderNotFound(ChatSenderNotFoundException ex) {
+		Map<String, Object> errorDetails = new HashMap<>();
+		errorDetails.put("timestamp", LocalDateTime.now());
+		errorDetails.put("message", ex.getMessage());
+		errorDetails.put("status", HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(InvalidChatRequestException.class)
+	public ResponseEntity<Object> handleInvalidChatRequest(InvalidChatRequestException ex) {
+		Map<String, Object> errorDetails = new HashMap<>();
+		errorDetails.put("timestamp", LocalDateTime.now());
+		errorDetails.put("message", ex.getMessage());
+		errorDetails.put("status", HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+	
 	@ExceptionHandler(DepartmentNotFoundException.class)
 	public ResponseEntity<Object> handleDepartmentNotFound(DepartmentNotFoundException ex) {
 		Map<String, Object> errorDetails = new HashMap<>();
@@ -60,6 +87,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		errorDetails.put("errors", fieldErrors);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
+	
 
 	
 	@ExceptionHandler(ComplaintTypeNotFoundException.class)
