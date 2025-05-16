@@ -26,7 +26,7 @@ public class ChatServiceImpl implements ChatService {
 		this.messagingTemplate = messagingTemplate;
 	}
 
-	@Override
+	/*@Override
 	public List<Chat> getChatHistoryByComplaintId(Long complaintId) {
 		if (complaintId == null) {
 	        throw new InvalidChatRequestException("Complaint ID cannot be null");
@@ -36,7 +36,10 @@ public class ChatServiceImpl implements ChatService {
 	        throw new ChatNotFoundException("No chat history found for complaint ID: " + complaintId);
 	    }
 	    return chatHistory;
+<<<<<<< HEAD
 	}
+=======
+	}*/
 
 	@Override
 	public List<Chat> getChatHistoryBetweenUsers(String sender, String receiver) {
@@ -51,7 +54,7 @@ public class ChatServiceImpl implements ChatService {
 		return sentMessages;
 	}
 
-	@Override
+	/*@Override
 	public Chat saveAndSendMessage(ChatMessageDTO chatMessageDTO) {
 		Chat chat = new Chat();
 
@@ -64,9 +67,9 @@ public class ChatServiceImpl implements ChatService {
 		Chat savedChat = chatRepository.save(chat);
 		messagingTemplate.convertAndSend("/topic/chat/" + chatMessageDTO.getReceiver(), chatMessageDTO);
 		return savedChat;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public Chat addChatMessage(ChatMessageDTO chatMessageDTO) {
 		Chat chat = new Chat();
 		chat.setComplaintId(chatMessageDTO.getComplaintId());
@@ -76,7 +79,7 @@ public class ChatServiceImpl implements ChatService {
 		chat.setChatTimestamp(LocalDateTime.now());
 
 		return chatRepository.save(chat);
-	}
+	}*/
 
 	@Override
 	public List<Chat> getMessagesBySender(String sender) {

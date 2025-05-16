@@ -7,40 +7,34 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "chat")
 public class Chat {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_id")
-    private Long chatId;
-    
-    @NotNull(message = "Complaint ID cannot be null")
-    @Column(name = "complaint_id")
-    private Long complaintId;
-    
-    @NotBlank(message = "Sender cannot be empty")
-    @Column(name = "chat_sender")
-    private String chatSender;
-    
-    @NotBlank(message = "Receiver cannot be empty")
-    @Column(name = "chat_receiver")
-    private String chatReceiver;
-    
-    @NotBlank(message = "Message cannot be empty")
-    @Size(min = 1, max = 1000, message = "Message must be between 1 and 1000 characters")
-    @Column(name = "chat_message", columnDefinition = "TEXT")
-    private String chatMessage;
-    
-    @NotNull(message = "Timestamp cannot be null")
-    @Column(name = "chat_timestamp")
-    private LocalDateTime chatTimestamp;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "chat_id")
+	private Long chatId;
+
+	@ManyToOne
+	@JoinColumn(name = "complaint_id", nullable = false)
+	private Complaint complaint;
+
+	@Column(name = "chat_sender")
+	private String chatSender;
+
+	@Column(name = "chat_receiver")
+	private String chatReceiver;
+
+	@Column(name = "chat_message", columnDefinition = "TEXT")
+	private String chatMessage;
+
+	@Column(name = "chat_timestamp")
+	private LocalDateTime chatTimestamp;
 
 	public Long getChatId() {
 		return chatId;
@@ -48,14 +42,6 @@ public class Chat {
 
 	public void setChatId(Long chatId) {
 		this.chatId = chatId;
-	}
-
-	public Long getComplaintId() {
-		return complaintId;
-	}
-
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
 	}
 
 	public String getChatSender() {
@@ -90,11 +76,18 @@ public class Chat {
 		this.chatTimestamp = chatTimestamp;
 	}
 
-	public Chat(Long chatId, Long complaintId, String chatSender, String chatReceiver, String chatMessage,
+	public Complaint getComplaint() {
+		return complaint;
+	}
+
+	public void setComplaint(Complaint complaint) {
+		this.complaint = complaint;
+	}
+
+	public Chat(Complaint complaint, String chatSender, String chatReceiver, String chatMessage,
 			LocalDateTime chatTimestamp) {
 		super();
-		this.chatId = chatId;
-		this.complaintId = complaintId;
+		this.complaint = complaint;
 		this.chatSender = chatSender;
 		this.chatReceiver = chatReceiver;
 		this.chatMessage = chatMessage;
@@ -104,7 +97,5 @@ public class Chat {
 	public Chat() {
 		super();
 	}
-    
-	
-    
+
 }

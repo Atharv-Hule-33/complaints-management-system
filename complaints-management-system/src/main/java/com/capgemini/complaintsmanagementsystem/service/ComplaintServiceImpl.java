@@ -53,9 +53,9 @@ public class ComplaintServiceImpl implements ComplaintService{
         existing.setComplaintDescription(complaint.getComplaintDescription());
         existing.setComplaintFiledDate(complaint.getComplaintFiledDate());
         existing.setComplaintStatus(complaint.getComplaintStatus());
-        existing.setComplaintTypeId(complaint.getComplaintTypeId());
-        existing.setDepartmentId(complaint.getDepartmentId());
-        existing.setUserId(complaint.getUserId());
+        existing.setComplaintType(complaint.getComplaintType());
+        existing.setDepartment(complaint.getDepartment());
+        existing.setUser(complaint.getUser());
         return complaintRepository.save(existing);
     }
 

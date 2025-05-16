@@ -3,124 +3,138 @@ package com.capgemini.complaintsmanagementsystem.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "complaint")
 public class Complaint {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "complaint_id")
-    private Long complaintId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @NotNull(message = "Enter the user")
-    @Column(name = "user_id")
-    private Long userId;
-    @NotNull(message = "Enter the department")
-    @Column(name = "department_id")
-    private Long departmentId;
-    @NotNull(message = "Enter the complaint type")
-    @Column(name = "complaint_type_id")
-    private Long complaintTypeId;
-    @NotBlank(message = "Enter the description")
-    @Column(name = "complaint_description")
-    private String complaintDescription;
-    @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
-    @Column(name = "complaint_filed_date")
-    private LocalDateTime complaintFiledDate;
-    @NotBlank(message = "Enter the status")
-    @Column(name = "complaint_status")
-    @Enumerated(EnumType.STRING)
-    private ComplaintStatusEnum complaintStatus;
+	@Column(name = "complaint_id")
+	private Long complaintId;
 
-    public Complaint() {
-    }
+	@NotNull(message = "User is required")
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    public Complaint(Long complaintId, Long userId, Long departmentId, Long complaintTypeId, String complaintDescription, LocalDateTime complaintFiledDate, ComplaintStatusEnum complaintStatus) {
-        this.complaintId = complaintId;
-        this.userId = userId;
-        this.departmentId = departmentId;
-        this.complaintTypeId = complaintTypeId;
-        this.complaintDescription = complaintDescription;
-        this.complaintFiledDate = complaintFiledDate;
-        this.complaintStatus = complaintStatus;
-    }
+	@NotNull(message = "Department is required")
+	@ManyToOne
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
 
+	@NotNull(message = "Complaint type is required")
+	@ManyToOne
+	@JoinColumn(name = "complaint_type_id", nullable = false)
+	private ComplaintType complaintType;
 
-    public Complaint(Long complaintId, String complaintDescription) {
-        this.complaintId = complaintId;
-        this.complaintDescription = complaintDescription;
-    }
+	@NotBlank(message = "Complaint description cannot be blank")
+	@Size(max = 2000, message = "Description is too long")
+	@Column(name = "complaint_description", columnDefinition = "TEXT")
+	private String complaintDescription;
 
-    public Long getComplaintId() {
-        return complaintId;
-    }
+	@NotBlank(message = "Status is required")
+	@Column(name = "complaint_status")
+	private String complaintStatus;
 
-    public void setComplaintId(Long complaintId) {
-        this.complaintId = complaintId;
-    }
+	@PastOrPresent(message = "Created date cannot be in the future")
+	@Column(name = "complaint_filed_date")
+	private LocalDateTime complaintFiledDate;
 
-    public Long getUserId() {
-        return userId;
-    }
+	@OneToMany(mappedBy = "complaint", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Chat> chats = new ArrayList<>();
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	@OneToMany(mappedBy = "complaint", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AuditLog> auditLogs = new ArrayList<>();
 
-    public Long getDepartmentId() {
-        return departmentId;
-    }
+	public Complaint() {
+		super();
+	}
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
+	public Complaint(User user, Department department, ComplaintType complaintType, String complaintDescription,
+			String complaintStatus, LocalDateTime complaintFiledDate) {
+		super();
+		this.user = user;
+		this.department = department;
+		this.complaintType = complaintType;
+		this.complaintDescription = complaintDescription;
+		this.complaintStatus = complaintStatus;
+		this.complaintFiledDate = complaintFiledDate;
+	}
 
-    public Long getComplaintTypeId() {
-        return complaintTypeId;
-    }
+	public Long getComplaintId() {
+		return complaintId;
+	}
 
-    public void setComplaintTypeId(Long complaintTypeId) {
-        this.complaintTypeId = complaintTypeId;
-    }
+	public void setComplaintId(Long complaintId) {
+		this.complaintId = complaintId;
+	}
 
-    public String getComplaintDescription() {
-        return complaintDescription;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setComplaintDescription(String complaintDescription) {
-        this.complaintDescription = complaintDescription;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public LocalDateTime getComplaintFiledDate() {
-        return complaintFiledDate;
-    }
+	public Department getDepartment() {
+		return department;
+	}
 
-    public void setComplaintFiledDate(LocalDateTime complaintFiledDate) {
-        this.complaintFiledDate = complaintFiledDate;
-    }
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 
-    public ComplaintStatusEnum getComplaintStatus() {
-        return complaintStatus;
-    }
+	public ComplaintType getComplaintType() {
+		return complaintType;
+	}
 
-    public void setComplaintStatus(ComplaintStatusEnum complaintStatus) {
-        this.complaintStatus = complaintStatus;
-    }
+	public void setComplaintType(ComplaintType complaintType) {
+		this.complaintType = complaintType;
+	}
 
-    @Override
-    public String toString() {
-        return "Complaints{" +
-                "complaintId=" + complaintId +
-                ", userId=" + userId +
-                ", departmentId=" + departmentId +
-                ", complaintTypeId=" + complaintTypeId +
-                ", complaintDescription='" + complaintDescription + '\'' +
-                ", complaintFiledDate=" + complaintFiledDate +
-                ", complaintStatus='" + complaintStatus + '\'' +
-                '}';
-    }
+	public String getComplaintDescription() {
+		return complaintDescription;
+	}
+
+	public void setComplaintDescription(String complaintDescription) {
+		this.complaintDescription = complaintDescription;
+	}
+
+	public String getComplaintStatus() {
+		return complaintStatus;
+	}
+
+	public void setComplaintStatus(String complaintStatus) {
+		this.complaintStatus = complaintStatus;
+	}
+
+	public LocalDateTime getComplaintFiledDate() {
+		return complaintFiledDate;
+	}
+
+	public void setComplaintFiledDate(LocalDateTime complaintFiledDate) {
+		this.complaintFiledDate = complaintFiledDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Complaint [complaintId=" + complaintId + ", complaintType=" + complaintType + ", complaintDescription="
+				+ complaintDescription + ", complaintStatus=" + complaintStatus + ", complaintFiledDate="
+				+ complaintFiledDate + "]";
+	}
+
 }
