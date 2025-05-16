@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,8 +20,9 @@ public class Chat {
     @Column(name = "chat_id")
     private Long chatId;
     
-    @Column(name = "complaint_id")
-    private Long complaintId;
+    @ManyToOne
+    @JoinColumn(name = "complaint_id", nullable = false)
+    private Complaint complaint;
     
     @Column(name = "chat_sender")
     private String chatSender;
@@ -41,13 +44,6 @@ public class Chat {
 		this.chatId = chatId;
 	}
 
-	public Long getComplaintId() {
-		return complaintId;
-	}
-
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
-	}
 
 	public String getChatSender() {
 		return chatSender;
@@ -81,11 +77,18 @@ public class Chat {
 		this.chatTimestamp = chatTimestamp;
 	}
 
-	public Chat(Long chatId, Long complaintId, String chatSender, String chatReceiver, String chatMessage,
+	public Complaint getComplaint() {
+		return complaint;
+	}
+
+	public void setComplaint(Complaint complaint) {
+		this.complaint = complaint;
+	}
+
+	public Chat(Complaint complaint, String chatSender, String chatReceiver, String chatMessage,
 			LocalDateTime chatTimestamp) {
 		super();
-		this.chatId = chatId;
-		this.complaintId = complaintId;
+		this.complaint = complaint;
 		this.chatSender = chatSender;
 		this.chatReceiver = chatReceiver;
 		this.chatMessage = chatMessage;

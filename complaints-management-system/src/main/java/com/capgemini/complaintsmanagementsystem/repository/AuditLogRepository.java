@@ -12,9 +12,9 @@ import com.capgemini.complaintsmanagementsystem.entity.AuditLog;
 @Repository
 public interface AuditLogRepository extends JpaRepository<AuditLog, Long>{
 	
-	List<AuditLog> findByComplaintId(Long complaintId);
+	List<AuditLog> findByComplaint_ComplaintId(Long complaintId);
 
-	List<AuditLog> findByUserId(Long userId);
+	List<AuditLog> findByUser_UserId(Long userId);
 
 	@Query("SELECT a FROM AuditLog a WHERE a.auditLogTimestamp BETWEEN :start AND :end")
 	List<AuditLog> findLogsBetween(LocalDateTime start, LocalDateTime end);

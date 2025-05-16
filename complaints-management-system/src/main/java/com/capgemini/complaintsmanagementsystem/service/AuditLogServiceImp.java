@@ -36,25 +36,24 @@ public class AuditLogServiceImp implements AuditLogService {
 	}
 
 	@Override
-	public AuditLog getAuditLogById(long id) {
+	public AuditLog getAuditLogById(Long id) {
 		log.debug("Fetching Audit Log by ID : ", id);
 		return auditLogRepository.findById(id).orElseThrow(() -> {
 			log.warn("Audit Log not found with ID: {}", id);
 			return new AuditLogNotFoundException("No log with ID {}: " + id);
 		});
-
 	}
-
+	
 	@Override
 	public List<AuditLog> getLogsByComplaintId(Long complaintId) {
 		log.debug("Fetching Audit Logs by complaintID : {}", complaintId);
-		return auditLogRepository.findByComplaintId(complaintId);
+		return auditLogRepository.findByComplaint_ComplaintId(complaintId);
 	}
 
 	@Override
 	public List<AuditLog> getLogsByUserId(Long userId) {
 		log.debug("Fetching Audit Logs by userID : {}", userId);
-		return auditLogRepository.findByUserId(userId);
+		return auditLogRepository.findByUser_UserId(userId);
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class AuditLogServiceImp implements AuditLogService {
 		log.debug("Fetching Audit Logs between {} and {}", start, end);
 		return auditLogRepository.findLogsBetween(start, end);
 	}
-
+	
 	@Override
 	public List<Object[]> getDailyLogCounts() {
 		log.debug("Fetching daily Audit Logs count");
