@@ -11,11 +11,13 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 	
 	@Query("SELECT FUNCTION('DATE', c.complaintFiledDate), COUNT(c) FROM Complaint c GROUP BY FUNCTION('DATE', c.complaintFiledDate)")
 	List<Object[]> getDailyComplaintCounts();
+
     @Query("SELECT ct.complaintSeverity, COUNT(c.complaintId) " +
             "FROM Complaint c " +
             "JOIN c.complaintType ct " +
             "GROUP BY ct.complaintSeverity")
-    List<Object[]> countComplaintsBySeverity();
+
+List<Object[]> countComplaintsBySeverity();
 
 
     @Query("SELECT DATE(c.complaintFiledDate), COUNT(c.complaintId) " +

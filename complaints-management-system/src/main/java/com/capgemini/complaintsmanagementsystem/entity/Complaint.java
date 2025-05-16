@@ -19,56 +19,58 @@ import java.time.LocalDateTime;
 @Table(name = "complaint")
 public class Complaint {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
-    @Column(name = "complaint_id")
-    private Long complaintId;
-    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @NotNull(message = "User is required")
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@Column(name = "complaint_id")
+	private Long complaintId;	
 
-    @NotNull(message = "Department is required")
-    @ManyToOne
-    @JoinColumn(name = "department_id", nullable = false)
-    private Department department;
-    
-    @NotNull(message = "Complaint type is required")
-    @ManyToOne
-    @JoinColumn(name = "complaint_type_id", nullable = false)
-    private ComplaintType complaintType;
-    
-    @NotBlank(message = "Complaint description cannot be blank")
-    @Size(max = 2000, message = "Description is too long")
-    @Column(name = "complaint_description", columnDefinition = "TEXT")
-    private String complaintDescription;
-    
-    @NotBlank(message = "Status is required")
-    @Column(name = "complaint_status")
-    private String complaintStatus;
+	@NotNull(message = "User is required")
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @PastOrPresent(message = "Created date cannot be in the future")
-    @Column(name = "complaint_filed_date")
-    private LocalDateTime complaintFiledDate;
-    
-    @OneToMany(mappedBy = "complaint", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Chat> chats = new ArrayList<>();
+	@NotNull(message = "Department is required")
+	@ManyToOne
+	@JoinColumn(name = "department_id", nullable = false)
+	private Department department;
 
-    @OneToMany(mappedBy = "complaint", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AuditLog> auditLogs = new ArrayList<>();
+	@NotNull(message = "Complaint type is required")
+	@ManyToOne
+	@JoinColumn(name = "complaint_type_id", nullable = false)
+	private ComplaintType complaintType;
+
+	@NotBlank(message = "Complaint description cannot be blank")
+	@Size(max = 2000, message = "Description is too long")
+	@Column(name = "complaint_description", columnDefinition = "TEXT")
+	private String complaintDescription;
+
+	@NotBlank(message = "Status is required")
+	@Column(name = "complaint_status")
+	private String complaintStatus;
+
+	@PastOrPresent(message = "Created date cannot be in the future")
+	@Column(name = "complaint_filed_date")
+	private LocalDateTime complaintFiledDate;
+
+	@OneToMany(mappedBy = "complaint", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Chat> chats = new ArrayList<>();
+
+	@OneToMany(mappedBy = "complaint", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AuditLog> auditLogs = new ArrayList<>();
 
 	public Complaint() {
 		super();
 	}
+
 
 	public Complaint(Long complaintId, String complaintDescription, String complaintStatus) {
 		this.complaintId = complaintId;
 		this.complaintDescription = complaintDescription;
 		this.complaintStatus = complaintStatus;
 	}
+
+
 
 	public Complaint(User user, Department department, ComplaintType complaintType, String complaintDescription,
 					 String complaintStatus, LocalDateTime complaintFiledDate) {
@@ -80,8 +82,6 @@ public class Complaint {
 		this.complaintStatus = complaintStatus;
 		this.complaintFiledDate = complaintFiledDate;
 	}
-
-
 
 	public Long getComplaintId() {
 		return complaintId;
@@ -131,19 +131,13 @@ public class Complaint {
 		this.complaintStatus = complaintStatus;
 	}
 
-	
-
 	public LocalDateTime getComplaintFiledDate() {
 		return complaintFiledDate;
 	}
 
-
-
 	public void setComplaintFiledDate(LocalDateTime complaintFiledDate) {
 		this.complaintFiledDate = complaintFiledDate;
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -152,13 +146,4 @@ public class Complaint {
 				+ complaintFiledDate + "]";
 	}
 
-
-
-
-
-	
-    
-
-
-    
 }

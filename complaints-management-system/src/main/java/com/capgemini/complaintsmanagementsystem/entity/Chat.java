@@ -14,27 +14,27 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "chat")
 public class Chat {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_id")
-    private Long chatId;
-    
-    @ManyToOne
-    @JoinColumn(name = "complaint_id", nullable = false)
-    private Complaint complaint;
-    
-    @Column(name = "chat_sender")
-    private String chatSender;
-    
-    @Column(name = "chat_receiver")
-    private String chatReceiver;
-    
-    @Column(name = "chat_message", columnDefinition = "TEXT")
-    private String chatMessage;
-    
-    @Column(name = "chat_timestamp")
-    private LocalDateTime chatTimestamp;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "chat_id")
+	private Long chatId;
+
+	@ManyToOne
+	@JoinColumn(name = "complaint_id", nullable = false)
+	private Complaint complaint;
+
+	@Column(name = "chat_sender")
+	private String chatSender;
+
+	@Column(name = "chat_receiver")
+	private String chatReceiver;
+
+	@Column(name = "chat_message", columnDefinition = "TEXT")
+	private String chatMessage;
+
+	@Column(name = "chat_timestamp")
+	private LocalDateTime chatTimestamp;
 
 	public Long getChatId() {
 		return chatId;
@@ -43,7 +43,6 @@ public class Chat {
 	public void setChatId(Long chatId) {
 		this.chatId = chatId;
 	}
-
 
 	public String getChatSender() {
 		return chatSender;
@@ -98,7 +97,5 @@ public class Chat {
 	public Chat() {
 		super();
 	}
-    
-	
-    
+
 }
