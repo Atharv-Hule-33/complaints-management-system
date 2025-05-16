@@ -15,44 +15,41 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 
-
-
 import jakarta.persistence.*;
-
 
 @Entity
 @Table(name = "audit_log")
 public class AuditLog {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_id", nullable = false)
-    private Long logId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "log_id", nullable = false)
+	private Long logId;
 
-    @ManyToOne
-    @JoinColumn(name = "complaint_id", nullable = false)
-    @NotNull(message = "Complaint is required")
-    private Complaint complaint;
+	@ManyToOne
+	@JoinColumn(name = "complaint_id", nullable = false)
+	@NotNull(message = "Complaint is required")
+	private Complaint complaint;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @NotNull(message = "User is required")
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	@NotNull(message = "User is required")
+	private User user;
 
-    @Column(name = "action_taken", nullable = false)
-    @NotBlank(message = "Actions cannot be blank")
-    private String actionTaken;
+	@Column(name = "action_taken", nullable = false)
+	@NotBlank(message = "Actions cannot be blank")
+	private String actionTaken;
 
-    @Column(name = "audit_log_timestamp", nullable = false)
-    @NotNull(message = "Timestamp is required")
-    @PastOrPresent(message = "Timestamp cannot be in the future")
-    private LocalDateTime auditLogTimestamp;
+	@Column(name = "audit_log_timestamp", nullable = false)
+	@NotNull(message = "Timestamp is required")
+	@PastOrPresent(message = "Timestamp cannot be in the future")
+	private LocalDateTime auditLogTimestamp;
 
 	public AuditLog() {
 		super();
 	}
 
-	public AuditLog(Complaint complaint,User user,String actionTaken,LocalDateTime auditLogTimestamp) {
+	public AuditLog(Complaint complaint, User user, String actionTaken, LocalDateTime auditLogTimestamp) {
 		super();
 		this.complaint = complaint;
 		this.user = user;
@@ -105,9 +102,5 @@ public class AuditLog {
 		return "AuditLog [logId=" + logId + ", complaint=" + complaint + ", user=" + user + ", actionTaken="
 				+ actionTaken + ", auditLogTimestamp=" + auditLogTimestamp + "]";
 	}
-	
 
-   
 }
-
-	

@@ -16,40 +16,36 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-
-
 @Entity
 @Table(name = "complaint_type")
 public class ComplaintType {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "complaint_type_id")
-    private Long complaintTypeId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "complaint_type_id")
+	private Long complaintTypeId;
 
-    @NotBlank(message = "Complaint type name is required")
-    @Column(name = "complaint_type")
-    private String complaintType;
+	@NotBlank(message = "Complaint type name is required")
+	@Column(name = "complaint_type")
+	private String complaintType;
 
-    @NotNull(message = "Severity level is required")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "complaint_severity")
-    private ComplaintSeverity complaintSeverity;
+	@NotNull(message = "Severity level is required")
+	@Enumerated(EnumType.STRING)
+	@Column(name = "complaint_severity")
+	private ComplaintSeverity complaintSeverity;
 
-    
-
-    @OneToMany(mappedBy = "complaintType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Complaint> complaints = new ArrayList<>();
+	@OneToMany(mappedBy = "complaintType", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Complaint> complaints = new ArrayList<>();
 
 	public ComplaintType() {
 	}
 
-	public ComplaintType(Long complaintTypeId ,String complaintType, ComplaintSeverity complaintSeverity) {
-		this.complaintTypeId=complaintTypeId;
+	public ComplaintType(Long complaintTypeId, String complaintType, ComplaintSeverity complaintSeverity) {
+		this.complaintTypeId = complaintTypeId;
 		this.complaintType = complaintType;
 		this.complaintSeverity = complaintSeverity;
 	}
-	
+
 	public ComplaintType(String complaintType, ComplaintSeverity complaintSeverity) {
 		this.complaintType = complaintType;
 		this.complaintSeverity = complaintSeverity;
