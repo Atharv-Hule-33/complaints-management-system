@@ -27,11 +27,12 @@ import com.capgemini.complaintsmanagementsystem.entity.Chat;
 import com.capgemini.complaintsmanagementsystem.service.ChatService;
 
 
-
+@RestController
 
 import jakarta.validation.Valid;
 
-@RestController
+@Controller
+
 @RequestMapping("/api/chat")
 public class ChatController {
 
@@ -48,7 +49,7 @@ public class ChatController {
     
     
 
-    /*@MessageMapping("/chat.send")
+    @MessageMapping("/chat.send")
     public void sendMessage(@Payload ChatMessageDTO chatMessageDTO) {
         log.debug("Request received to send the message:{}",chatMessageDTO);
         chatService.saveAndSendMessage(chatMessageDTO);
@@ -59,7 +60,6 @@ public class ChatController {
         log.debug("Request received to get the history of chat by ID:{}",complaintId);
         return chatService.getChatHistoryByComplaintId(complaintId);
     }
-    */
     
     @GetMapping("/between/{sender}/{receiver}")
     public List<Chat> getChatHistoryBetweenUsers(
@@ -69,11 +69,11 @@ public class ChatController {
         return chatService.getChatHistoryBetweenUsers(sender, receiver);
     }
    
-    /*@PostMapping("/addMessage")
+    @PostMapping("/addMessage")
     @ResponseBody
     public Chat addChatMessage(@Valid @RequestBody ChatMessageDTO chatMessageDTO) {
         return chatService.addChatMessage(chatMessageDTO);
-    }*/
+    }
     
     @GetMapping("/sender/{sender}")
     public ResponseEntity<List<Chat>> getMessagesBySender(@PathVariable String sender) {
