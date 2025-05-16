@@ -20,7 +20,9 @@ import com.capgemini.complaintsmanagementsystem.entity.User;
 import com.capgemini.complaintsmanagementsystem.service.UserService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -33,11 +35,13 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
+		log.debug("Returning {} users", userService.getAllUsers().size());
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
 	}
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+		 log.debug("Employee fetched: {}", userId); 
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(userId));
 	}
 
@@ -47,6 +51,7 @@ public class UserController {
 			throw new IllegalArgumentException("Invalid Data Found!!");
 		}
 		User createdUser = userService.addUser(user);
+		log.debug("Employee created with ID: {}", user.getUserId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 	}
 
@@ -57,6 +62,7 @@ public class UserController {
 			throw new IllegalArgumentException("Invalid Data Found!!");
 		}
   else{
+	  log.debug("Employee created with ID: {}", user.getUserId());
     	return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, user));
   }
 
@@ -66,12 +72,14 @@ public class UserController {
 	@PatchMapping("/{userId}")
 	public ResponseEntity<User> patchComplaint(@PathVariable Long userId, @RequestBody User user) {
 		User updated = userService.patchUser(userId, user);
+		log.debug("User updations with ID: {}", user.getUserId());
 		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
 
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
 		userService.deleteUser(userId);
+		log.info("User with ID {} successfully deleted", userId); 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 

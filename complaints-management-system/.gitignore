@@ -75,3 +75,4 @@ Desktop.ini
 *.iml
 *.ipr
 *.iws
+/.apt_generated_tests/

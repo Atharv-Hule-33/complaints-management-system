@@ -33,12 +33,13 @@ public class Complaint {
     private LocalDateTime complaintFiledDate;
     @NotBlank(message = "Enter the status")
     @Column(name = "complaint_status")
-    private String complaintStatus;
+    @Enumerated(EnumType.STRING)
+    private ComplaintStatusEnum complaintStatus;
 
     public Complaint() {
     }
 
-    public Complaint(Long complaintId, Long userId, Long departmentId, Long complaintTypeId, String complaintDescription, LocalDateTime complaintFiledDate, String complaintStatus) {
+    public Complaint(Long complaintId, Long userId, Long departmentId, Long complaintTypeId, String complaintDescription, LocalDateTime complaintFiledDate, ComplaintStatusEnum complaintStatus) {
         this.complaintId = complaintId;
         this.userId = userId;
         this.departmentId = departmentId;
@@ -102,11 +103,11 @@ public class Complaint {
         this.complaintFiledDate = complaintFiledDate;
     }
 
-    public String getComplaintStatus() {
+    public ComplaintStatusEnum getComplaintStatus() {
         return complaintStatus;
     }
 
-    public void setComplaintStatus(String complaintStatus) {
+    public void setComplaintStatus(ComplaintStatusEnum complaintStatus) {
         this.complaintStatus = complaintStatus;
     }
 
