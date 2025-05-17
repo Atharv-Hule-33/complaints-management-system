@@ -1,80 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<title>Complaints Management</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Complaints Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
 
-        .error {
-            color: red;
-        }
-    </style>
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+    }
+
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
 </head>
 
 <body class="container my-5">
 <h2 class="mb-4">Complaints Management</h2>
-<button id="showFormBtn" class="btn btn-primary mb-3" style="margin-left: 13px">
-    <i class="bi bi-plus-circle"></i> Add Complaint
-</button>
-<form id="complaintForm" class="mb-4" novalidate style="display: none">
-    <div class="mb-3">
-        <label for="user" class="form-label">User:</label>
-        <select class="form-select" id="user" required>
-            <option value="" disabled selected>Select User</option>
-        </select>
-        <div class="invalid-feedback">User is required.</div>
-        <div class="error" id="user-error"></div>
-    </div>
-    <div class="mb-3">
-        <label for="department" class="form-label">Department:</label>
-        <select class="form-select" id="department" required>
-            <option value="" disabled selected>Select Department</option>
-        </select>
-        <div class="invalid-feedback">Department is required.</div>
-        <div class="error" id="department-error"></div>
-    </div>
-    <div class="mb-3">
-        <label for="complaintType" class="form-label">Complaint Type:</label>
-        <select class="form-select" id="complaintType" required>
-            <option value="" disabled selected>Select Complaint Type</option>
-        </select>
-        <div class="invalid-feedback">Complaint Type is required.</div>
-        <div class="error" id="complaintType-error"></div>
-    </div>
-    <div class="mb-3">
-        <label for="complaintDescription" class="form-label">Description:</label>
-        <textarea class="form-control" id="complaintDescription" rows="3" required></textarea>
-        <div class="invalid-feedback">Description is required.</div>
-        <div class="error" id="complaintDescription-error"></div>
-    </div>
-    <div class="mb-3">
-        <label for="complaintStatus" class="form-label">Status:</label>
-        <select class="form-select" id="complaintStatus" required>
-            <option value="" disabled selected>Select Status</option>
-            <option value="Filed">FILED</option>
-            <option value="InProgress">IN_PROGRESS</option>
-            <option value="Resolved">RESOLVED</option>
-            <option value="Closed">CLOSED</option>
-        </select>
-        <div class="invalid-feedback">Please select a status.</div>
-        <div class="error" id="complaintStatus-error"></div>
-    </div>
-    <button type="submit" class="btn btn-primary">
-        <span id="submit-btn-text">Add Complaint</span>
-    </button>
-    <button type="button" class="btn btn-secondary" id="cancel-btn" style="display: none">
-        Cancel
-    </button>
-</form>
 
 <table class="table table-bordered">
     <thead>
@@ -92,143 +58,260 @@
     <tbody id="complaintsTableBody"></tbody>
 </table>
 
-<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="errorModalLabel">Error!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div id="editStatusModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Edit Complaint Status</h3>
+        <form id="editStatusForm">
+            <input type="hidden" id="editComplaintId">
+            <div class="mb-3">
+                <label for="editComplaintStatus" class="form-label">Status:</label>
+                <select class="form-select" id="editComplaintStatus" required>
+                    <option value="" disabled selected>Select Status</option>
+                    <option value="FILED">FILED</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="RESOLVED">RESOLVED</option>
+                    <option value="CLOSED">CLOSED</option>
+                </select>
+                <div class="invalid-feedback">Please select a status.</div>
             </div>
-            <div class="modal-body">
-                <ul id="error-list"></ul>
+            <div class="mb-3">
+                <label for="actionTaken" class="form-label">Action Taken:</label>
+                <textarea class="form-control" id="actionTaken" rows="3"></textarea>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
+            <button type="submit" class="btn btn-primary">Confirm</button>
+            <button type="button" class="btn btn-secondary close-button">Cancel</button>
+        </form>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    apiUrl = "http://localhost:8080/api";
-    const complaintForm = document.getElementById('complaintForm');
-    const complaintsTableBody = document.getElementById('complaintsTableBody');
-    const userSelect = document.getElementById('user');
-    const departmentSelect = document.getElementById('department');
-    const complaintTypeSelect = document.getElementById('complaintType');
-    const submitButton = document.querySelector('#complaintForm button[type="submit"]');
-    const cancelButton = document.getElementById('cancel-btn');
-    const showFormBtn = document.getElementById("showFormBtn");
+    (() => {
+        const apiUrl = "http://localhost:8080/api";
+        const complaintsTableBody = document.getElementById('complaintsTableBody');
+        const editStatusModal = document.getElementById('editStatusModal');
+        const editStatusForm = document.getElementById('editStatusForm');
+        const editComplaintIdInput = document.getElementById('editComplaintId');
+        const editComplaintStatusSelect = document.getElementById('editComplaintStatus');
+        const actionTakenInput = document.getElementById('actionTaken');
 
-    let complaintDetails = [];
-    let complaintTypesDetails = [];
-    let departmentDetails = [];
-    let userDetails = [];
+        let complaintDetails = [];
+        let complaintTypesDetails = [];
+        let departmentDetails = [];
+        let userDetails = [];
 
-    showFormBtn.addEventListener("click", () => {
-        complaintForm.style.display = "block";
-        showFormBtn.style.display = "none";
-    });
+        // Search bar
+        const searchInput = document.createElement("input");
+        searchInput.setAttribute("type", "text");
+        searchInput.setAttribute("placeholder", "Search by Movie Name...",);
+        searchInput.classList.add("form-control", "mb-3");
+        document.querySelector(".table").parentNode.insertBefore(searchInput, document.querySelector(".table"));
+        searchInput.style.backgroundColor = "white";
+        searchInput.style.color = "black";
+        searchInput.style.border = "1px solid black";
 
-    function fetchAndRenderComplaints() {
-        fetch(`${apiUrl}/complaints`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
-                complaintDetails = data;
-                renderComplaints(data);
-            })
-    }
-
-    function fetchComplaintType() {
-        fetch(`${apiUrl}/complaint-types`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
-                complaintTypesDetails = data;
-                complaintTypeSelect.innerHTML = `<option selected disabled>Select ComplaintType</option>`;
-                data.forEach(type => {
-                    complaintTypeSelect.innerHTML += `<option value="${type.complaintTypeId}">${type.complaintType}</option>`;
-                })
-            })
-            .catch(error => {
-                console.error("failed to fetch the complaint type!!!", error);
-            });
-    }
-
-    function fetchDepartment() {
-        fetch(`${apiUrl}/departments`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
-                departmentDetails = data;
-                departmentSelect.innerHTML = `<option selected disabled>Select Department</option>`;
-                data.forEach(department => {
-                    departmentSelect.innerHTML += `<option value="${department.departmentId}">${department.departmentName}</option>`;
-                })
-            })
-            .catch(error => {
-                console.error("failed to fetch the department!!!", error);
-            });
-    }
-
-    function fetchUser() {
-        fetch(`${apiUrl}/users`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
-                userDetails = data;
-                userSelect.innerHTML = `<option selected disabled>Select User</option>`;
-                data.forEach(user => {
-                    userSelect.innerHTML += `<option value="${user.userId}">${user.userName}</option>`;
-                })
-            })
-            .catch(error => {
-                console.error("failed to fetch the user!!!", error);
-            });
-    }
-
-    function renderComplaints(complaints) {
-        complaintsTableBody.innerHTML = "";
-        complaints.forEach(complaint => {
-            let foundUser = userDetails.find(u=> u.userId === complaint.user.userId);
-            let department = departmentDetails.find(d => d.departmentId === complaint.department.departmentId);
-            let complaintType = complaintTypesDetails.find(ct => ct.complaintTypeId === complaint.complaintType.complaintTypeId);
-            const row = document.createElement("tr");
-            row.innerHTML = `<td>${complaint.complaintId}</td>
-            </td>${foundUser ? foundUser.name : 'N/A'}</td>
-            <td>${department ? department.departmentName : 'N/A'}</td>
-            <td>${complaintType ? complaintType.complaintType : 'N/A'}</td>
-            <td>${complaint.complaintDescription}</td>
-            <td>${complaint.complaintStatus}</td>
-            <td>${complaint.complaintFiledDate}</td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${complaint.complaintId}"><i class="bi bi-pencil-square"></i>Edit</button>
-                <button class="btn btn-sm btn-outline-danger delete-btn mt-3" data-id="${complaint.complaintId}"><i class="bi bi-trash"></i>Delete</button>
-            </td>`;
-            complaintsTableBody.appendChild(row);
-        })
-    }
-    Promise.all([ fetchUser(),fetchDepartment(),fetchComplaintType()])
-        .then(() =>{
-           fetchAndRenderComplaints();
+        searchInput.addEventListener("input", () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filtered = complaintDetails.filter(complaint => complaint.myUser.userName.toLowerCase().includes(searchTerm));
+            renderComplaints(filtered);
         });
+
+        function fetchAndRenderComplaints() {
+            fetch(`${apiUrl}/complaints`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then(res => res.json())
+                .then(data => {
+                    complaintDetails = data;
+                    renderComplaints(data);
+                })
+                .catch(error => {
+                    console.error("Failed to fetch complaints:", error);
+                });
+        }
+
+        function fetchComplaintType() {
+            return fetch(`${apiUrl}/complaint-types`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then(res => res.json())
+                .then(data => {
+                    complaintTypesDetails = data;
+                })
+                .catch(error => {
+                    console.error("Failed to fetch complaint types:", error);
+                });
+        }
+
+        function fetchDepartment() {
+            return fetch(`${apiUrl}/departments`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then(res => res.json())
+                .then(data => {
+                    departmentDetails = data;
+                })
+                .catch(error => {
+                    console.error("Failed to fetch departments:", error);
+                });
+        }
+
+        function fetchUser() {
+            return fetch(`${apiUrl}/users`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then(res => res.json())
+                .then(data => {
+                    userDetails = data;
+                })
+                .catch(error => {
+                    console.error("Failed to fetch users:", error);
+                });
+        }
+
+        function renderComplaints(complaints) {
+            complaintsTableBody.innerHTML = "";
+            complaints.forEach(complaint => {
+                const foundUser = userDetails.find(u => u.userId === complaint.myUser.userId);
+                const department = departmentDetails.find(d => d.departmentId === complaint.department.departmentId);
+                const complaintType = complaintTypesDetails.find(ct => ct.complaintTypeId === complaint.complaintType.complaintTypeId);
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${complaint.complaintId}</td>
+                            <td>${foundUser ? foundUser.userName : 'N/A'}</td>
+                            <td>${department ? department.departmentName : 'N/A'}</td>
+                            <td>${complaintType ? complaintType.complaintType : 'N/A'}</td>
+                            <td>${complaint.complaintDescription}</td>
+                            <td>${complaint.complaintStatus}</td>
+                            <td>${complaint.complaintFiledDate}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${complaint.complaintId}"><i class="bi bi-pencil-square"></i>Edit Status</button>
+                            </td>`;
+                complaintsTableBody.appendChild(row);
+            });
+
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', openEditStatusModal);
+            });
+        }
+
+        function openEditStatusModal(event) {
+            const complaintId = event.currentTarget.getAttribute('data-id');
+            editComplaintIdInput.value = complaintId;
+
+            fetch(`${apiUrl}/complaints/${complaintId}`)
+                .then(res => res.json())
+                .then(complaint => {
+                    editComplaintStatusSelect.value = complaint.complaintStatus;
+                    editStatusModal.dataset.complaint = JSON.stringify(complaint);
+                    editStatusModal.style.display = "block";
+                })
+                .catch(error => {
+                    console.error("Error fetching complaint details:", error);
+                });
+        }
+
+        editStatusForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const complaintId = editComplaintIdInput.value;
+            const newStatus = editComplaintStatusSelect.value;
+            const actionTakenDescription = actionTakenInput.value;
+
+            const existingComplaint = JSON.parse(editStatusModal.dataset.complaint);
+
+            const updatedComplaint = {
+                ...existingComplaint,
+                complaintStatus: newStatus
+            };
+
+            fetch(`${apiUrl}/complaints/${complaintId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedComplaint)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errData => {
+                            throw new Error(errData.message || "Failed to update status");
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Complaint status updated:", data);
+                    const timestamp = new Date().toISOString();
+
+                    const log = {
+                        complaint: existingComplaint,
+                        user: existingComplaint.myUser,
+                        actionTaken: actionTakenDescription,
+                        auditLogTimestamp: timestamp
+                    };
+
+                    return fetch(`${apiUrl}/audit-log`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(log)
+                    });
+                })
+                .then(auditResponse => {
+                    if (!auditResponse.ok) {
+                        return auditResponse.json().then(errData => {
+                            throw new Error(errData.message || "Failed to log audit");
+                        });
+                    }
+                    return auditResponse.json();
+                })
+                .then(auditData => {
+                    console.log("Audit log recorded:", auditData);
+                    alert("Status updated successfully and audit log recorded.");
+                    closeEditStatusModal();
+                    fetchAndRenderComplaints();
+                })
+                .catch(error => {
+                    console.error("Error updating status or logging audit:", error);
+                    alert("Error updating status or logging audit.");
+                });
+        });
+
+        // Close modal when the close button (x) or cancel button is clicked
+        document.querySelectorAll('.close-button').forEach(button => {
+            button.addEventListener('click', closeEditStatusModal);
+        });
+
+        // Close modal if clicked outside the modal
+        window.addEventListener('click', function (event) {
+            if (event.target === editStatusModal) {
+                closeEditStatusModal();
+            }
+        });
+
+        function closeEditStatusModal() {
+            editStatusModal.style.display = "none";
+            // Clear the action taken input when closing the modal
+            actionTakenInput.value = "";
+        }
+
+
+        Promise.all([fetchUser(), fetchDepartment(), fetchComplaintType()])
+            .then(() => {
+                fetchAndRenderComplaints();
+            });
+    })();
 </script>
 </body>
-</html>

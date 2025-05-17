@@ -29,7 +29,7 @@ public class ComplaintController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Complaint>> getAll() {
 		log.debug("Received request to fetch all complaints");
 		return ResponseEntity.status(HttpStatus.OK).body(complaintService.getAllComplaint());
