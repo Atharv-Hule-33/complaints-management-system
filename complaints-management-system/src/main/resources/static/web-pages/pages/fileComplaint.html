@@ -1,95 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: #f5f7fb;
-        overflow-x: hidden;
-      }
-    </style>
-  </head>
-  <body class="container my-5">
-    <div class="card">
-      <div class="card-header bg-white">
-        <h5 class="mb-0">Quick File a Complaint</h5>
-      </div>
-      <div class="card-body">
-        <form id="complaintForm">
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Department</label>
-              <select class="form-select" id="departmentSelect">
-                <option selected>Select Department</option>
-              </select>
-              <div class="invalid-feedback">Please select a Department.</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Complaint Type</label>
-              <select class="form-select" id="complaintTypeSelect">
-                <option selected>Select Type</option>
-              </select>
-              <div class="invalid-feedback">Please select a Type.</div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Date Filed</label>
-            <input
-              type="date"
-              class="form-control"
-              id="dateFiled"
-              max="YYYY-MM-DD"
-              disabled
-            />
-            <div class="invalid-feedback">Date is required.</div>
-          </div>
+<div class="card">
+	<div class="card-header bg-white">
+		<h5 class="mb-0">Quick File a Complaint</h5>
+	</div>
+	<div class="card-body">
+		<form id="complaintForm">
+			<div class="row mb-3">
+				<div class="col-md-6">
+					<label class="form-label">Department</label> <select
+						class="form-select" id="departmentSelect">
+						<option selected>Select Department</option>
+					</select>
+					<div class="invalid-feedback">Please select a Department.</div>
+				</div>
+				<div class="col-md-6">
+					<label class="form-label">Complaint Type</label> <select
+						class="form-select" id="complaintTypeSelect">
+						<option selected>Select Type</option>
+					</select>
+					<div class="invalid-feedback">Please select a Type.</div>
+				</div>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">Date Filed</label> <input type="date"
+					class="form-control" id="dateFiled" max="YYYY-MM-DD" disabled />
+				<div class="invalid-feedback">Date is required.</div>
+			</div>
 
-          <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea
-              class="form-control"
-              rows="4"
-              placeholder="Please provide details about your complaint"
-              id="description"
-            ></textarea>
-            <div class="invalid-feedback">Description is required.</div>
-          </div>
+			<div class="mb-3">
+				<label class="form-label">Description</label>
+				<textarea class="form-control" rows="4"
+					placeholder="Please provide details about your complaint"
+					id="description"></textarea>
+				<div class="invalid-feedback">Description is required.</div>
+			</div>
 
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button
-              type="button"
-              class="btn btn-secondary me-md-2"
-              id="resetBtn"
-            >
-              Reset
-            </button>
-            <button type="submit" class="btn btn-primary" id="submitBtn">
-              Submit Complaint
-            </button>
-            <div
-              class="alert alert-success mt-3"
-              id="successMessage"
-              style="display: none"
-            >
-              Complaint filed successfully!
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <script src="js/fileComplaiints.js"></script>
-  </body>
-</html>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<button type="button" class="btn btn-secondary me-md-2"
+					id="resetBtn">Reset</button>
+				<button type="submit" class="btn btn-primary" id="submitBtn">
+					Submit Complaint</button>
+				<div class="alert alert-success mt-3" id="successMessage"
+					style="display: none">Complaint filed successfully!</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+    // Example: populate department and type dropdowns from backend
+    fetch('/api/departments')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('departmentSelect');
+            data.forEach(dep => {
+                const opt = document.createElement('option');
+                opt.value = dep.departmentId;
+                opt.textContent = dep.departmentName;
+                select.appendChild(opt);
+            });
+        });
+
+    fetch('/api/complaint-types')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('complaintTypeSelect');
+            data.forEach(type => {
+                const opt = document.createElement('option');
+                opt.value = type.complaintTypeId;
+                opt.textContent = type.complaintType;
+                select.appendChild(opt);
+            });
+        });
+    // Set today's date for filed date
+    document.getElementById('dateFiled').value = new Date().toISOString().split('T')[0];
+
+    // Handle form submission
+    document.getElementById('complaintForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Collect data
+        const departmentId = document.getElementById('departmentSelect').value;
+        const complaintTypeId = document.getElementById('complaintTypeSelect').value;
+        const description = document.getElementById('description').value;
+        const userId = 1; // Replace with actual logged-in user ID
+
+        // Simple validation
+        if (!departmentId || !complaintTypeId || !description.trim()) {
+            alert('Please fill all fields.');
+            return;
+        }
+
+        // Prepare payload as per your Complaint entity
+        const payload = {
+            user: { userId: userId },
+            department: { departmentId: departmentId },
+            complaintType: { complaintTypeId: complaintTypeId },
+            complaintDescription: description,
+            complaintStatus: "FILED",
+            complaintFiledDate: new Date().toISOString()
+        };
+
+        fetch('/api/complaints', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to file complaint');
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('complaintForm').reset();
+        })
+        .catch(err => {
+            alert('Error: ' + err.message);
+        });
+    });
+
+    // Reset button
+    document.getElementById('resetBtn').addEventListener('click', function () {
+        document.getElementById('complaintForm').reset();
+        document.getElementById('successMessage').style.display = 'none';
+    });
+</script>
+
+
+
