@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -68,5 +69,16 @@ public class ComplaintController {
 		log.debug("reuqest received to delete the complaint by ID:{}",complaintId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
+	
+	@GetMapping("/complaints")
+    public List<Complaint> getComplaints(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Long departmentId,
+            @RequestParam(required = false) Long typeId,
+            @RequestParam(required = false) String month) {
+
+        YearMonth ym = (month != null && !month.isBlank()) ? YearMonth.parse(month) : null;
+        return complaintService.getFilteredComplaints(status, departmentId, typeId, ym);
+    }
 
 }
