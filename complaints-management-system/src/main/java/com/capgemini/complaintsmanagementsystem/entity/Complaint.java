@@ -92,11 +92,11 @@ public class Complaint {
 		this.complaintId = complaintId;
 	}
 
-	public User getUser() {
+	public User getMyUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setMyUser(User user) {
 		this.user = user;
 	}
 
