@@ -114,12 +114,9 @@
 
 <script>
     // Replace with actual userId (e.g., from session, JWT, or URL)
-    userId = 8;
-
-    // Optionally, set the user name if available
     document.getElementById('userName').textContent = 'User';
 
-    fetch(`/api/user-dashboard/${userId}`)
+    fetch(`/api/user-dashboard/${getUserId()}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('totalComplaints').textContent = data.totalComplaints;
@@ -138,7 +135,7 @@
                 const filedOn = new Date(complaint.filedOn).toLocaleDateString('en-US', {
                     year: 'numeric', month: 'short', day: '2-digit'
                 });
-
+				console.log(complaint);
                 tbody.innerHTML += `
                     <tr>
                         <td>#${complaint.id}</td>
