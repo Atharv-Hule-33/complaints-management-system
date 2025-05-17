@@ -55,7 +55,7 @@ public class AuditLogController {
 		return ResponseEntity.status(HttpStatus.OK).body(auditLog);
 	}
 	
-	@PostMapping()
+	@PostMapping
 	public ResponseEntity<AuditLog> addAuditLog(@Valid @RequestBody AuditLog newAuditLog, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new IllegalArgumentException("Invalid Data Found!!");

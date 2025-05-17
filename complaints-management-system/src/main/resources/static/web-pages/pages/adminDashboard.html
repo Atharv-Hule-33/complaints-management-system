@@ -146,106 +146,106 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
 
 <script>
-    // script.js
-    apiUrl = "http://localhost:8080/api/dashboard";
+    (()=> {
+        const apiUrl = "http://localhost:8080/api/dashboard";
 
-    function fetchData() {
-        fetch(`${apiUrl}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(dashboard => {
-                dashboard.forEach(data => {
-                    document.getElementById('filedComplaints').textContent = data.filedComplaints;
-                    document.getElementById('inProgressComplaints').textContent = data.inProgressComplaints;
-                    document.getElementById('resolvedComplaints').textContent = data.resolvedComplaints;
-                    document.getElementById('closedComplaints').textContent = data.closedComplaints;
-                    document.getElementById('numberOfDepartments').textContent = data.numberOfDepartments;
-                    document.getElementById('numberOfUsers').textContent = data.numberOfUsers;
-                    document.getElementById('numberOfComplaints').textContent = data.numberOfComplaints;
-                    renderComplaintBySeverity(data.complaintsCountBySeverity);
-                    renderComplaintByDate(data.complaintsCountByDate);
+        function fetchData() {
+            fetch(`${apiUrl}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
                 })
-            })
-            .catch(error => {
-                console.error('Error fetching dashboard data:', error);
-            });
-    }
-
-    function generateRandomColour() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
+                .then(dashboard => {
+                    dashboard.forEach(data => {
+                        document.getElementById('filedComplaints').textContent = data.filedComplaints;
+                        document.getElementById('inProgressComplaints').textContent = data.inProgressComplaints;
+                        document.getElementById('resolvedComplaints').textContent = data.resolvedComplaints;
+                        document.getElementById('closedComplaints').textContent = data.closedComplaints;
+                        document.getElementById('numberOfDepartments').textContent = data.numberOfDepartments;
+                        document.getElementById('numberOfUsers').textContent = data.numberOfUsers;
+                        document.getElementById('numberOfComplaints').textContent = data.numberOfComplaints;
+                        renderComplaintBySeverity(data.complaintsCountBySeverity);
+                        renderComplaintByDate(data.complaintsCountByDate);
+                    })
+                })
+                .catch(error => {
+                    console.error('Error fetching dashboard data:', error);
+                });
         }
-        return color;
-    }
 
-
-
-    function renderComplaintBySeverity(complaintBySeverity){
-        const severity = Object.keys(complaintBySeverity);
-        const complaints = Object.values(complaintBySeverity);
-
-        const ctxSeverity = document.getElementById('complaintsBySeverityChart').getContext('2d');
-        new Chart(ctxSeverity, {
-            type: 'bar',
-            data: {
-                labels: severity,
-                datasets: [{
-                    label: 'Complaints',
-                    data: complaints,
-                    backgroundColor: generateRandomColour() // Example colors
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+        function generateRandomColour() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
             }
-        });
+            return color;
+        }
 
-    }
 
-    function renderComplaintByDate(complaintsCountByDate){
-        const date = Object.keys(complaintsCountByDate);
-        const complaint = Object.values(complaintsCountByDate);
+        function renderComplaintBySeverity(complaintBySeverity) {
+            const severity = Object.keys(complaintBySeverity);
+            const complaints = Object.values(complaintBySeverity);
 
-        const ctxDate = document.getElementById('complaintsByDateChart').getContext('2d');
-        new Chart(ctxDate, {
-            type: 'line',
-            data: {
-                labels: date,
-                datasets: [{
-                    label: 'Complaints',
-                    data: complaint,
-                    borderColor: generateRandomColour(),
-                    tension: 0.4
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-
-                            format: 'YYYY-MM-DDTHH:mm:ss',
-
-                            unit: 'day'
+            const ctxSeverity = document.getElementById('complaintsBySeverityChart').getContext('2d');
+            new Chart(ctxSeverity, {
+                type: 'bar',
+                data: {
+                    labels: severity,
+                    datasets: [{
+                        label: 'Complaints',
+                        data: complaints,
+                        backgroundColor: generateRandomColour() // Example colors
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         }
-                    },
-                    y: {
-                        beginAtZero: true
                     }
                 }
-            }
-        });
-    }
+            });
 
-    fetchData();
+        }
+
+        function renderComplaintByDate(complaintsCountByDate) {
+            const date = Object.keys(complaintsCountByDate);
+            const complaint = Object.values(complaintsCountByDate);
+
+            const ctxDate = document.getElementById('complaintsByDateChart').getContext('2d');
+            new Chart(ctxDate, {
+                type: 'line',
+                data: {
+                    labels: date,
+                    datasets: [{
+                        label: 'Complaints',
+                        data: complaint,
+                        borderColor: generateRandomColour(),
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+
+                                format: 'YYYY-MM-DDTHH:mm:ss',
+
+                                unit: 'day'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        fetchData();
+    })();
 </script>

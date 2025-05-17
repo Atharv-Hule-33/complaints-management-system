@@ -41,7 +41,7 @@ public class DepartmentController {
 	    
 	    
 	    @GetMapping
-	    @PreAuthorize("hasRole('ADMIN')")
+//	    @PreAuthorize("hasRole('ADMIN')")
 	    public ResponseEntity<List<Department>> getAllDepartments() {
 	        List<Department> departments = departmentService.getAllDepartments();
 	        log.debug("Returning {} departments", departments.size());
