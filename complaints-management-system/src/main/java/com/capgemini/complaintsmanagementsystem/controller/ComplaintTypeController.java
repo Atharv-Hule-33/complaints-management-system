@@ -28,7 +28,7 @@ public class ComplaintTypeController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<ComplaintType>> getAllComplaintTypes() {
 		log.debug("Received request to fetch all complaint types");
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getAllComplaintTypes());
