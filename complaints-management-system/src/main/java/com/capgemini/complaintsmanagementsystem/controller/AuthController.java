@@ -3,6 +3,7 @@ package com.capgemini.complaintsmanagementsystem.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.capgemini.complaintsmanagementsystem.Dto.ResponseToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
@@ -53,7 +54,8 @@ public class AuthController {
 			claims.put("userid", user.getUserId());
 			claims.put("usertype", user.getUserType());
 			String token = jwtService.generateToken(loginDto.getUsername(),claims);
-			return ResponseEntity.status(HttpStatus.OK).body(token);
+			ResponseToken responseToken = new ResponseToken(token);
+			return ResponseEntity.status(HttpStatus.OK).body(responseToken);
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not Authorized !!");
 	}

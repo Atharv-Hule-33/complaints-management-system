@@ -77,8 +77,8 @@
         let allDepartments = [];
 
         function fetchAndRenderDepartments() {
-            fetch(departmentsApiUrl)
-                .then((res) => res.json())
+            fetch(`${departmentsApiUrl}`)
+                .then(res => res.json())
                 .then((data) => {
                     allDepartments = data;
                     renderDepartments(data);
