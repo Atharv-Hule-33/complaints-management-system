@@ -1,137 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hospital Complaint Management System - Registration</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="pages/css/userReg.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="registration-container">
-            <div class="registration-header">
-              <img
-                src="images/hospital_icon.png"
-                alt="hospital_icon"
-                width="85px"
-              />
-              <h1>Hospital Complaint Management System</h1>
-              <p class="text-muted">
-                Create your account to submit and track complaints
-              </p>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Complaint Management System - Registration</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="pages/css/userReg.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="registration-container">
+          <div class="registration-header">
+            <img src="images/hospital_icon.png" alt="hospital_icon" width="85px" />
+            <h1>Hospital Complaint Management System</h1>
+            <p class="text-muted">
+              Create your account to submit and track complaints
+            </p>
+          </div>
+
+          <form class="registration-form" id="userForm">
+            <div class="mb-3">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Enter your full name" />
+              <div class="error-message" id="name-error">
+                Please enter your full name
+              </div>
             </div>
 
-            <form class="registration-form" id="userForm">
-              <div class="mb-3">
-                <label for="name" class="form-label">Full Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  placeholder="Enter your full name"
-                />
-                <div class="error-message" id="name-error">
-                  Please enter your full name
-                </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="email" placeholder="name@example.com" />
+              <div class="error-message" id="email-error">
+                Please enter a valid email address
               </div>
-
-              <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  placeholder="name@example.com"
-                />
-                <div class="error-message" id="email-error">
-                  Please enter a valid email address
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Create a password"
-                />
-                <div class="error-message" id="password-error">
-                  Password must be at least 8 characters
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label for="confirm-password" class="form-label"
-                  >Confirm Password</label
-                >
-                <input
-                  type="password"
-                  class="form-control"
-                  id="confirm-password"
-                  placeholder="Re-enter your password"
-                />
-                <div class="error-message" id="confirm-password-error">
-                  Passwords do not match
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label for="phone" class="form-label">Phone Number</label>
-                <input
-                  type="tel"
-                  class="form-control"
-                  id="phone"
-                  placeholder="Enter your phone number"
-                />
-                <div class="error-message" id="phone-error">
-                  Please enter a valid phone number
-                </div>
-              </div>
-
-              <div class="mb-4">
-                <label for="userType" class="form-label">User Type</label>
-                <select
-                  class="form-select"
-                  id="userType"
-                  aria-label="User type selection"
-                >
-                  <option value="" selected disabled>Select user type</option>
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
-                <div class="error-message" id="user-type-error">
-                  Please select a user type
-                </div>
-              </div>
-
-              <button type="submit" class="btn register-btn">Register</button>
-            </form>
-
-            <div class="divider"></div>
-
-            <div class="login-link">
-              <p>Already have an account?</p>
-              <button
-                class="btn login-btn"
-                onclick="window.location.href='login.html'"
-              >
-                Login
-              </button>
             </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Create a password" />
+              <div class="error-message" id="password-error">
+                Password must be at least 8 characters
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirm-password" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="confirm-password" placeholder="Re-enter your password" />
+              <div class="error-message" id="confirm-password-error">
+                Passwords do not match
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" />
+              <div class="error-message" id="phone-error">
+                Please enter a valid phone number
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="userType" class="form-label">User Type</label>
+              <select class="form-select" id="userType" aria-label="User type selection">
+                <option value="" selected disabled>Select user type</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <div class="error-message" id="user-type-error">
+                Please select a user type
+              </div>
+            </div>
+
+            <button type="submit" class="btn register-btn">Register</button>
+          </form>
+
+          <div class="divider"></div>
+
+          <div class="login-link">
+            <p>Already have an account?</p>
+            <button class="btn login-btn" onclick="window.location.href='login.html'">
+              Login
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Bootstrap JS Bundle  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/userReg.js"></script>
-  </body>
+  <!-- Bootstrap JS Bundle  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const apiUrl = "http://localhost:8080/api/users";
+
+    const form = document.querySelector(".registration-form");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+    const phoneInput = document.getElementById("phone");
+    const userTypeInput = document.getElementById("userType");
+
+    // Form validation
+    document
+      .querySelector(".registration-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const errorElements = document.querySelectorAll(".error-message");
+        errorElements.forEach((element) => {
+          element.style.display = "none";
+        });
+
+        let isValid = true;
+
+        if (nameInput.value.trim().length < 3) {
+          document.getElementById("name-error").style.display = "block";
+          isValid = false;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(emailInput.value)) {
+          document.getElementById("email-error").style.display = "block";
+          isValid = false;
+        }
+
+        if (passwordInput.value.length < 8) {
+          document.getElementById("password-error").style.display = "block";
+          isValid = false;
+        }
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          document.getElementById("confirm-password-error").style.display = "block";
+          isValid = false;
+        }
+
+        const phonePattern = /^\d{10,15}$/;
+        if (!phonePattern.test(phoneInput.value.replace(/\D/g, ""))) {
+          document.getElementById("phone-error").style.display = "block";
+          isValid = false;
+        }
+
+        if (userTypeInput.value === "") {
+          document.getElementById("user-type-error").style.display = "block";
+          isValid = false;
+        }
+        const user = {
+          userName: nameInput.value.trim(),
+          userEmail: emailInput.value.trim(),
+          userPhone: phoneInput.value.trim(),
+          userPassword: passwordInput.value.trim(),
+          userType: userTypeInput.value.trim(),
+        };
+
+        if (isValid) {
+          fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user),
+          })
+            .then(() => {
+              alert("You are registered successfully!");
+
+              window.location.href = "login.html";
+              form.reset();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        } else {
+          alert("Please, Enter all the details accurately. ");
+        }
+      });
+  </script>
+</body>
+
 </html>
