@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Complaint</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f7fb;
+        overflow-x: hidden;
+      }
+
+      .timeline {
+        position: relative;
+        padding-left: 30px;
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-bottom: 25px;
+      }
+
+      .timeline-item:last-child {
+        padding-bottom: 0;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -30px;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: #e0e0e0;
+      }
+
+      .timeline-badge {
+        position: absolute;
+        left: -38px;
+        top: 0;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        z-index: 1;
+      }
+
+      .badge-filed {
+        background-color: #4e73df;
+      }
+
+      .badge-acknowledged {
+        background-color: #f6c23e;
+      }
+
+      .badge-processing {
+        background-color: #36b9cc;
+      }
+
+      .badge-resolved {
+        background-color: #1cc88a;
+      }
+
+      .badge-rejected {
+        background-color: #e74a3b;
+      }
+
+      .complaint-info {
+        background-color: #f8f9fc;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .search-section {
+        max-width: 600px;
+        margin: 0 auto 30px;
+      }
+    </style>
+  </head>
+  <body class="container my-5">
+    <div class="card">
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Track Your Complaint</h5>
+      </div>
+      <div class="card-body">
+        <!-- Search Section -->
+        <div class="search-section text-center">
+          <h6 class="mb-3">Enter your complaint ID to track its progress</h6>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="complaint-id-addon">#</span>
+            <input
+              type="text"
+              class="form-control"
+              id="complaintIdInput"
+              placeholder="Enter Complaint ID"
+              aria-describedby="complaint-id-addon"
+            />
+            <button class="btn btn-primary" type="button" id="trackBtn">
+              <i class="fas fa-search me-1"></i> Track
+            </button>
+          </div>
+          <div class="form-text">Example: 1085 (without the # symbol)</div>
+        </div>
+
+        <!-- Tracking Results -->
+        <div id="trackingResults" style="display: none">
+          <!-- Complaint Info -->
+          <div class="complaint-info">
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Complaint #1085</h5>
+                <p class="mb-1">
+                  <strong>Subject:</strong> Delay in treatment at Cardiology
+                  department
+                </p>
+                <p class="mb-1"><strong>Filed on:</strong> Apr 10, 2025</p>
+                <p class="mb-1"><strong>Department:</strong> Cardiology</p>
+                <p class="mb-1"><strong>Type:</strong> Service Quality</p>
+              </div>
+              <div class="col-md-6 text-md-end">
+                <div class="mb-3">
+                  <span class="badge bg-warning px-3 py-2 fs-6"
+                    >In Progress</span
+                  >
+                </div>
+                <p class="mb-1"><strong>Last Updated:</strong> Apr 12, 2025</p>
+                <p><strong>Expected Resolution:</strong> Apr 17, 2025</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <h6 class="mb-3">Progress Timeline</h6>
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="timeline-badge badge-filed"></span>
+              <div class="d-flex justify-content-between mb-1">
+                <h6 class="fw-bold mb-0">Complaint Filed</h6>
+                <small class="text-muted">Apr 10, 2025 at 09:45 AM</small>
+              </div>
+              <p class="text-muted mb-0 small">
+                Your complaint about Cardiology service has been submitted
+                successfully. Complaint ID #1085 has been assigned.
+              </p>
+            </div>
+
+            <div class="timeline-item">
+              <span class="timeline-badge badge-acknowledged"></span>
+              <div class="d-flex justify-content-between mb-1">
+                <h6 class="fw-bold mb-0">Complaint Acknowledged</h6>
+                <small class="text-muted">Apr 10, 2025 at 02:30 PM</small>
+              </div>
+              <p class="text-muted mb-0 small">
+                Your complaint has been received and acknowledged by our patient
+                relations team. Initial review is being conducted.
+              </p>
+            </div>
+
+            <div class="timeline-item">
+              <span class="timeline-badge badge-processing"></span>
+              <div class="d-flex justify-content-between mb-1">
+                <h6 class="fw-bold mb-0">Under Investigation</h6>
+                <small class="text-muted">Apr 11, 2025 at 11:20 AM</small>
+              </div>
+              <p class="text-muted mb-0 small">
+                Your complaint has been forwarded to the Department Head of
+                Cardiology for investigation and resolution.
+              </p>
+            </div>
+
+            <div class="timeline-item">
+              <span class="timeline-badge badge-processing"></span>
+              <div class="d-flex justify-content-between mb-1">
+                <h6 class="fw-bold mb-0">Department Response</h6>
+                <small class="text-muted">Apr 12, 2025 at 03:15 PM</small>
+              </div>
+              <p class="text-muted mb-0 small">
+                The Cardiology department has provided their initial response.
+                Your case is being reviewed by the department head.
+              </p>
+            </div>
+
+            <div class="timeline-item">
+              <span
+                class="timeline-badge"
+                style="background-color: #e0e0e0"
+              ></span>
+              <div class="d-flex justify-content-between mb-1">
+                <h6 class="fw-bold mb-0">Resolution (Pending)</h6>
+                <small class="text-muted">Expected by Apr 17, 2025</small>
+              </div>
+              <p class="text-muted mb-0 small">
+                Final resolution is expected within 7 days of filing.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feedback Section -->
+          <div class="card mt-4">
+            <div class="card-body">
+              <h6>Add Comment</h6>
+              <div class="mb-3">
+                <textarea
+                  class="form-control"
+                  rows="3"
+                  placeholder="Add any additional information or comments about your complaint..."
+                ></textarea>
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-primary">
+                  <i class="fas fa-paper-plane me-1"></i> Submit Comment
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Results Found  -->
+        <div id="noResults" class="text-center py-4" style="display: none">
+          <i class="fas fa-search fa-3x text-muted mb-3"></i>
+          <h5>No Complaint Found</h5>
+          <p class="text-muted">
+            We couldn't find a complaint with the ID you entered. Please check
+            the ID and try again.
+          </p>
+          <button class="btn btn-outline-primary mt-2">
+            <i class="fas fa-file-alt me-1"></i> File a New Complaint
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const trackBtn = document.getElementById("trackBtn");
+        const complaintIdInput = document.getElementById("complaintIdInput");
+        const trackingResults = document.getElementById("trackingResults");
+        const noResults = document.getElementById("noResults");
+
+        trackBtn.addEventListener("click", function () {
+          const complaintId = complaintIdInput.value.trim();
+
+          if (complaintId === "1085") {
+            trackingResults.style.display = "block";
+            noResults.style.display = "none";
+          } else {
+            trackingResults.style.display = "none";
+            noResults.style.display = "block";
+          }
+        });
+
+        complaintIdInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            trackBtn.click();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

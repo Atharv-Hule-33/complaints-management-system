@@ -36,6 +36,9 @@ public class ChatServiceImpl implements ChatService {
 	        throw new ChatNotFoundException("No chat history found for complaint ID: " + complaintId);
 	    }
 	    return chatHistory;
+<<<<<<< HEAD
+	}
+=======
 	}*/
 
 	@Override

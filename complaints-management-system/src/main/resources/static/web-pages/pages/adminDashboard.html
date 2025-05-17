@@ -1,0 +1,255 @@
+<div class="container-fluid" id="page-content">
+    <div class="row">
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card bg-primary-gradient">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon mr-3">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title text-uppercase mb-0">Filed Complaints</h5>
+                            <span class="h2 font-weight-bold mb-0" id="filedComplaints">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card bg-success-gradient">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon mr-3">
+                            <i class="fas fa-spinner"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title text-uppercase mb-0">In Progress Complaints</h5>
+                            <span class="h2 font-weight-bold mb-0" id="inProgressComplaints">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card bg-warning-gradient">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon mr-3">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title text-uppercase mb-0">Resolved Complaints</h5>
+                            <span class="h2 font-weight-bold mb-0" id="resolvedComplaints">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card bg-danger-gradient">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon mr-3">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title text-uppercase mb-0">Closed Complaints</h5>
+                            <span class="h2 font-weight-bold mb-0" id="closedComplaints">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon mr-3">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title text-uppercase mb-0">Number of Departments</h5>
+                            <span class="h2 font-weight-bold mb-0" id="numberOfDepartments">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card" style="background: linear-gradient(45deg, #00c6ff, #0072ff);">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon mr-3">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title text-uppercase mb-0">Number of Users</h5>
+                            <span class="h2 font-weight-bold mb-0" id="numberOfUsers">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card" style="background: linear-gradient(45deg, #ff9a9e, #fad0c4);">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon mr-3">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title text-uppercase mb-0">Number of Complaints</h5>
+                            <span class="h2 font-weight-bold mb-0" id="numberOfComplaints">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    Number of Complaints by Date
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="complaintsByDateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    Number of Complaints by Severity
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="complaintsBySeverityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+
+<script>
+    // script.js
+    apiUrl = "http://localhost:8080/api/dashboard";
+
+    function fetchData() {
+        fetch(`${apiUrl}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(dashboard => {
+                console.log(dashboard);
+                dashboard.forEach(data => {
+                    console.log(data.filedComplaints);
+                    document.getElementById('filedComplaints').textContent = data.filedComplaints;
+                    document.getElementById('inProgressComplaints').textContent = data.inProgressComplaints;
+                    document.getElementById('resolvedComplaints').textContent = data.resolvedComplaints;
+                    document.getElementById('closedComplaints').textContent = data.closedComplaints;
+                    document.getElementById('numberOfDepartments').textContent = data.numberOfDepartments;
+                    document.getElementById('numberOfUsers').textContent = data.numberOfUsers;
+                    document.getElementById('numberOfComplaints').textContent = data.numberOfComplaints;
+                    console.log(data.complaintsCountBySeverity);
+                    console.log(data.complaintsCountByDate);
+                    renderComplaintBySeverity(data.complaintsCountBySeverity);
+                    renderComplaintByDate(data.complaintsCountByDate);
+                })
+            })
+            .catch(error => {
+                console.error('Error fetching dashboard data:', error);
+            });
+    }
+
+    function generateRandomColour() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+
+
+    function renderComplaintBySeverity(complaintBySeverity){
+        const severity = Object.keys(complaintBySeverity);
+        const complaints = Object.values(complaintBySeverity);
+
+        const ctxSeverity = document.getElementById('complaintsBySeverityChart').getContext('2d');
+        new Chart(ctxSeverity, {
+            type: 'bar',
+            data: {
+                labels: severity,
+                datasets: [{
+                    label: 'Complaints',
+                    data: complaints,
+                    backgroundColor: generateRandomColour() // Example colors
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    }
+
+    function renderComplaintByDate(complaintsCountByDate){
+        const date = Object.keys(complaintsCountByDate);
+        const complaint = Object.values(complaintsCountByDate);
+
+        const ctxDate = document.getElementById('complaintsByDateChart').getContext('2d');
+        new Chart(ctxDate, {
+            type: 'line',
+            data: {
+                labels: date,
+                datasets: [{
+                    label: 'Complaints',
+                    data: complaint,
+                    borderColor: generateRandomColour(),
+                    tension: 0.4
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+
+                            format: 'YYYY-MM-DDTHH:mm:ss',
+
+                            unit: 'day'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    fetchData();
+</script>
