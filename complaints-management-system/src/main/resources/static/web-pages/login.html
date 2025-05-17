@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -77,4 +78,102 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../js/login.js"></script>
   </body>
+=======
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hospital Complaint Management System - Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="pages/css/login.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="login-container">
+                <div class="login-header">
+                    <img src="images/hospital_icon.png" alt="hospital_icon" width="85px"/>
+                    <h1>Hospital Complaint Management System</h1>
+                    <p class="text-muted">Please log in to access the system</p>
+                </div>
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="name@gmail.com"/>
+                        <div class="error-message" id="email-error">Please enter a valid email address</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password"/>
+                        <div class="error-message" id="password-error">
+                            Password is required
+                        </div>
+                    </div>
+                    <button type="submit" class="btn login-btn" id="loginBtn">Login</button>
+                </form>
+                <div class="divider"></div>
+                <div class="register-link">
+                    <p>Don't have an account?</p>
+                    <button class="btn register-btn" onclick="window.location.href='userReg.html'">Register Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        verify();
+    });
+
+    function verify() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        fetch("http://localhost:8080/auth/signin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({username: email, password: password})
+        })
+            .then(response => {
+                // Handle HTTP status codes with console logs
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    document.getElementById("error").textContent = "404 Not Found - Users data not available.";
+                } else if (response.status === 401) {
+                    document.getElementById("error").textContent = "401 Unauthorized - Invalid token or access denied.";
+                } else if (response.status === 500) {
+                    document.getElementById("error").textContent = "500 Internal Server Error.";
+                } else {
+                    document.getElementById("error").textContent = `Unexpected status code: ${response.status}`;
+                }
+            })
+            .then(response => {
+                    if (!response) return;
+
+                    if (response.token)
+                        localStorage.setItem("token", response.token);
+                    else
+                        throw new Error("Token Not Found");
+
+                    const userType = getUserType();
+                    if (userType === "ADMIN") {
+                        window.location.href = "admin.html";
+                    } else {
+                        window.location.href = "user.html";
+                    }
+                }
+            )
+            .catch(error => {
+                console.log(error);
+                document.getElementById("error").textContent = "Something went wrong. Please try again.";
+            });
+    }
+</script>
+</body>
+
 </html>

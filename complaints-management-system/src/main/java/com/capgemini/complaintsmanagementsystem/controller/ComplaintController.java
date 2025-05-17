@@ -9,13 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/complaints")
+@RequestMapping("/api/complaints")
 @Slf4j
 public class ComplaintController {
 
@@ -27,6 +28,7 @@ public class ComplaintController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Complaint>> getAll() {
 		log.debug("Received request to fetch all complaints");
 		return ResponseEntity.status(HttpStatus.OK).body(complaintService.getAllComplaint());
