@@ -2,48 +2,40 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Reports</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-	rel="stylesheet" />
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-<style>
-@import
-	url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap")
-	;
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Reports</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+	<style>
+		@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-body {
-	font-family: "Poppins", sans-serif;
-}
+		body {
+			font-family: "Poppins", sans-serif;
+		}
 
-.status-pending {
-	color: #ff9800;
-	font-weight: 500;
-}
+		.status-pending {
+			color: #ff9800;
+			font-weight: 500;
+		}
 
-.status-resolved {
-	color: #4caf50;
-	font-weight: 500;
-}
+		.status-resolved {
+			color: #4caf50;
+			font-weight: 500;
+		}
 
-.status-in-progress {
-	color: #2196f3;
-	font-weight: 500;
-}
+		.status-in-progress {
+			color: #2196f3;
+			font-weight: 500;
+		}
 
-.status-closed {
-	color: #f44336;
-	font-weight: 500;
-}
-</style>
+		.status-closed {
+			color: #f44336;
+			font-weight: 500;
+		}
+	</style>
 </head>
 
 <body class="container my-5">
@@ -52,8 +44,8 @@ body {
 	<!-- Filters -->
 	<div class="row mb-4">
 		<div class="col-md-3 mb-3">
-			<label for="status-filter" class="form-label">Status:</label> <select
-				class="form-select" id="status-filter">
+			<label for="status-filter" class="form-label">Status:</label> <select class="form-select"
+				id="status-filter">
 				<option value="" selected>All Statuses</option>
 				<option value="Filed">Filed</option>
 				<option value="In-Progress">In Progress</option>
@@ -77,8 +69,8 @@ body {
 		</div>
 
 		<div class="col-md-3 mb-3">
-			<label for="month-filter" class="form-label">Month:</label> <input
-				type="month" class="form-control" id="month-filter" />
+			<label for="month-filter" class="form-label">Month:</label> <input type="month" class="form-control"
+				id="month-filter" />
 		</div>
 	</div>
 
@@ -114,57 +106,56 @@ body {
 	</table>
 
 	<script>
-	function initializeReportsPage() {
-	  const API = 'http://localhost:8080/api';
-	  const STATUS_CLASSES = {
-	    'filed': 'status-pending',
-	    'in-progress': 'status-in-progress',
-	    'resolved': 'status-resolved',
-	    'closed': 'status-closed'
-	  };
-	
-	  const body = document.getElementById('complaints-data');
-	  const statusFilter = document.getElementById('status-filter');
-	  const departmentFilter = document.getElementById('department-filter');
-	  const complaintTypeFilter = document.getElementById('complaint-type-filter');
-	  const monthFilter = document.getElementById('month-filter');
-	  const applyBtn = document.getElementById('apply-filters');
-	  const resetBtn = document.getElementById('reset-filters');
-	  const exportBtn = document.getElementById('export-pdf');
-	
-	  function loadOptions(url, selectElement, valueKey, textKey) {
-	    fetch(url)
-	      .then(response => response.json())
-	      .then(data => {
-	        data.forEach(item => {
-	          const option = document.createElement('option');
-	          option.value = item[valueKey];
-	          option.textContent = item[textKey];
-	          selectElement.appendChild(option);
-	        });
-	      })
-	      .catch(error => console.error('Error loading options:', error));
-	  }
-	
-	  function getFilterParams() {
-	    const params = {};
-	    if (statusFilter.value) params.status = statusFilter.value;
-	    if (departmentFilter.value) params.departmentId = departmentFilter.value;
-	    if (complaintTypeFilter.value) params.complaintTypeId = complaintTypeFilter.value;
-	    if (monthFilter.value) {
-	      const [year, month] = monthFilter.value.split('-');
-	      params.month = month;
-	      params.year = year;
-	    }
-	    return new URLSearchParams(params).toString();
-	  }
-	
-	  function renderTable(complaints) {
-	    if (!complaints.length) {
-	      body.innerHTML = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
-	      return;
-	    }
-	    body.innerHTML = complaints.map(complaint => `
+		function initializeReportsPage() {
+			const API = 'http://localhost:8080/api';
+			const STATUS_CLASSES = {
+				'filed': 'status-pending',
+				'in-progress': 'status-in-progress',
+				'resolved': 'status-resolved',
+				'closed': 'status-closed'
+			};
+
+			const body = document.getElementById('complaints-data');
+			const statusFilter = document.getElementById('status-filter');
+			const departmentFilter = document.getElementById('department-filter');
+			const complaintTypeFilter = document.getElementById('complaint-type-filter');
+			const monthFilter = document.getElementById('month-filter');
+			const applyBtn = document.getElementById('apply-filters');
+			const resetBtn = document.getElementById('reset-filters');
+			const exportBtn = document.getElementById('export-pdf');
+
+			function loadOptions(url, selectElement, valueKey, textKey) {
+				fetch(url)
+					.then(response => response.json())
+					.then(data => {
+						data.forEach(item => {
+							const option = document.createElement('option');
+							option.value = item[valueKey];
+							option.textContent = item[textKey];
+							selectElement.appendChild(option);
+						});
+					})
+					.catch(error => console.error('Error loading options:', error));
+			}
+
+			function getFilterParams() {
+				const params = {};
+				if (statusFilter.value) params.status = statusFilter.value;
+				if (departmentFilter.value) params.departmentId = departmentFilter.value;
+				if (complaintTypeFilter.value) params.typeId = complaintTypeFilter.value;
+				if (monthFilter.value) {
+					params.month = monthFilter.value; // e.g., "2025-05"
+				}
+				return new URLSearchParams(params).toString();
+			}
+
+			function renderTable(complaints) {
+				console.log(complaints);
+				if (!complaints.length) {
+					body.innerHTML = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
+					return;
+				}
+				body.innerHTML = complaints.map(complaint => `
 	      <tr>
 	        <td>${complaint.complaintId}</td>
 	        <td>${(complaint.myUser?.userName ?? 'N/A')}</td>
@@ -179,62 +170,63 @@ body {
 	        </td>
 	      </tr>
 	    `).join('');
-	  }
-	
-	  function loadComplaints() {
-	    const url = `${API}/complaints/complaints?${getFilterParams()}`;
-	    fetch(url)
-	      .then(response => {
-	        if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-	        return response.json();
-	      })
-	      .then(data => renderTable(data))
-	      .catch(error => {
-	        body.innerHTML = '<tr><td colspan="7" class="text-danger text-center">Error loading complaints</td></tr>';
-	        console.error('Error loading complaints:', error);
-	      });
-	  }
-	
-	  function exportToPdf() {
-	    try {
-	      const { jsPDF } = window.jspdf;
-	      const doc = new jsPDF();
-	      doc.text('Complaint Records', 14, 15);
-	      if (typeof doc.autoTable === 'function') {
-	        doc.autoTable({ 
-	          html: '.table',
-	          startY: 20,
-	          styles: { fontSize: 8 },
-	          columnStyles: { 4: { cellWidth: 50 } }
-	        });
-	      } else {
-	        console.error('autoTable plugin not found');
-	        alert('PDF table plugin not loaded properly');
-	        return;
-	      }
-	      doc.save('complaints-report.pdf');
-	    } catch (error) {
-	      console.error('Error exporting PDF:', error);
-	      alert('Error generating PDF: ' + error.message);
-	    }
-	  }
-	
-	  applyBtn?.addEventListener('click', loadComplaints);
-	  resetBtn?.addEventListener('click', function () {
-	    statusFilter.value = '';
-	    departmentFilter.value = '';
-	    complaintTypeFilter.value = '';
-	    monthFilter.value = '';
-	    loadComplaints();
-	  });
-	  exportBtn?.addEventListener('click', exportToPdf);
-	
-	  loadOptions(`${API}/departments`, departmentFilter, 'departmentId', 'departmentName');
-	  loadOptions(`${API}/complaint-types`, complaintTypeFilter, 'complaintTypeId', 'complaintType');
-	  loadComplaints();
-	}
-	initializeReportsPage();
-</script>
+			}
+
+			function loadComplaints() {
+				const url = `${API}/complaints/complaints?${getFilterParams()}`;
+				console.log(url);
+				fetch(url)
+					.then(response => {
+						if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
+						return response.json();
+					})
+					.then(data => renderTable(data))
+					.catch(error => {
+						body.innerHTML = '<tr><td colspan="7" class="text-danger text-center">Error loading complaints</td></tr>';
+						console.error('Error loading complaints:', error);
+					});
+			}
+
+			function exportToPdf() {
+				try {
+					const { jsPDF } = window.jspdf;
+					const doc = new jsPDF();
+					doc.text('Complaint Records', 14, 15);
+					if (typeof doc.autoTable === 'function') {
+						doc.autoTable({
+							html: '.table',
+							startY: 20,
+							styles: { fontSize: 8 },
+							columnStyles: { 4: { cellWidth: 50 } }
+						});
+					} else {
+						console.error('autoTable plugin not found');
+						alert('PDF table plugin not loaded properly');
+						return;
+					}
+					doc.save('complaints-report.pdf');
+				} catch (error) {
+					console.error('Error exporting PDF:', error);
+					alert('Error generating PDF: ' + error.message);
+				}
+			}
+
+			applyBtn?.addEventListener('click', loadComplaints);
+			resetBtn?.addEventListener('click', function () {
+				statusFilter.value = '';
+				departmentFilter.value = '';
+				complaintTypeFilter.value = '';
+				monthFilter.value = '';
+				loadComplaints();
+			});
+			exportBtn?.addEventListener('click', exportToPdf);
+
+			loadOptions(`${API}/departments`, departmentFilter, 'departmentId', 'departmentName');
+			loadOptions(`${API}/complaint-types`, complaintTypeFilter, 'complaintTypeId', 'complaintType');
+			loadComplaints();
+		}
+		initializeReportsPage();
+	</script>
 
 </body>
 
