@@ -1,4 +1,100 @@
 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f7fb;
+        overflow-x: hidden;
+      }
+    </style>
+  </head>
+  <body class="container my-5">
+    <div class="card">
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Quick File a Complaint</h5>
+      </div>
+      <div class="card-body">
+        <form id="complaintForm">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Department</label>
+              <select class="form-select" id="departmentSelect">
+                <option selected>Select Department</option>
+              </select>
+              <div class="invalid-feedback">Please select a Department.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Complaint Type</label>
+              <select class="form-select" id="complaintTypeSelect">
+                <option selected>Select Type</option>
+              </select>
+              <div class="invalid-feedback">Please select a Type.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date Filed</label>
+            <input
+              type="date"
+              class="form-control"
+              id="dateFiled"
+              max="YYYY-MM-DD"
+              disabled
+            />
+            <div class="invalid-feedback">Date is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              rows="4"
+              placeholder="Please provide details about your complaint"
+              id="description"
+            ></textarea>
+            <div class="invalid-feedback">Description is required.</div>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button
+              type="button"
+              class="btn btn-secondary me-md-2"
+              id="resetBtn"
+            >
+              Reset
+            </button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              Submit Complaint
+            </button>
+            <div
+              class="alert alert-success mt-3"
+              id="successMessage"
+              style="display: none"
+            >
+              Complaint filed successfully!
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="js/fileComplaiints.js"></script>
+  </body>
+</html>
+
 <div class="card">
 	<div class="card-header bg-white">
 		<h5 class="mb-0">Quick File a Complaint</h5>
@@ -124,6 +220,7 @@
         document.getElementById('successMessage').style.display = 'none';
     });
 </script>
+
 
 
 

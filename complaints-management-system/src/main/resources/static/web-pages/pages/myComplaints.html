@@ -1,4 +1,109 @@
 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Complaints</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/myComplaints.css" />
+  </head>
+  <body class="container my-5">
+    <div class="card mb-4">
+      <div
+        class="card-header bg-white d-flex justify-content-between align-items-center"
+      >
+        <h5 class="mb-0">My Complaints</h5>
+        <a href="#" class="btn btn-sm btn-primary">
+          <i class="fas fa-plus me-1"></i>File New Complaint
+        </a>
+      </div>
+      <div class="card-body">
+        <!-- Filter Section -->
+        <div class="filter-section mb-4">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <select class="form-select" id="statusFilter">
+                <option value="" selected>All Statuses</option>
+                <option value="Filed">Filed</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+                <option value="Pending">Pending</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="departmentFilter">
+                <option value="" selected>All Departments</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="typeFilter">
+                <option value="" selected>All Types</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search..."
+                  id="searchInput"
+                />
+                <button class="btn btn-outline-secondary" type="button">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complaints List -->
+        <div class="complaints-list">
+          <div class="card complaint-card mb-3">
+            <div class="card-body">
+              <div class="row align-items-center" id="allComplaints">
+                <div class="col-md-8">
+                  <h5 class="card-title">
+                    #1085 - Delay in treatment at Cardiology department
+                  </h5>
+                  <p class="text-muted mb-2">
+                    <i class="fas fa-calendar-alt me-2"></i>Filed on: Apr 10,
+                    2025
+                  </p>
+                  <p class="text-muted mb-2">
+                    <i class="fas fa-info-circle me-2"></i>Type: Service Delay
+                  </p>
+                </div>
+
+                <div class="col-md-4 text-md-end">
+                  <span
+                    class="status-badge badge-inprogress mb-2 d-inline-block"
+                    >In Progress</span
+                  >
+                  <div class="mt-2">
+                    <a href="#" class="btn btn-sm btn-outline-secondary me-2">
+                      <i class="fas fa-edit me-1"></i>Edit Complaint
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+
 <div class="container py-4">
 	<div class="card mb-4">
 		<div
@@ -282,4 +387,5 @@ function openEditModal(complaintId) {
 // Expose for inline onclick
 window.openEditModal = openEditModal;
 </script>
+
 
