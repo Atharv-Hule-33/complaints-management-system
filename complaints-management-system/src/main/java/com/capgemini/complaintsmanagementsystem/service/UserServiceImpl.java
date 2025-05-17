@@ -10,6 +10,7 @@ import com.capgemini.complaintsmanagementsystem.entity.User;
 import com.capgemini.complaintsmanagementsystem.exception.UserNotFoundException;
 import com.capgemini.complaintsmanagementsystem.repository.UserRepository;
 
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -20,6 +21,15 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository) {
 		this.userRepository= userRepository;
+	}
+	@Override
+	public boolean existsByUserName(String username) {
+		return userRepository.existsByUserName(username);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByUserEmail(email);
 	}
 	
 
@@ -100,5 +110,9 @@ public class UserServiceImpl implements UserService{
 	    log.debug("Updated user details after patch: {}", existing);
 		return userRepository.save(existing);
 	}
-
+	@Override
+	public User findByUserNameOrEmail(String username, String email) {
+		return userRepository.findByUserNameOrUserEmail(username, email)
+				.orElseThrow(()->new UserNotFoundException("Username or Email not Found !"));
+	}
 }

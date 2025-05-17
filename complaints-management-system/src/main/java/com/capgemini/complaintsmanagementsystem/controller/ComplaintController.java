@@ -9,13 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/complaints")
+@RequestMapping("/api/complaints")
 @Slf4j
 public class ComplaintController {
 
@@ -27,6 +29,7 @@ public class ComplaintController {
 	}
 
 	@GetMapping
+//	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Complaint>> getAll() {
 		log.debug("Received request to fetch all complaints");
 		return ResponseEntity.status(HttpStatus.OK).body(complaintService.getAllComplaint());
@@ -66,5 +69,16 @@ public class ComplaintController {
 		log.debug("reuqest received to delete the complaint by ID:{}",complaintId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
+	
+	@GetMapping("/complaints")
+    public List<Complaint> getComplaints(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Long departmentId,
+            @RequestParam(required = false) Long typeId,
+            @RequestParam(required = false) String month) {
+
+        YearMonth ym = (month != null && !month.isBlank()) ? YearMonth.parse(month) : null;
+        return complaintService.getFilteredComplaints(status, departmentId, typeId, ym);
+    }
 
 }

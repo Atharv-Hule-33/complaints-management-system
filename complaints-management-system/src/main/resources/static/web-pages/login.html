@@ -1,89 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hospital Complaint Management System - Login</title>
-
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="pages/css/login.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="login-container">
-            <div class="login-header">
-              <img
-                src="images/hospital_icon.png"
-                alt="hospital_icon"
-                width="85px"
-              />
-              <h1>Hospital Complaint Management System</h1>
-              <p class="text-muted">Please log in to access the system</p>
-            </div>
-
-            <form id="loginForm">
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  placeholder="name@gmail.com"
-                />
-                <div class="error-message" id="email-error">
-                  Please enter a valid email address
-                </div>
-              </div>
-
-              <div class="mb-4">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Enter your password"
-                />
-                <div class="error-message" id="password-error">
-                  Password is required
-                </div>
-              </div>
-
-              <button type="submit" class="btn login-btn" id="loginBtn">
-                Login
-              </button>
-            </form>
-
-            <div class="divider"></div>
-
-            <div class="register-link">
-              <p>Don't have an account?</p>
-              <button
-                class="btn register-btn"
-                onclick="window.location.href='userReg.html'"
-              >
-                Register Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/login.js"></script>
-  </body>
-=======
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Hospital Complaint Management System - Login</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
     <link rel="stylesheet" href="pages/css/login.css"/>
 </head>
 <body>
@@ -92,35 +18,66 @@
         <div class="col-12">
             <div class="login-container">
                 <div class="login-header">
-                    <img src="images/hospital_icon.png" alt="hospital_icon" width="85px"/>
+                    <img
+                            src="images/hospital_icon.png"
+                            alt="hospital_icon"
+                            width="85px"
+                    />
                     <h1>Hospital Complaint Management System</h1>
                     <p class="text-muted">Please log in to access the system</p>
                 </div>
+
                 <form id="loginForm">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="name@gmail.com"/>
-                        <div class="error-message" id="email-error">Please enter a valid email address</div>
+                        <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                placeholder="name@gmail.com"
+                        />
+                        <div class="error-message" id="email-error">
+                            Please enter a valid email address
+                        </div>
                     </div>
+
                     <div class="mb-4">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password"/>
+                        <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                placeholder="Enter your password"
+                        />
                         <div class="error-message" id="password-error">
                             Password is required
                         </div>
                     </div>
-                    <button type="submit" class="btn login-btn" id="loginBtn">Login</button>
+
+                    <button type="submit" class="btn login-btn" id="loginBtn">
+                        Login
+                    </button>
                 </form>
+
                 <div class="divider"></div>
+
                 <div class="register-link">
                     <p>Don't have an account?</p>
-                    <button class="btn register-btn" onclick="window.location.href='userReg.html'">Register Now</button>
+                    <button
+                            class="btn register-btn"
+                            onclick="window.location.href='userReg.html'"
+                    >
+                        Register Now
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="./pages/js/script.js"></script>
 <script>
     document.getElementById("loginForm").addEventListener("submit", function (e) {
         e.preventDefault();
@@ -174,6 +131,4 @@
             });
     }
 </script>
-</body>
-
 </html>
