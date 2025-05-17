@@ -158,7 +158,13 @@
                 return response.json();
             })
             .then(dashboard => {
+
+                console.log(dashboard);
                 dashboard.forEach(data => {
+                    console.log(data.filedComplaints);
+
+                dashboard.forEach(data => {
+
                     document.getElementById('filedComplaints').textContent = data.filedComplaints;
                     document.getElementById('inProgressComplaints').textContent = data.inProgressComplaints;
                     document.getElementById('resolvedComplaints').textContent = data.resolvedComplaints;
@@ -166,6 +172,10 @@
                     document.getElementById('numberOfDepartments').textContent = data.numberOfDepartments;
                     document.getElementById('numberOfUsers').textContent = data.numberOfUsers;
                     document.getElementById('numberOfComplaints').textContent = data.numberOfComplaints;
+
+                    console.log(data.complaintsCountBySeverity);
+                    console.log(data.complaintsCountByDate);
+
                     renderComplaintBySeverity(data.complaintsCountBySeverity);
                     renderComplaintByDate(data.complaintsCountByDate);
                 })

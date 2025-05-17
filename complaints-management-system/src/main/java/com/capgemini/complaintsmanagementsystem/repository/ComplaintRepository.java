@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.capgemini.complaintsmanagementsystem.entity.Complaint;
 
-import com.capgemini.complaintsmanagementsystem.entity.User;
-
 
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 	
@@ -41,10 +39,12 @@ List<Object[]> countComplaintsBySeverity();
 
     @Query("SELECT COUNT(c.complaintId) FROM Complaint c WHERE c.complaintStatus = 'RESOLVED'")
     Long countResolvedComplaints();
+
     
     long countByUser(User user);
     long countByUserAndComplaintStatus(User user, String status);
     List<Complaint> findTop5ByUserOrderByComplaintFiledDateDesc(User user);
+
 
 
 }
