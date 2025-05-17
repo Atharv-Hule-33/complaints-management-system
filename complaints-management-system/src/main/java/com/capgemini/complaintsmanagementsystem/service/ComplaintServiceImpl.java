@@ -8,6 +8,8 @@ import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 @Slf4j
@@ -68,4 +70,20 @@ public class ComplaintServiceImpl implements ComplaintService{
         });
         complaintRepository.delete(complaint);
     }
+    
+    public List<Complaint> getFilteredComplaints(String status, Long departmentId, Long typeId, YearMonth month) {
+	    LocalDateTime start = null;
+	    LocalDateTime end = null;
+
+	    if (month != null) {
+	        start = month.atDay(1).atStartOfDay();
+	        end = month.atEndOfMonth().atTime(23, 59, 59);
+	    }
+
+	    // Normalize status: "In-Progress" → "IN_PROGRESS"
+	    if (status != null && !status.isBlank()) {
+	        status = status.trim().toUpperCase().replace("-", "_");
+	    }
+	    return complaintRepository.findFilteredComplaints(status, departmentId, typeId, start, end);
+	}
 }
