@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -246,3 +247,165 @@
     <script src="/js/userDashboard.js"></script>
   </body>
 </html>
+
+
+<div class="row mb-4">
+	<div class="col-md-12">
+		<h2>
+			Welcome <span id="userName"></span>
+		</h2>
+		<div class="row">
+			<div class="col-xl-3 col-md-6">
+				<div class="card">
+					<div class="stat-card bg-primary-gradient">
+						<div class="d-flex justify-content-between align-items-center">
+							<div>
+								<h6 class="mb-0">Total Complaints</h6>
+								<h2 class="mb-0 mt-2" id="totalComplaints">0</h2>
+							</div>
+							<div class="stat-icon">
+								<i class="fas fa-clipboard-list"></i>
+							</div>
+						</div>
+						<div class="mt-2 small">
+							<span class="text-white">View all your complaints</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-md-6">
+				<div class="card">
+					<div class="stat-card bg-success-gradient">
+						<div class="d-flex justify-content-between align-items-center">
+							<div>
+								<h6 class="mb-0">Resolved</h6>
+								<h2 class="mb-0 mt-2" id="resolvedComplaints">0</h2>
+							</div>
+							<div class="stat-icon">
+								<i class="fas fa-check-circle"></i>
+							</div>
+						</div>
+						<div class="mt-2 small">
+							<span class="text-white">Successfully resolved complaints</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-md-6">
+				<div class="card">
+					<div class="stat-card bg-warning-gradient">
+						<div class="d-flex justify-content-between align-items-center">
+							<div>
+								<h6 class="mb-0">In Progress</h6>
+								<h2 class="mb-0 mt-2" id="inProgressComplaints">0</h2>
+							</div>
+							<div class="stat-icon">
+								<i class="fas fa-clock"></i>
+							</div>
+						</div>
+						<div class="mt-2 small">
+							<span class="text-white">Currently being processed</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-md-6">
+				<div class="card">
+					<div class="stat-card bg-info-gradient">
+						<div class="d-flex justify-content-between align-items-center">
+							<div>
+								<h6 class="mb-0">Filed</h6>
+								<h2 class="mb-0 mt-2" id="filedComplaints">0</h2>
+							</div>
+							<div class="stat-icon">
+								<i class="fas fa-hourglass-half"></i>
+							</div>
+						</div>
+						<div class="mt-2 small">
+							<span class="text-white">Awaiting initial response</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg">
+		<div class="card">
+			<div class="card-header bg-white">
+				<div class="d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Recent Complaints</h5>
+				</div>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead class="table-light">
+							<tr>
+								<th>ID</th>
+								<th>Department</th>
+								<th>Type</th>
+								<th>Filed On</th>
+								<th>Status</th>
+								<th>Chat</th>
+							</tr>
+						</thead>
+						<tbody id="recentComplaintsTable">
+							<!-- Complaints will be injected here -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    // Replace with actual userId (e.g., from session, JWT, or URL)
+    userId = 8;
+
+    // Optionally, set the user name if available
+    document.getElementById('userName').textContent = 'User';
+
+    fetch(`/api/user-dashboard/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('totalComplaints').textContent = data.totalComplaints;
+            document.getElementById('resolvedComplaints').textContent = data.resolvedComplaints;
+            document.getElementById('inProgressComplaints').textContent = data.inProgressComplaints;
+            document.getElementById('filedComplaints').textContent = data.filedComplaints;
+
+            const tbody = document.getElementById('recentComplaintsTable');
+            tbody.innerHTML = '';
+            data.recentComplaints.forEach(complaint => {
+            	let badgeClass = 'bg-secondary';
+            	if (complaint.status === 'RESOLVED') badgeClass = 'bg-success';
+            	else if (complaint.status === 'IN_PROGRESS') badgeClass = 'bg-warning text-dark';
+            	else if (complaint.status === 'FILED') badgeClass = 'bg-primary';
+            	else if (complaint.status === 'CLOSED') badgeClass = 'bg-info';
+                const filedOn = new Date(complaint.filedOn).toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'short', day: '2-digit'
+                });
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${complaint.id}</td>
+                        <td>${complaint.department}</td>
+                        <td>${complaint.type}</td>
+                        <td>${filedOn}</td>
+                        <td><span class="badge ${badgeClass}">${complaint.status}</span></td>
+                        <td><a href="#" class="btn btn-sm btn-outline-secondary" title="Chat">
+                        <i class="fas fa-comments"></i>
+                        </a></td>
+                    </tr>
+                `;
+            });
+        })
+        .catch(err => {
+            console.error('Failed to load dashboard data', err);
+        });
+</script>
+
+
