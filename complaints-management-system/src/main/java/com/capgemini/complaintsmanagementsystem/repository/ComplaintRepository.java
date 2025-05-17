@@ -33,6 +33,8 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 	@Query("SELECT COUNT(c.complaintId) FROM Complaint c WHERE c.complaintStatus = 'IN_PROGRESS'")
 	Long countInProgressComplaints();
 
+	@Query("SELECT COUNT(c.complaintId) FROM Complaint c WHERE c.complaintStatus = 'RESOLVED'")
+    Long countResolvedComplaints();
 
     @Query("SELECT COUNT(c.complaintId) FROM Complaint c WHERE c.complaintStatus = 'RESOLVED'")
     Long countResolvedComplaints();
@@ -52,6 +54,8 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 			""")
 	List<Complaint> findFilteredComplaints(String status, Long departmentId, Long typeId, LocalDateTime startDate,
 			LocalDateTime endDate);
+    List<Complaint> findTop5ByUserOrderByComplaintFiledDateDesc(User user);
+
 
 
 }
