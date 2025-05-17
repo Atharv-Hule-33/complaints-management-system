@@ -167,7 +167,7 @@ body {
 	    body.innerHTML = complaints.map(complaint => `
 	      <tr>
 	        <td>${complaint.complaintId}</td>
-	        <td>${(complaint.user?.userName ?? 'N/A')}</td>
+	        <td>${(complaint.myUser?.userName ?? 'N/A')}</td>
 	        <td>${(complaint.department?.departmentName ?? 'N/A')}</td>
 	        <td>${(complaint.complaintType?.complaintType ?? 'N/A')}</td>
 	        <td>${(complaint.complaintDescription)}</td>
