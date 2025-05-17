@@ -64,6 +64,7 @@ public class Complaint {
 	}
 
 
+
 	public Complaint(Long complaintId, String complaintDescription, String complaintStatus) {
 		this.complaintId = complaintId;
 		this.complaintDescription = complaintDescription;
