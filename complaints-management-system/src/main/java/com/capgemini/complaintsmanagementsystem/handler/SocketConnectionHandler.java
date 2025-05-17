@@ -28,6 +28,7 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
+	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		String compId = getComplaintId(session);
@@ -39,7 +40,7 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
 		complaintSessions.computeIfAbsent(compId, k -> Collections.synchronizedList(new ArrayList<>())).add(session);
 		System.out.println("Connected to compId: " + compId);
 
-		// Send recent messages wrapped as JSON
+		
 		Long complaintId = Long.parseLong(compId);
 		List<Chat> recentMessages = chatRepository.findByComplaint_ComplaintIdOrderByChatTimestampDesc(complaintId);
 		for (int i = recentMessages.size() - 1; i >= 0; i--) {
@@ -105,16 +106,4 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
 		return null;
 	}
 
-	private String getToken(WebSocketSession session) {
-		String query = session.getUri().getQuery();
-		if (query != null) {
-			for (String param : query.split("&")) {
-				String[] pair = param.split("=", 2);
-				if (pair.length == 2 && pair[0].equals("token")) {
-					return pair[1];
-				}
-			}
-		}
-		return null;
-	}
 }
