@@ -28,8 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/departments")
-
-
 public class DepartmentController {
 	 private final DepartmentService departmentService;
 
