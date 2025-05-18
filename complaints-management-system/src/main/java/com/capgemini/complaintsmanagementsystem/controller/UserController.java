@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.capgemini.complaintsmanagementsystem.Dto.UserPasswordUpdateDto;
 import com.capgemini.complaintsmanagementsystem.entity.User;
 import com.capgemini.complaintsmanagementsystem.service.UserService;
 
@@ -82,5 +83,14 @@ public class UserController {
 		log.info("User with ID {} successfully deleted", userId); 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
+	
+	@PatchMapping("/{userId}/password")
+	public ResponseEntity<User> updatePassword(
+	        @PathVariable Long userId,
+	        @RequestBody UserPasswordUpdateDto passwordUpdateDTO) {
+	    User updated = userService.updateUserPassword(userId, passwordUpdateDTO);
+	    return ResponseEntity.status(HttpStatus.OK).body(updated);
+	}
+
 
 }
