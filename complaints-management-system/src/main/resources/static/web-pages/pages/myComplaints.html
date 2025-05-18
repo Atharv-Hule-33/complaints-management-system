@@ -168,9 +168,9 @@ function renderComplaints() {
 
     let filtered = complaints.filter(c => {
         let match = true;
-        if (status && c.complaintStatus != status) match = false;
-        if (dep && c.department.departmentId != dep) match = false;
-        if (type && c.complaintType.complaintTypeId != type) match = false;
+        if (status && c.complaintStatus !== status) match = false;
+        if (dep && c.department.departmentId !== dep) match = false;
+        if (type && c.complaintType.complaintTypeId !== type) match = false;
         if (search && !c.complaintDescription.toLowerCase().includes(search)) match = false;
         return match;
     });
@@ -269,7 +269,7 @@ function openEditModal(complaintId) {
         return res.json();
     })
     .then(data => {
-        const idx = complaints.findIndex(c => c.complaintId == id);
+        const idx = complaints.findIndex(c => c.complaintId === id);
         complaints[idx] = data;
         fetchComplaints(); // Refresh the list
         bootstrap.Modal.getInstance(document.getElementById('editComplaintModal')).hide();

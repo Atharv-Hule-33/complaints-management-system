@@ -62,10 +62,10 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity<User> registerUser(@RequestBody User user) {
-		if (userService.existsByUserName(user.getUserName()) || userService.existsByEmail(user.getUserEmail()))
+		if (userService.existsByEmail(user.getUserEmail()))
 			throw new UserAlreadyExistsException("Username or Email Exists !");
 		user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
 
-		return ResponseEntity.status(HttpStatus.OK).body(userService.addUser(user));
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(user));
 	}
 }

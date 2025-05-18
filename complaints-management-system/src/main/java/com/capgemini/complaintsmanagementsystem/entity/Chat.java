@@ -8,19 +8,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "chat")
 public class Chat {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "chat_id")
 	private Long chatId;
 
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "complaint_id", nullable = false)
 	private Complaint complaint;
 
@@ -97,5 +96,4 @@ public class Chat {
 	public Chat() {
 		super();
 	}
-
 }
