@@ -229,11 +229,12 @@
             const actionTakenDescription = actionTakenInput.value;
 
             const existingComplaint = JSON.parse(editStatusModal.dataset.complaint);
-
+            console.log(existingComplaint);
             const updatedComplaint = {
                 ...existingComplaint,
                 complaintStatus: newStatus
             };
+
 
             fetch(`${apiUrl}/complaints/${complaintId}`, {
                 method: "PUT",
