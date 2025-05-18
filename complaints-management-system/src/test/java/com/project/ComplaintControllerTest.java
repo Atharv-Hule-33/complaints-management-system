@@ -94,7 +94,7 @@ class ComplaintControllerTest {
 
         when(complaintService.updateComplaint(updatedComplaint, complaintId)).thenReturn(updatedComplaint);
 
-        ResponseEntity<Complaint> response = complaintController.uodateComplaint(updatedComplaint, complaintId,bindingResult);
+        ResponseEntity<Complaint> response = complaintController.updateComplaint(updatedComplaint, complaintId,bindingResult);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(updatedComplaint, response.getBody());
