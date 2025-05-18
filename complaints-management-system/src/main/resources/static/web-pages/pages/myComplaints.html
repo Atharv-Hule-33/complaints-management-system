@@ -235,12 +235,6 @@ function openEditModal(complaintId) {
         if (e.key === 'Enter') renderComplaints();
     });
 
-    // File New Complaint button
-    document.getElementById('fileNewBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-        // Implement navigation to file complaint section/page
-        window.location.href = 'fileComplaint.html';
-    });
 
     // Edit Complaint form submit
     document.getElementById('editComplaintForm').addEventListener('submit', function(e) {
