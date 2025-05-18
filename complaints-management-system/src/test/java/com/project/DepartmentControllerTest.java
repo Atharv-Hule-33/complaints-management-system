@@ -31,7 +31,7 @@ class DepartmentControllerTest {
     private Department department2;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         
         department1 = new Department(1L, "IT", "it@company.com");
@@ -39,7 +39,7 @@ class DepartmentControllerTest {
     }
 
     @Test
-    public void getAllDepartments_ShouldReturnAllDepartments() {
+    void getAllDepartments_ShouldReturnAllDepartments() {
        
         List<Department> expectedDepartments = Arrays.asList(department1, department2);
         when(departmentService.getAllDepartments()).thenReturn(expectedDepartments);
@@ -55,7 +55,7 @@ class DepartmentControllerTest {
     }
 
     @Test
-    public void getDepartmentById_ShouldReturnDepartment() {
+    void getDepartmentById_ShouldReturnDepartment() {
         
         when(departmentService.getDepartmentById(1L)).thenReturn(department1);
 
@@ -69,7 +69,7 @@ class DepartmentControllerTest {
     }
 
     @Test
-    public void createDepartment_ShouldReturnCreatedDepartment() {
+    void createDepartment_ShouldReturnCreatedDepartment() {
         BindingResult bindingResult =mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
         
@@ -89,7 +89,7 @@ class DepartmentControllerTest {
     }
 
     @Test
-    public void updateDepartment_ShouldReturnUpdatedDepartment() {
+    void updateDepartment_ShouldReturnUpdatedDepartment() {
     	 BindingResult bindingResult =mock(BindingResult.class);
          when(bindingResult.hasErrors()).thenReturn(false);
          
@@ -107,7 +107,7 @@ class DepartmentControllerTest {
     }
 
     @Test
-    public void deleteDepartment_ShouldReturnNoContent() {
+    void deleteDepartment_ShouldReturnNoContent() {
         
         doNothing().when(departmentService).deleteDepartment(1L);
 

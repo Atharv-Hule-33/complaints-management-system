@@ -7,8 +7,6 @@ import com.capgemini.complaintsmanagementsystem.repository.DepartmentRepository;
 import com.capgemini.complaintsmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
