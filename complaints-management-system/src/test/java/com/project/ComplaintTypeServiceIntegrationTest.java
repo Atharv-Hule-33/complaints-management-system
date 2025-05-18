@@ -7,9 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.capgemini.complaintsmanagementsystem.ComplaintsManagementSystemApplication;
@@ -18,7 +15,7 @@ import com.capgemini.complaintsmanagementsystem.entity.ComplaintType;
 import com.capgemini.complaintsmanagementsystem.service.ComplaintTypeService;
 
 @SpringBootTest(classes = ComplaintsManagementSystemApplication.class)
-public class ComplaintTypeServiceIntegrationTest {
+class ComplaintTypeServiceIntegrationTest {
 
 	@Autowired
 	private ComplaintTypeService complaintTypeService;

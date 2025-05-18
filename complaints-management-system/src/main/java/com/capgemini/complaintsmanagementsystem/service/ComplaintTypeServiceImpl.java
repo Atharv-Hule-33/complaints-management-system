@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class ComplaintTypeServiceImpl implements ComplaintTypeService {
+	private static final String COMPLAINT_TYPE_NOT_FOUND_MSG = "ComplaintType not found with id: ";
 
 	private final ComplaintTypeRepository complaintTypeRepository;
 
@@ -36,7 +37,7 @@ public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 		Optional<ComplaintType> optionalComplaintType = complaintTypeRepository.findById(complaintTypeId);
 		return optionalComplaintType.orElseThrow(() -> {
 			log.warn("While getting Complaint Type not found with ID: {}", complaintTypeId);
-			return new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId);
+			return new ComplaintTypeNotFoundException(COMPLAINT_TYPE_NOT_FOUND_MSG + complaintTypeId);
 		});
 	}
 
@@ -50,7 +51,7 @@ public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 	public ComplaintType updateComplaintType(Long complaintTypeId, ComplaintType complaintTypeDetails) {
 		ComplaintType complaintType = complaintTypeRepository.findById(complaintTypeId).orElseThrow(() -> {
 			log.warn("while updating Complaint Type not found with ID: {}", complaintTypeId);
-			return new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId);
+			return new ComplaintTypeNotFoundException(COMPLAINT_TYPE_NOT_FOUND_MSG + complaintTypeId);
 		});
 
 		log.debug("Updating new complaint type from the repository");
@@ -64,7 +65,7 @@ public class ComplaintTypeServiceImpl implements ComplaintTypeService {
 		log.debug("Deleting complaint type by ID: {}", complaintTypeId);
 		ComplaintType complaintType = complaintTypeRepository.findById(complaintTypeId).orElseThrow(()->{
 			log.warn("while deleting Complaint Type not found with ID: {}", complaintTypeId);
-			return new ComplaintTypeNotFoundException("ComplaintType not found with id: " + complaintTypeId);
+			return new ComplaintTypeNotFoundException(COMPLAINT_TYPE_NOT_FOUND_MSG + complaintTypeId);
 		});
 		complaintTypeRepository.delete(complaintType);
 
