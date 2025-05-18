@@ -84,6 +84,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 	    if (status != null && !status.isBlank()) {
 	        status = status.trim().toUpperCase().replace("-", "_");
 	    }
+	    System.out.println(status+ departmentId+typeId+ month);
 	    return complaintRepository.findFilteredComplaints(status, departmentId, typeId, start, end);
 	}
 }

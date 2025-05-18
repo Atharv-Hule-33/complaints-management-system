@@ -19,7 +19,7 @@ public class UserDashboardDtoController {
     }
 
     @GetMapping("/{userId}")
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<UserDashboardDto> getUserDashboard(@PathVariable Long userId) {
         return ResponseEntity.ok(userDashboardService.getUserDashboardData(userId));
     }
