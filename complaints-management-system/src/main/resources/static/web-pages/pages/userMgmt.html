@@ -110,7 +110,7 @@
 </table> -->
 
 <script>
-    usersApiUrl = "http://localhost:8080/api/users";
+    const usersApiUrl = "http://localhost:8080/api/users";
 
     const userForm = document.getElementById("userForm");
     const userIdField = document.getElementById("userId");
@@ -126,6 +126,7 @@
     let sortDirection = 1;
 
     function fetchAndRenderUsers() {
+    
         fetch(usersApiUrl)
             .then((res) => res.json())
             .then((data) => {
