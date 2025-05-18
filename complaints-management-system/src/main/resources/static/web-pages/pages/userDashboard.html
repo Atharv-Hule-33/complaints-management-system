@@ -111,11 +111,9 @@
 		</div>
 	</div>
 </div>
-
 <script>
     // Replace with actual userId (e.g., from session, JWT, or URL)
     document.getElementById('userName').textContent = 'User';
-
     fetch(`/api/user-dashboard/${getUserId()}`)
         .then(response => response.json())
         .then(data => {
