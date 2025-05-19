@@ -1,0 +1,85 @@
+### Eclipse ###
+.metadata/
+*.tmp
+*.bak
+*.swp
+*~.nib
+.localhistory/
+.recommenders/
+.settings/
+bin/
+tmp/
+*.log
+
+### STS (Spring Tool Suite) ###
+.apt_generated/
+.classpath
+.factorypath
+.project
+.springBeans
+.target/
+
+### IntelliJ (optional, in case imported) ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Gradle (optional if not using) ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+
+### Logs ###
+*.log
+
+### Docker ###
+**/Dockerfile~
+**/docker-compose*.yml~
+.dockerignore
+
+### GitHub Actions ###
+# Ignore temporary logs/artifacts, not workflow files
+.github/workflows/*.log
+.github/workflows/*.tmp
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+### Other ###
+*.launch
+*.iml
+*.ipr
+*.iws
+/.apt_generated_tests/
+
+# Ignore compressed log files
+complaints-management-system/logs/*.gz
+
+# Optionally, ignore all logs folder contents
+# complaints-management-system/logs/
+
