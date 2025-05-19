@@ -1,244 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
+<script>
+  function initializeAuditLogsPage() {
+    const API = 'http://localhost:8080/api';
+    const body = document.getElementById('audit-log-data');
+    const departmentFilter = document.getElementById('department-filter');
+    const complaintTypeFilter = document.getElementById('complaint-type-filter');
+    const startDateInput = document.getElementById('start-date');
+    const endDateInput = document.getElementById('end-date');
+    const applyBtn = document.getElementById('apply-filters');
+    const resetBtn = document.getElementById('reset-filters');
+    const exportBtn = document.getElementById('export-pdf');
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Reports</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-	<style>
-		@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+    // Your existing getAuthorization function
+    function getAuthorization() {
+      return 'Bearer ' + localStorage.getItem('token');
+    }
 
-		body {
-			font-family: "Poppins", sans-serif;
-		}
+    function loadOptions(url, selectElement, valueKey, textKey) {
+      console.log(url);
+      fetch(url, {
+        headers: {
+          'Authorization': getAuthorization(),
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item[valueKey];
+            option.textContent = item[textKey];
+            selectElement.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error loading options:', error));
+    }
 
-		.status-pending {
-			color: #ff9800;
-			font-weight: 500;
-		}
+    function getFilterParams() {
+      const params = {};
+      if (departmentFilter.value) params.departmentId = departmentFilter.value;
+      if (complaintTypeFilter.value) params.complaintTypeId = complaintTypeFilter.value;
+      if (startDateInput.value) params.startDate = `${startDateInput.value}T00:00:00`;
+      if (endDateInput.value) params.endDate = `${endDateInput.value}T23:59:59`;
+      return new URLSearchParams(params).toString();
+    }
 
-		.status-resolved {
-			color: #4caf50;
-			font-weight: 500;
-		}
+    function renderTable(logs) {
+      if (!logs.length) {
+        body.innerHTML = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
+        return;
+      }
+      body.innerHTML = logs.map(log => {
+        status = log.complaint?.complaintStatus ?? 'N/A';
 
-		.status-in-progress {
-			color: #2196f3;
-			font-weight: 500;
-		}
+        let statusClass = '';
+        switch (status) {
+          case 'IN_PROGRESS':
+            statusClass = 'text-warning fw-bold';
+            break;
+          case 'RESOLVED':
+            statusClass = 'text-success fw-bold';
+            break;
+          case 'CLOSED':
+            statusClass = 'text-danger fw-bold';
+            break;
+          default:
+            statusClass = 'text-secondary fw-bold';
+            break;
+        }
+        return `
+          <tr>
+            <td>${log.complaint?.complaintId}</td>
+            <td>${log.user?.userName ?? 'N/A'}</td>
+            <td>${log.complaint?.department?.departmentName ?? 'N/A'}</td>
+            <td>${log.complaint?.complaintType?.complaintType ?? 'N/A'}</td>
+            <td>${log.actionTaken}</td>
+            <td>${new Date(log.auditLogTimestamp).toLocaleString()}</td>
+            <td class='${statusClass}'>${log.complaint?.complaintStatus ?? 'N/A'}</td>
+          </tr>
+        `;
+      }).join('');
+    }
 
-		.status-closed {
-			color: #f44336;
-			font-weight: 500;
-		}
-	</style>
-</head>
+    function loadAuditLogs() {
+      const url = `${API}/audit-log/filter?${getFilterParams()}`;
+      fetch(url, {
+        headers: {
+          'Authorization': getAuthorization(),
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
+          return response.json();
+        })
+        .then(data => renderTable(data))
+        .catch(error => {
+          body.innerHTML = '<tr><td colspan="7" class="text-danger text-center">Error loading audit logs</td></tr>';
+          console.error('Error loading audit logs:', error);
+        });
+    }
 
-<body class="container my-5">
-	<h2 class="mb-4">Reports</h2>
+    function exportToPdf() {
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text('Records', 14, 15);
+        if (typeof doc.autoTable === 'function') {
+          doc.autoTable({
+            html: '.table',
+            startY: 20,
+            styles: { fontSize: 8 },
+            columnStyles: { 5: { cellWidth: 50 } }
+          });
+        } else {
+          alert('PDF export plugin not available.');
+          return;
+        }
+        doc.save('audit-log-report.pdf');
+      } catch (error) {
+        console.error('Error exporting PDF:', error);
+        alert('Error generating PDF: ' + error.message);
+      }
+    }
 
-	<!-- Filters -->
-	<div class="row mb-4">
-		<div class="col-md-3 mb-3">
-			<label for="status-filter" class="form-label">Status:</label> <select class="form-select"
-				id="status-filter">
-				<option value="" selected>All Statuses</option>
-				<option value="Filed">Filed</option>
-				<option value="In-Progress">In Progress</option>
-				<option value="Resolved">Resolved</option>
-				<option value="Closed">Closed</option>
-			</select>
-		</div>
+    applyBtn?.addEventListener('click', loadAuditLogs);
+    resetBtn?.addEventListener('click', function () {
+      departmentFilter.value = '';
+      complaintTypeFilter.value = '';
+      startDateInput.value = '';
+      endDateInput.value = '';
+      loadAuditLogs();
+    });
+    exportBtn?.addEventListener('click', exportToPdf);
 
-		<div class="col-md-3 mb-3">
-			<label for="department-filter" class="form-label">Department:</label>
-			<select class="form-select" id="department-filter">
-				<option value="" selected>All Departments</option>
-			</select>
-		</div>
+    loadOptions(`${API}/departments`, departmentFilter, 'departmentId', 'departmentName');
+    loadOptions(`${API}/complaint-types`, complaintTypeFilter, 'complaintTypeId', 'complaintType');
+    loadAuditLogs();
+  }
 
-		<div class="col-md-3 mb-3">
-			<label for="complaint-type-filter" class="form-label">Complaint
-				Type:</label> <select class="form-select" id="complaint-type-filter">
-				<option value="" selected>All Types</option>
-			</select>
-		</div>
-
-		<div class="col-md-3 mb-3">
-			<label for="month-filter" class="form-label">Month:</label> <input type="month" class="form-control"
-				id="month-filter" />
-		</div>
-	</div>
-
-	<div class="d-flex mb-4">
-		<button id="apply-filters" class="btn btn-primary me-2">
-			Apply Filters</button>
-		<button id="reset-filters" class="btn btn-outline-secondary me-2">
-			Reset Filters</button>
-		<button id="export-pdf" class="btn btn-success">
-			<i class="bi bi-file-earmark-pdf"></i> Export to PDF
-		</button>
-	</div>
-
-	<!-- Complaints Table -->
-	<h4 class="mb-3">Complaint Records</h4>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>User</th>
-				<th>Department</th>
-				<th>Complaint Type</th>
-				<th>Description</th>
-				<th>Date Filed</th>
-				<th>Status</th>
-			</tr>
-		</thead>
-		<tbody id="complaints-data">
-			<tr>
-				<td colspan="7" class="text-center">Loading complaints...</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<script>
-		function initializeReportsPage() {
-			const API = 'http://localhost:8080/api';
-			const STATUS_CLASSES = {
-				'filed': 'status-pending',
-				'in-progress': 'status-in-progress',
-				'resolved': 'status-resolved',
-				'closed': 'status-closed'
-			};
-
-			const body = document.getElementById('complaints-data');
-			const statusFilter = document.getElementById('status-filter');
-			const departmentFilter = document.getElementById('department-filter');
-			const complaintTypeFilter = document.getElementById('complaint-type-filter');
-			const monthFilter = document.getElementById('month-filter');
-			const applyBtn = document.getElementById('apply-filters');
-			const resetBtn = document.getElementById('reset-filters');
-			const exportBtn = document.getElementById('export-pdf');
-
-			function loadOptions(url, selectElement, valueKey, textKey) {
-				fetch(url,{
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json",
-						"Authorization": getAuthorization()
-					},
-				})
-					.then(response => response.json())
-					.then(data => {
-						data.forEach(item => {
-							const option = document.createElement('option');
-							option.value = item[valueKey];
-							option.textContent = item[textKey];
-							selectElement.appendChild(option);
-						});
-					})
-					.catch(error => console.error('Error loading options:', error));
-			}
-
-			function getFilterParams() {
-				const params = {};
-				if (statusFilter.value) params.status = statusFilter.value;
-				if (departmentFilter.value) params.departmentId = departmentFilter.value;
-				if (complaintTypeFilter.value) params.typeId = complaintTypeFilter.value;
-				if (monthFilter.value) {
-					params.month = monthFilter.value; // e.g., "2025-05"
-				}
-				return new URLSearchParams(params).toString();
-			}
-
-			function renderTable(complaints) {
-				console.log(complaints);
-				if (!complaints.length) {
-					body.innerHTML = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
-					return;
-				}
-				body.innerHTML = complaints.map(complaint => `
-	      <tr>
-	        <td>${complaint.complaintId}</td>
-	        <td>${(complaint.myUser?.userName ?? 'N/A')}</td>
-	        <td>${(complaint.department?.departmentName ?? 'N/A')}</td>
-	        <td>${(complaint.complaintType?.complaintType ?? 'N/A')}</td>
-	        <td>${(complaint.complaintDescription)}</td>
-	        <td>${new Date(complaint.complaintFiledDate).toLocaleDateString()}</td>
-	        <td>
-	          <span class="${STATUS_CLASSES[complaint.complaintStatus?.toLowerCase()] || ''}">
-	            ${(complaint.complaintStatus)}
-	          </span>
-	        </td>
-	      </tr>
-	    `).join('');
-			}
-
-			function loadComplaints() {
-				const url = `${API}/complaints/complaints?${getFilterParams()}`;
-				fetch(url,{
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json",
-						"Authorization": getAuthorization()
-					},
-				})
-					.then(response => {
-						if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-						return response.json();
-					})
-					.then(data => renderTable(data))
-					.catch(error => {
-						body.innerHTML = '<tr><td colspan="7" class="text-danger text-center">Error loading complaints</td></tr>';
-						console.error('Error loading complaints:', error);
-					});
-			}
-
-			function exportToPdf() {
-				try {
-					const { jsPDF } = window.jspdf;
-					const doc = new jsPDF();
-					doc.text('Complaint Records', 14, 15);
-					if (typeof doc.autoTable === 'function') {
-						doc.autoTable({
-							html: '.table',
-							startY: 20,
-							styles: { fontSize: 8 },
-							columnStyles: { 4: { cellWidth: 50 } }
-						});
-					} else {
-						console.error('autoTable plugin not found');
-						alert('PDF table plugin not loaded properly');
-						return;
-					}
-					doc.save('complaints-report.pdf');
-				} catch (error) {
-					console.error('Error exporting PDF:', error);
-					alert('Error generating PDF: ' + error.message);
-				}
-			}
-
-			applyBtn?.addEventListener('click', loadComplaints);
-			resetBtn?.addEventListener('click', function () {
-				statusFilter.value = '';
-				departmentFilter.value = '';
-				complaintTypeFilter.value = '';
-				monthFilter.value = '';
-				loadComplaints();
-			});
-			exportBtn?.addEventListener('click', exportToPdf);
-
-			loadOptions(`${API}/departments`, departmentFilter, 'departmentId', 'departmentName');
-			loadOptions(`${API}/complaint-types`, complaintTypeFilter, 'complaintTypeId', 'complaintType');
-			loadComplaints();
-		}
-		initializeReportsPage();
-	</script>
-
-</body>
-
-</html>
+  initializeAuditLogsPage();
+</script>

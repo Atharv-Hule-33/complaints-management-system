@@ -29,20 +29,22 @@ public class ComplaintController {
 	}
 
 	@GetMapping
-//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Complaint>> getAll() {
 		log.debug("Received request to fetch all complaints");
 		return ResponseEntity.status(HttpStatus.OK).body(complaintService.getAllComplaint());
 
 	}
-
+	
 	@GetMapping("/{complaintId}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<Complaint> getById(@PathVariable Long complaintId) {
 		log.debug("Request received to fetch complaint by ID:{}",complaintId);
 		return ResponseEntity.status(HttpStatus.OK).body(complaintService.getComplaintById(complaintId));
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<Complaint> addComplaint(@Valid @RequestBody Complaint complaint, BindingResult result) {
 		if (result.hasErrors()) {
 			log.warn("Invalid data found while creating");
@@ -53,6 +55,7 @@ public class ComplaintController {
 	}
 
 	@PutMapping("/{complaintId}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<Complaint> updateComplaint(@Valid @RequestBody Complaint complaint,
 			@PathVariable Long complaintId, BindingResult result) {
 		if (result.hasErrors()) {
@@ -64,6 +67,7 @@ public class ComplaintController {
 	}
 
 	@DeleteMapping("/{complaintId}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> deleteComplaint(@PathVariable Long complaintId) {
 		complaintService.deleteComplaint(complaintId);
 		log.debug("reuqest received to delete the complaint by ID:{}",complaintId);
@@ -71,6 +75,7 @@ public class ComplaintController {
 	}
 	
 	@GetMapping("/complaints")
+	@PreAuthorize("hasRole('ADMIN')")
     public List<Complaint> getComplaints(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Long departmentId,
