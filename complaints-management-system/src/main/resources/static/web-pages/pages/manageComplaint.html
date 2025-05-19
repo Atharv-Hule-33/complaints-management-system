@@ -116,7 +116,7 @@
         });
 
         function fetchAndRenderComplaints() {
-            fetch(${apiUrl}/complaints, {
+            fetch(`${apiUrl}/complaints`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -134,7 +134,7 @@
         }
 
         function fetchComplaintType() {
-            return fetch(${apiUrl}/complaint-types, {
+            return fetch(`${apiUrl}/complaint-types`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -151,7 +151,7 @@
         }
 
         function fetchDepartment() {
-            return fetch(${apiUrl}/departments, {
+            return fetch(`${apiUrl}/departments`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -168,7 +168,7 @@
         }
 
         function fetchUser() {
-            return fetch(${apiUrl}/users, {
+            return fetch(`${apiUrl}/users`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -213,7 +213,7 @@
             const complaintId = event.currentTarget.getAttribute('data-id');
             editComplaintIdInput.value = complaintId;
 
-            fetch(${apiUrl}/complaints/${complaintId},{
+            fetch(`${apiUrl}/complaints/${complaintId}`,{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -245,7 +245,7 @@
             };
 
 
-            fetch(${apiUrl}/complaints/${complaintId}, {
+            fetch(`${apiUrl}/complaints/${complaintId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -273,7 +273,7 @@
                         auditLogTimestamp: timestamp
                     };
 
-                    return fetch(${apiUrl}/audit-log, {
+                    return fetch(`${apiUrl}/audit-log`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
