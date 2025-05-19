@@ -2,6 +2,7 @@ package com.capgemini.complaintsmanagementsystem.service;
 
 import java.util.*;
 
+import com.capgemini.complaintsmanagementsystem.Dto.UserPasswordUpdateDto;
 import com.capgemini.complaintsmanagementsystem.entity.User;
 
 
@@ -21,5 +22,8 @@ public interface UserService {
 
 	void deleteUser(Long userId);
 	User findByUserNameOrEmail(String username, String email);
+	
+	User updateUserPassword(Long userId, UserPasswordUpdateDto passwordUpdateDTO);
+
 
 }

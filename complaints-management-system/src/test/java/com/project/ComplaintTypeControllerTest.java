@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ComplaintTypeControllerTest {
+class ComplaintTypeControllerTest {
 
 	@Mock
 	private ComplaintTypeService complaintTypeService;
@@ -31,7 +31,7 @@ public class ComplaintTypeControllerTest {
 	private ComplaintType complaintType2;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		MockitoAnnotations.openMocks(this);
 
 		complaintType1 = new ComplaintType();
@@ -46,7 +46,7 @@ public class ComplaintTypeControllerTest {
 	}
 
 	@Test
-	public void getAllComplaintTypesTest() {
+	void getAllComplaintTypesTest() {
 		List<ComplaintType> expectedTypes = Arrays.asList(complaintType1, complaintType2);
 		when(complaintTypeService.getAllComplaintTypes()).thenReturn(expectedTypes);
 
@@ -58,7 +58,7 @@ public class ComplaintTypeControllerTest {
 	}
 
 	@Test
-	public void getComplaintTypeByIdTest() {
+	void getComplaintTypeByIdTest() {
 		when(complaintTypeService.getComplaintTypeById(1L)).thenReturn(complaintType1);
 
 		ResponseEntity<ComplaintType> response = complaintTypeController.getComplaintTypeById(2L);
@@ -69,7 +69,7 @@ public class ComplaintTypeControllerTest {
 	}
 
 	@Test
-	public void createComplaintTypeTest() {
+	void createComplaintTypeTest() {
 		BindingResult bindingResult = mock(BindingResult.class);
 		when(bindingResult.hasErrors()).thenReturn(false);
 		when(complaintTypeService.createComplaintType(complaintType1)).thenReturn(complaintType1);
@@ -83,7 +83,7 @@ public class ComplaintTypeControllerTest {
 	}
 
 	@Test
-	public void updateComplaintTypeTest() {
+	void updateComplaintTypeTest() {
 		BindingResult bindingResult = mock(BindingResult.class);
 		when(bindingResult.hasErrors()).thenReturn(false);
 
@@ -106,13 +106,13 @@ public class ComplaintTypeControllerTest {
 	}
 
 	@Test
-	public void deleteComplaintTypeTest() {
+	void deleteComplaintTypeTest() {
 		doNothing().when(complaintTypeService).deleteComplaintType(1L);
 		verify(complaintTypeService, times(1)).deleteComplaintType(1L);
 	}
 
 	@Test
-	public void getComplaintTypesBySeverityTest() {
+	void getComplaintTypesBySeverityTest() {
 		List<ComplaintType> expectedTypes = Arrays.asList(complaintType1);
 		when(complaintTypeService.getComplaintTypesBySeverity(ComplaintSeverity.HIGH)).thenReturn(expectedTypes);
 
