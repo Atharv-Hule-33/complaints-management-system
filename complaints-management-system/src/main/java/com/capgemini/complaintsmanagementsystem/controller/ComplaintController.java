@@ -85,5 +85,12 @@ public class ComplaintController {
         YearMonth ym = (month != null && !month.isBlank()) ? YearMonth.parse(month) : null;
         return complaintService.getFilteredComplaints(status, departmentId, typeId, ym);
     }
+	
+	@GetMapping("/user/{userId}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public ResponseEntity<List<Complaint>> getComplaintsByUser(@PathVariable Long userId) {
+	    log.debug("Request received to fetch complaints for user ID: {}", userId);
+	    return ResponseEntity.ok(complaintService.getComplaintsByUser(userId));
+	}
 
 }

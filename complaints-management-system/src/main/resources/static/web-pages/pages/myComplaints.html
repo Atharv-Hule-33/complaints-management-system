@@ -163,7 +163,7 @@ function fetchTypes() {
 }
 
 function fetchComplaints() {
-    let url = `/api/complaints?userId=${userId}`;
+    let url = `/api/complaints/user/${userId}`;
     return fetch(url,{
 		method: "GET",
 		headers: {
