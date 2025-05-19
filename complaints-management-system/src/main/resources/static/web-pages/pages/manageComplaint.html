@@ -68,7 +68,6 @@
                 <label for="editComplaintStatus" class="form-label">Status:</label>
                 <select class="form-select" id="editComplaintStatus" required>
                     <option value="" disabled selected>Select Status</option>
-                    <option value="FILED">FILED</option>
                     <option value="IN_PROGRESS">IN_PROGRESS</option>
                     <option value="RESOLVED">RESOLVED</option>
                     <option value="CLOSED">CLOSED</option>
@@ -194,7 +193,7 @@
                             <td>${complaintType ? complaintType.complaintType : 'N/A'}</td>
                             <td>${complaint.complaintDescription}</td>
                             <td>${complaint.complaintStatus}</td>
-                            <td>${complaint.complaintFiledDate}</td>
+                            <td>${complaint.complaintFiledDate.split('T')}</td>
                             <td>
                                 <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${complaint.complaintId}"><i class="bi bi-pencil-square"></i>Edit Status</button>
                             </td>`;
