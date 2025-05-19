@@ -101,7 +101,13 @@ function getStatusClass(status) {
 }
 
 function fetchDepartments() {
-    return fetch('/api/departments')
+    return fetch('/api/departments',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             departments = data;
@@ -126,7 +132,13 @@ function fetchDepartments() {
 }
 
 function fetchTypes() {
-    return fetch('/api/complaint-types')
+    return fetch('/api/complaint-types',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             types = data;
@@ -152,7 +164,13 @@ function fetchTypes() {
 
 function fetchComplaints() {
     let url = `/api/complaints?userId=${userId}`;
-    return fetch(url)
+    return fetch(url,{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             complaints = data;
@@ -255,7 +273,9 @@ function openEditModal(complaintId) {
 
     fetch(`/api/complaints/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+			"Authorization": getAuthorization()
+		},
         body: JSON.stringify(payload)
     })
     .then(res => {

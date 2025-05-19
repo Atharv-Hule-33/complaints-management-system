@@ -79,7 +79,13 @@
     });
 
     function fetchAndRenderComplaints() {
-        fetch(apiUrl)
+        fetch(apiUrl,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": getAuthorization()
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 allComplaints = data;
@@ -138,7 +144,10 @@
             console.log(editId);
             fetch(`${apiUrl}/${editId}`, {
                 method: "PUT",
-                headers: {"Content-Type": "application/json"},
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getAuthorization()
+                },
                 body: JSON.stringify(complaints),
             })
                 .then(() => {
@@ -152,7 +161,10 @@
         } else {
             fetch(apiUrl, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getAuthorization()
+                },
                 body: JSON.stringify(complaints),
             })
                 .then(() => {
@@ -165,7 +177,13 @@
     });
 
     function loadComplaintForEdit(id) {
-        fetch(`${apiUrl}/${id}`)
+        fetch(`${apiUrl}/${id}`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": getAuthorization()
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 complaintsType.value = data.complaintType;
@@ -182,6 +200,10 @@
         if (confirm("Are you sure you want to delete this complaint?")) {
             fetch(`${apiUrl}/${id}`, {
                 method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getAuthorization()
+                },
             })
                 .then(() => fetchAndRenderComplaints())
                 .catch((error) => console.error("Error deleting complaint:", error));

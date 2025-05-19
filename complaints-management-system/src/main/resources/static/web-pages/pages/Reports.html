@@ -125,7 +125,13 @@
 			const exportBtn = document.getElementById('export-pdf');
 
 			function loadOptions(url, selectElement, valueKey, textKey) {
-				fetch(url)
+				fetch(url,{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": getAuthorization()
+					},
+				})
 					.then(response => response.json())
 					.then(data => {
 						data.forEach(item => {
@@ -174,8 +180,13 @@
 
 			function loadComplaints() {
 				const url = `${API}/complaints/complaints?${getFilterParams()}`;
-				console.log(url);
-				fetch(url)
+				fetch(url,{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": getAuthorization()
+					},
+				})
 					.then(response => {
 						if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
 						return response.json();

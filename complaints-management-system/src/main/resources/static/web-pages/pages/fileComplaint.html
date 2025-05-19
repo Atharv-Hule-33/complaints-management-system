@@ -48,7 +48,13 @@
 </div>
 <script>
     // Example: populate department and type dropdowns from backend
-    fetch('/api/departments')
+    fetch('/api/departments',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             const select = document.getElementById('departmentSelect');
@@ -60,7 +66,13 @@
             });
         });
 
-    fetch('/api/complaint-types')
+    fetch('/api/complaint-types',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             const select = document.getElementById('complaintTypeSelect');
@@ -97,7 +109,9 @@
 		console.log(payload);
         fetch('/api/complaints', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' ,
+				"Authorization": getAuthorization()
+			},
             body: JSON.stringify(payload)
         })
         .then(res => {
