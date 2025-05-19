@@ -98,7 +98,7 @@
 </table>
 <script>
     (() => {
-        usersApiUrl = "http://localhost:8080/api/users";
+        const usersApiUrl = "http://localhost:8080/api/users";
 
         const userForm = document.getElementById("userForm");
         const userIdField = document.getElementById("userId");
@@ -110,21 +110,22 @@
         const userTableBody = document.getElementById("userTableBody");
 
 
-<script>
-    const usersApiUrl = "http://localhost:8080/api/users";
 
-    const userForm = document.getElementById("userForm");
-    const userIdField = document.getElementById("userId");
-    const userName = document.getElementById("name");
-    const userEmail = document.getElementById("email");
-    const userPassword = document.getElementById("password");
-    const userPhone = document.getElementById("phone");
-    const userType = document.getElementById("userType");
-    const userTableBody = document.getElementById("userTableBody");
+        function fetchAndRenderUsers() {
+
+            fetch(usersApiUrl)
+                .then((res) => res.json())
+                .then((data) => {
+                    allUsers = data;
+                    renderUsers(data);
+                })
+                .catch((error) => console.error("Error fetching users:", error));
+        }
 
     let editUserId = null;
     let allUsers = [];
     let sortDirection = 1;
+
 
     function fetchAndRenderUsers() {
     
