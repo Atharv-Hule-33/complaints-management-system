@@ -5,15 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "complaint")
@@ -142,9 +137,14 @@ public class Complaint {
 
 	@Override
 	public String toString() {
-		return "Complaint [complaintId=" + complaintId + ", complaintType=" + complaintType + ", complaintDescription="
-				+ complaintDescription + ", complaintStatus=" + complaintStatus + ", complaintFiledDate="
-				+ complaintFiledDate + "]";
+		return "Complaint{" +
+				"complaintId=" + complaintId +
+				", user=" + user +
+				", department=" + department +
+				", complaintType=" + complaintType +
+				", complaintDescription='" + complaintDescription + '\'' +
+				", complaintStatus='" + complaintStatus + '\'' +
+				", complaintFiledDate=" + complaintFiledDate +
+				'}';
 	}
-
 }

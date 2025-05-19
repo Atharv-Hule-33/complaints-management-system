@@ -53,7 +53,7 @@ public class ComplaintController {
 	}
 
 	@PutMapping("/{complaintId}")
-	public ResponseEntity<Complaint> uodateComplaint(@Valid @RequestBody Complaint complaint,
+	public ResponseEntity<Complaint> updateComplaint(@Valid @RequestBody Complaint complaint,
 			@PathVariable Long complaintId, BindingResult result) {
 		if (result.hasErrors()) {
 			log.warn("Invalid data found while updating");
