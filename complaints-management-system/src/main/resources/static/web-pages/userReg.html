@@ -10,13 +10,143 @@
     />
     <link rel="stylesheet" href="pages/css/userReg.css"/>
 </head>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+    body {
+        background-color: #f8f9fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .registration-container {
+        max-width: 550px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 5vh;
+        margin-bottom: 5vh;
+    }
+
+    .registration-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .registration-header h1 {
+        color: #2b5797;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .registration-header .logo {
+        width: 80px;
+        margin-bottom: 15px;
+    }
+
+    .registration-form label {
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .register-btn {
+        background-color: #2b5797;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 0;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .register-btn:hover {
+        background-color: #1e3c6a;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 20px;
+        color: #6c757d;
+    }
+
+    .login-btn {
+        color: #2b5797;
+        background-color: transparent;
+        border: 1px solid #2b5797;
+        padding: 8px 20px;
+        transition: all 0.3s;
+    }
+
+    .login-btn:hover {
+        background-color: #2b5797;
+        color: white;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: #e9ecef;
+        margin: 25px 0 15px;
+    }
+
+    .form-control:focus {
+        border-color: #2b5797;
+        box-shadow: 0 0 0 0.25rem rgba(43, 87, 151, 0.25);
+    }
+
+    .form-text {
+        font-size: 12px;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+
+    .password-strength {
+        height: 5px;
+        margin-top: 10px;
+        border-radius: 5px;
+        background-color: #e9ecef;
+    }
+
+    .password-strength-bar {
+        height: 100%;
+        border-radius: 5px;
+        width: 0%;
+        transition: all 0.3s;
+    }
+
+    .strength-weak {
+        background-color: #dc3545;
+        width: 33%;
+    }
+
+    .strength-medium {
+        background-color: #ffc107;
+        width: 66%;
+    }
+
+    .strength-strong {
+        background-color: #198754;
+        width: 100%;
+    }
+
+    .strength-text {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+</style>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-12">
             <div class="registration-container">
                 <div class="registration-header">
-                    <img src="images/hospital_icon.png" alt="hospital_icon" width="85px"/>
                     <h1>Hospital Complaint Management System</h1>
                     <p class="text-muted">Create your account to submit and track complaints</p>
                 </div>
