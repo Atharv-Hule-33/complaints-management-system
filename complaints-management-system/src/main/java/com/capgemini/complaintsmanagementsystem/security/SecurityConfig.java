@@ -59,8 +59,10 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/signin", "/auth/register","/web-pages/**").permitAll()
 						.requestMatchers("/api/**").hasAnyRole("USER", "ADMIN").anyRequest().authenticated())
+
 				.authenticationProvider(authenticationProvider()) 
+
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
-	}                              
+	}
 
 }
