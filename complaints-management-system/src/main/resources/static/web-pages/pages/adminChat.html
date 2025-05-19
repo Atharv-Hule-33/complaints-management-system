@@ -1,4 +1,4 @@
-<title>Chats</title>
+<title>Complaints Management</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
 <style>
@@ -68,6 +68,7 @@
                 <label for="editComplaintStatus" class="form-label">Status:</label>
                 <select class="form-select" id="editComplaintStatus" required>
                     <option value="" disabled selected>Select Status</option>
+                    <option value="FILED">FILED</option>
                     <option value="IN_PROGRESS">IN_PROGRESS</option>
                     <option value="RESOLVED">RESOLVED</option>
                     <option value="CLOSED">CLOSED</option>
@@ -116,7 +117,7 @@
         });
 
         function fetchAndRenderComplaints() {
-            fetch(${apiUrl}/complaints, {
+            fetch(`${apiUrl}/complaints`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -134,7 +135,7 @@
         }
 
         function fetchComplaintType() {
-            return fetch(${apiUrl}/complaint-types, {
+            return fetch(`${apiUrl}/complaint-types`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -151,7 +152,7 @@
         }
 
         function fetchDepartment() {
-            return fetch(${apiUrl}/departments, {
+            return fetch(`${apiUrl}/departments`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -168,7 +169,7 @@
         }
 
         function fetchUser() {
-            return fetch(${apiUrl}/users, {
+            return fetch(`${apiUrl}/users`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -197,9 +198,9 @@
                             <td>${complaintType ? complaintType.complaintType : 'N/A'}</td>
                             <td>${complaint.complaintDescription}</td>
                             <td>${complaint.complaintStatus}</td>
-                            <td>${complaint.complaintFiledDate.split('T')}</td>
+                            <td>${complaint.complaintFiledDate}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${complaint.complaintId}"><i class="bi bi-pencil-square"></i>Edit Status</button>
+                                <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${complaint.complaintId}"> <i class="fas fa-comments"></i></button>
                             </td>`;
                 complaintsTableBody.appendChild(row);
             });
@@ -213,7 +214,7 @@
             const complaintId = event.currentTarget.getAttribute('data-id');
             editComplaintIdInput.value = complaintId;
 
-            fetch(${apiUrl}/complaints/${complaintId},{
+            fetch(`${apiUrl}/complaints/${complaintId}`,{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -245,7 +246,7 @@
             };
 
 
-            fetch(${apiUrl}/complaints/${complaintId}, {
+            fetch(`${apiUrl}/complaints/${complaintId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -273,7 +274,7 @@
                         auditLogTimestamp: timestamp
                     };
 
-                    return fetch(${apiUrl}/audit-log, {
+                    return fetch(`${apiUrl}/audit-log`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
