@@ -28,19 +28,21 @@ public class ComplaintTypeController {
 	}
 
 	@GetMapping
-//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<List<ComplaintType>> getAllComplaintTypes() {
 		log.debug("Received request to fetch all complaint types");
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getAllComplaintTypes());
 	}
 
 	@GetMapping("/{complaintTypeId}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ComplaintType> getComplaintTypeById(@PathVariable Long complaintTypeId) {
 		log.debug("Complaint type fetched: {}", complaintTypeId);
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getComplaintTypeById(complaintTypeId));
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ComplaintType> createComplaintType(@Valid @RequestBody ComplaintType complaintType,
 			BindingResult result) {
 		if (result.hasErrors()) {
@@ -51,6 +53,7 @@ public class ComplaintTypeController {
 	}
 
 	@PutMapping("/{complaintTypeId}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ComplaintType> updateComplaintType(@PathVariable Long complaintTypeId,
 			@Valid @RequestBody ComplaintType complaintTypeDetails, BindingResult result) {
 		if (result.hasErrors()) {
@@ -62,6 +65,7 @@ public class ComplaintTypeController {
 	}
 
 	@DeleteMapping("/{complaintTypeId}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> deleteComplaintType(@PathVariable Long complaintTypeId) {
 		complaintTypeService.deleteComplaintType(complaintTypeId);
 		log.debug("Deleted complaint type with ID: {}", complaintTypeId);
@@ -69,6 +73,7 @@ public class ComplaintTypeController {
 	}
 
 	@GetMapping("/severity/{severity}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<ComplaintType>> getComplaintTypesBySeverity(@PathVariable ComplaintSeverity severity) {
 		log.debug("Getting complaint type by Severity: {}", severity);
 		return ResponseEntity.status(HttpStatus.OK).body(complaintTypeService.getComplaintTypesBySeverity(severity));

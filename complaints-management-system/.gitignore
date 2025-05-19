@@ -76,3 +76,10 @@ Desktop.ini
 *.ipr
 *.iws
 /.apt_generated_tests/
+
+# Ignore compressed log files
+complaints-management-system/logs/*.gz
+
+# Optionally, ignore all logs folder contents
+# complaints-management-system/logs/
+

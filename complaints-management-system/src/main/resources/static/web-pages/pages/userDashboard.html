@@ -112,9 +112,16 @@
 	</div>
 </div>
 <script>
+		console.log(getUserId());
     // Replace with actual userId (e.g., from session, JWT, or URL)
     document.getElementById('userName').textContent = 'User';
-    fetch(`/api/user-dashboard/${getUserId()}`)
+    fetch(`/api/user-dashboard/${getUserId()}`,{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(response => response.json())
         .then(data => {
             document.getElementById('totalComplaints').textContent = data.totalComplaints;

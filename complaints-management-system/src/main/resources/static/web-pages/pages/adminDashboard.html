@@ -147,8 +147,14 @@
     (()=> {
         const apiUrl = "http://localhost:8080/api/dashboard";
 
-        function fetchData() {
-            fetch(`${apiUrl}`)
+        function fetchData(){
+            fetch(`${apiUrl}`,{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getAuthorization()
+                },
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);

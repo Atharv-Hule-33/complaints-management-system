@@ -109,19 +109,6 @@
         const userType = document.getElementById("userType");
         const userTableBody = document.getElementById("userTableBody");
 
-
-
-        function fetchAndRenderUsers() {
-
-            fetch(usersApiUrl)
-                .then((res) => res.json())
-                .then((data) => {
-                    allUsers = data;
-                    renderUsers(data);
-                })
-                .catch((error) => console.error("Error fetching users:", error));
-        }
-
     let editUserId = null;
     let allUsers = [];
     let sortDirection = 1;
@@ -129,7 +116,13 @@
 
     function fetchAndRenderUsers() {
     
-        fetch(usersApiUrl)
+        fetch(usersApiUrl,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": getAuthorization()
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 allUsers = data;
@@ -246,6 +239,8 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": getAuthorization()
+
                 },
                 body: JSON.stringify(user),
             })
@@ -261,6 +256,8 @@
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": getAuthorization()
+
                 },
                 body: JSON.stringify(user),
             })
@@ -287,7 +284,13 @@
 
         function deleteUser(id) {
             if (confirm("Are you sure you want to delete this user?")) {
-                fetch(`${usersApiUrl}/${id}`, {method: "DELETE"})
+                fetch(`${usersApiUrl}/${id}`, {method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": getAuthorization()
+
+                    },
+                })
                     .then(() => fetchAndRenderUsers())
                     .catch((error) => console.error("Error deleting user:", error));
             }
