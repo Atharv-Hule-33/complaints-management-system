@@ -67,6 +67,7 @@
         <th>Complaint Type</th>
         <th>Action Taken</th>
         <th>Timestamp</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody id="audit-log-data">
@@ -117,7 +118,25 @@
           body.innerHTML = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
           return;
         }
-        body.innerHTML = logs.map(log => `
+        body.innerHTML = logs.map(log => {
+        	status = log.complaint?.complaintStatus ?? 'N/A';
+        	
+        	let statusClass = '';
+        	switch(status) {
+        		case 'IN_PROGRESS':
+        			statusClass = 'text-warning fw-bold';
+        	        break;
+        		case 'RESOLVED':
+        			statusClass = 'text-success fw-bold';
+        	        break;
+        		case 'CLOSED':
+        			statusClass = 'text-danger fw-bold';
+        	        break;
+        	    default :
+        			statusClass = 'text-secondary fw-bold';
+        	        break;
+        	}
+        	return `
           <tr>
             <td>${log.complaint?.complaintId}</td>
             <td>${log.user?.userName ?? 'N/A'}</td>
@@ -125,8 +144,9 @@
             <td>${log.complaint?.complaintType?.complaintType ?? 'N/A'}</td>
             <td>${log.actionTaken}</td>
             <td>${new Date(log.auditLogTimestamp).toLocaleString()}</td>
+            <td class = '${statusClass}'>${log.complaint?.complaintStatus ?? 'N/A'}</td>
           </tr>
-        `).join('');
+        `}).join('');
       }
 
       function loadAuditLogs() {
