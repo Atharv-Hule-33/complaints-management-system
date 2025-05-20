@@ -185,7 +185,13 @@
     <script>
     userId = getUserId();
 
-    fetch(`/api/users/${userId}`)
+    fetch(`/api/users/${userId}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": getAuthorization()
+      },
+    })
       .then(res => res.json())
       .then(user => {
         document.getElementById('fullName').value = user.userName;
@@ -204,7 +210,10 @@
       };
       fetch(`/api/users/${userId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": getAuthorization()
+        },
         body: JSON.stringify(data)
       })
       .then(res => {
@@ -224,7 +233,10 @@
     	  }
     	  fetch(`/api/users/${userId}/password`, {
     	    method: 'PATCH',
-    	    headers: { 'Content-Type': 'application/json' },
+    	    headers: {
+              'Content-Type': 'application/json',
+              "Authorization": getAuthorization()
+            },
     	    body: JSON.stringify({
     	      currentPassword: currentPassword ,
     	    newPassword: newPassword

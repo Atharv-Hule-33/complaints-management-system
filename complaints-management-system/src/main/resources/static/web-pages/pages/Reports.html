@@ -1,5 +1,6 @@
 
-  <h2 class="mb-4">Reports</h2>
+<h2 class="mb-4">Reports</h2>
+
 
   <!-- Filters -->
   <div class="row mb-4">
@@ -31,9 +32,9 @@
   <div class="d-flex mb-4">
     <button id="apply-filters" class="btn btn-primary me-2">Apply Filters</button>
     <button id="reset-filters" class="btn btn-outline-secondary me-2">Reset Filters</button>
-    <button id="export-pdf" class="btn btn-success">
-      <i class="bi bi-file-earmark-pdf"></i> Export to PDF
-    </button>
+
+    
+
   </div>
 
   <!-- Audit Log Table -->
@@ -56,67 +57,76 @@
       </tr>
     </tbody>
   </table>
+<script>
+  function initializeAuditLogsPage() {
+    const API = 'http://localhost:8080/api';
+    const body = document.getElementById('audit-log-data');
+    const departmentFilter = document.getElementById('department-filter');
+    const complaintTypeFilter = document.getElementById('complaint-type-filter');
+    const startDateInput = document.getElementById('start-date');
+    const endDateInput = document.getElementById('end-date');
+    const applyBtn = document.getElementById('apply-filters');
+    const resetBtn = document.getElementById('reset-filters');
+    const exportBtn = document.getElementById('export-pdf');
 
-  <script>
-    function initializeAuditLogsPage() {
-      const API = 'http://localhost:8080/api';
-      const body = document.getElementById('audit-log-data');
-      const departmentFilter = document.getElementById('department-filter');
-      const complaintTypeFilter = document.getElementById('complaint-type-filter');
-      const startDateInput = document.getElementById('start-date');
-      const endDateInput = document.getElementById('end-date');
-      const applyBtn = document.getElementById('apply-filters');
-      const resetBtn = document.getElementById('reset-filters');
-      const exportBtn = document.getElementById('export-pdf');
+    // Your existing getAuthorization function
+    function getAuthorization() {
+      return 'Bearer ' + localStorage.getItem('token');
+    }
 
-      function loadOptions(url, selectElement, valueKey, textKey) {
-    	  console.log(url);
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            data.forEach(item => {
-              const option = document.createElement('option');
-              option.value = item[valueKey];
-              option.textContent = item[textKey];
-              selectElement.appendChild(option);
-            });
-          })
-          .catch(error => console.error('Error loading options:', error));
-      }
-
-      function getFilterParams() {
-    	  const params = {};
-    	  if (departmentFilter.value) params.departmentId = departmentFilter.value;
-    	  if (complaintTypeFilter.value) params.complaintTypeId = complaintTypeFilter.value;
-    	  if (startDateInput.value) params.startDate = `${startDateInput.value}T00:00:00`;
-    	  if (endDateInput.value) params.endDate = `${endDateInput.value}T23:59:59`;
-    	  return new URLSearchParams(params).toString();
-      }
-
-      function renderTable(logs) {
-        if (!logs.length) {
-          body.innerHTML = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
-          return;
+    function loadOptions(url, selectElement, valueKey, textKey) {
+      console.log(url);
+      fetch(url, {
+        headers: {
+          'Authorization': getAuthorization(),
+          'Content-Type': 'application/json'
         }
-        body.innerHTML = logs.map(log => {
-        	status = log.complaint?.complaintStatus ?? 'N/A';
-        	
-        	let statusClass = '';
-        	switch(status) {
-        		case 'IN_PROGRESS':
-        			statusClass = 'text-warning fw-bold';
-        	        break;
-        		case 'RESOLVED':
-        			statusClass = 'text-success fw-bold';
-        	        break;
-        		case 'CLOSED':
-        			statusClass = 'text-danger fw-bold';
-        	        break;
-        	    default :
-        			statusClass = 'text-secondary fw-bold';
-        	        break;
-        	}
-        	return `
+      })
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item[valueKey];
+            option.textContent = item[textKey];
+            selectElement.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error loading options:', error));
+    }
+
+    function getFilterParams() {
+      const params = {};
+      if (departmentFilter.value) params.departmentId = departmentFilter.value;
+      if (complaintTypeFilter.value) params.complaintTypeId = complaintTypeFilter.value;
+      if (startDateInput.value) params.startDate = `${startDateInput.value}T00:00:00`;
+      if (endDateInput.value) params.endDate = `${endDateInput.value}T23:59:59`;
+      return new URLSearchParams(params).toString();
+    }
+
+    function renderTable(logs) {
+      if (!logs.length) {
+        body.innerHTML = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
+        return;
+      }
+      body.innerHTML = logs.map(log => {
+        status = log.complaint?.complaintStatus ?? 'N/A';
+
+        let statusClass = '';
+        switch (status) {
+          case 'IN_PROGRESS':
+            statusClass = 'text-warning fw-bold';
+            break;
+          case 'RESOLVED':
+            statusClass = 'text-success fw-bold';
+            break;
+          case 'CLOSED':
+            statusClass = 'text-danger fw-bold';
+            break;
+          default:
+            statusClass = 'text-secondary fw-bold';
+            break;
+        }
+        return `
           <tr>
             <td>${log.complaint?.complaintId}</td>
             <td>${log.user?.userName ?? 'N/A'}</td>
@@ -124,61 +134,68 @@
             <td>${log.complaint?.complaintType?.complaintType ?? 'N/A'}</td>
             <td>${log.actionTaken}</td>
             <td>${new Date(log.auditLogTimestamp).toLocaleString()}</td>
-            <td class = '${statusClass}'>${log.complaint?.complaintStatus ?? 'N/A'}</td>
+            <td class='${statusClass}'>${log.complaint?.complaintStatus ?? 'N/A'}</td>
           </tr>
-        `}).join('');
-      }
-
-      function loadAuditLogs() {
-        const url = `${API}/audit-log/filter?${getFilterParams()}`;
-        fetch(url)
-          .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-            return response.json();
-          })
-          .then(data => renderTable(data))
-          .catch(error => {
-            body.innerHTML = '<tr><td colspan="7" class="text-danger text-center">Error loading audit logs</td></tr>';
-            console.error('Error loading audit logs:', error);
-          });
-      }
-
-      function exportToPdf() {
-        try {
-          const { jsPDF } = window.jspdf;
-          const doc = new jsPDF();
-          doc.text('Records', 14, 15);
-          if (typeof doc.autoTable === 'function') {
-            doc.autoTable({
-              html: '.table',
-              startY: 20,
-              styles: { fontSize: 8 },
-              columnStyles: { 5: { cellWidth: 50 } }
-            });
-          } else {
-            alert('PDF export plugin not available.');
-            return;
-          }
-          doc.save('audit-log-report.pdf');
-        } catch (error) {
-          console.error('Error exporting PDF:', error);
-          alert('Error generating PDF: ' + error.message);
-        }
-      }
-
-      applyBtn?.addEventListener('click', loadAuditLogs);
-      resetBtn?.addEventListener('click', function () {
-        departmentFilter.value = '';
-        complaintTypeFilter.value = '';
-        startDateInput.value = '';
-        endDateInput.value = '';
-        loadAuditLogs();
-      });
-      exportBtn?.addEventListener('click', exportToPdf);
-
-      loadOptions(`${API}/departments`, departmentFilter, 'departmentId', 'departmentName');
-      loadOptions(`${API}/complaint-types`, complaintTypeFilter, 'complaintTypeId', 'complaintType');
-      loadAuditLogs();
+        `;
+      }).join('');
     }
-    initializeAuditLogsPage();
-  </script>
+
+    function loadAuditLogs() {
+      const url = `${API}/audit-log/filter?${getFilterParams()}`;
+      fetch(url, {
+        headers: {
+          'Authorization': getAuthorization(),
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
+          return response.json();
+        })
+        .then(data => renderTable(data))
+        .catch(error => {
+          body.innerHTML = '<tr><td colspan="7" class="text-danger text-center">Error loading audit logs</td></tr>';
+          console.error('Error loading audit logs:', error);
+        });
+    }
+
+    function exportToPdf() {
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text('Records', 14, 15);
+        if (typeof doc.autoTable === 'function') {
+          doc.autoTable({
+            html: '.table',
+            startY: 20,
+            styles: { fontSize: 8 },
+            columnStyles: { 5: { cellWidth: 50 } }
+          });
+        } else {
+          alert('PDF export plugin not available.');
+          return;
+        }
+        doc.save('audit-log-report.pdf');
+      } catch (error) {
+        console.error('Error exporting PDF:', error);
+        alert('Error generating PDF: ' + error.message);
+      }
+    }
+
+    applyBtn?.addEventListener('click', loadAuditLogs);
+    resetBtn?.addEventListener('click', function () {
+      departmentFilter.value = '';
+      complaintTypeFilter.value = '';
+      startDateInput.value = '';
+      endDateInput.value = '';
+      loadAuditLogs();
+    });
+    exportBtn?.addEventListener('click', exportToPdf);
+
+    loadOptions(`${API}/departments`, departmentFilter, 'departmentId', 'departmentName');
+    loadOptions(`${API}/complaint-types`, complaintTypeFilter, 'complaintTypeId', 'complaintType');
+    loadAuditLogs();
+  }
+
+  initializeAuditLogsPage();
+</script>

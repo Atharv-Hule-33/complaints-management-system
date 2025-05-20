@@ -61,6 +61,12 @@
             </a>
         </li>
         <li>
+            <a href="#" onclick="loadPage('../web-pages/pages/adminChat.html')">
+                <i class="fas fa-comments"></i>
+                <span class="menu-text">Chats</span>
+            </a>
+        </li>
+        <li>
             <a href="#" onclick="loadPage('../web-pages/pages/adminSettings.html')">
                 <i class="fas fa-cogs"></i>
                 <span class="menu-text">Settings</span>
@@ -109,6 +115,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="./pages/js/script.js"></script>
+<script>
+    loadPage('../web-pages/pages/adminDashboard.html');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebarLinks = document.querySelectorAll('#sidebar .components a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
 </body>
 </html>
 
