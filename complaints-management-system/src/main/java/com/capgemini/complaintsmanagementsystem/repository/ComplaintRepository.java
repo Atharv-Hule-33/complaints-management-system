@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.capgemini.complaintsmanagementsystem.entity.Complaint;
-import com.capgemini.complaintsmanagementsystem.entity.User;
 
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
@@ -33,13 +32,13 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 	@Query("SELECT COUNT(c.complaintId) FROM Complaint c WHERE c.complaintStatus = 'IN_PROGRESS'")
 	Long countInProgressComplaints();
 
+	@Query("SELECT COUNT(c.complaintId) FROM Complaint c WHERE c.complaintStatus = 'RESOLVED'")
 
-    
-    
+	Long countResolvedComplaints();
+
     long countByUser(User user);
     long countByUserAndComplaintStatus(User user, String status);
-
-
+    List<Complaint> findTop5ByUserOrderByComplaintFiledDateDesc(User user);
 
 	@Query("""
 			    SELECT c FROM Complaint c
@@ -51,6 +50,7 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 			""")
 	List<Complaint> findFilteredComplaints(String status, Long departmentId, Long typeId, LocalDateTime startDate,
 			LocalDateTime endDate);
-
+	
+	List<Complaint> findByUser(User user);
 
 }

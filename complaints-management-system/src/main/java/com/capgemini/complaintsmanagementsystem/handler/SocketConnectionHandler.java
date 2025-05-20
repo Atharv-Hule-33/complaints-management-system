@@ -18,11 +18,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class SocketConnectionHandler extends TextWebSocketHandler {
 
-	@Autowired
-	private ChatRepository chatRepository;
+	private static final String COMP_ID = "compId";
 
-	@Autowired
+
+	private ChatRepository chatRepository;	
 	private ComplaintRepository complaintRepository;
+	
+	@Autowired
+	public SocketConnectionHandler(ChatRepository chatRepository, ComplaintRepository complaintRepository) {
+		this.chatRepository = chatRepository;
+		this.complaintRepository = complaintRepository;
+  }
 
 	private final Map<String, List<WebSocketSession>> complaintSessions = new ConcurrentHashMap<>();
 
@@ -47,7 +53,10 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
 			Chat msg = recentMessages.get(i);
 
 			String outgoingJson = objectMapper.writeValueAsString(Map.of("from", msg.getChatSender(), "to",
-					msg.getChatReceiver(), "content", msg.getChatMessage(), "compId", compId));
+
+
+					msg.getChatReceiver(), "content", msg.getChatMessage(), COMP_ID , compId));
+
 			System.out.println(outgoingJson);
 			session.sendMessage(new TextMessage(outgoingJson));
 		}
@@ -87,7 +96,9 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
 		for (WebSocketSession s : complaintSessions.getOrDefault(compId, new ArrayList<>())) {
 			if (s.isOpen()) {
 				String outgoingJson = objectMapper.writeValueAsString(
-						Map.of("from", fromUser, "to", toUser, "content", content, "compId", compId));
+
+						Map.of("from", fromUser, "to", toUser, "content", content, COMP_ID , compId));
+
 				s.sendMessage(new TextMessage(outgoingJson));
 			}
 		}
@@ -98,7 +109,9 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
 		if (query != null) {
 			for (String param : query.split("&")) {
 				String[] pair = param.split("=", 2);
-				if (pair.length == 2 && pair[0].equals("compId")) {
+
+				if (pair.length == 2 && pair[0].equals(COMP_ID )) {
+
 					return pair[1];
 				}
 			}

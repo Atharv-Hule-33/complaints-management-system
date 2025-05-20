@@ -28,8 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/departments")
-
-
 public class DepartmentController {
 	 private final DepartmentService departmentService;
 
@@ -41,12 +39,13 @@ public class DepartmentController {
 	    
 	    
 	    @GetMapping
-//	    @PreAuthorize("hasRole('ADMIN')")
+		@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	    public ResponseEntity<List<Department>> getAllDepartments() {
 	        List<Department> departments = departmentService.getAllDepartments();
 	        log.debug("Returning {} departments", departments.size());
 	        return ResponseEntity.status(HttpStatus.OK).body(departments);
 	    }
+	    
 	    @GetMapping("/{id}")
 	    public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
 	    	Department department = departmentService.getDepartmentById(id);
@@ -56,6 +55,7 @@ public class DepartmentController {
 
 	   
 	    @PostMapping
+	    @PreAuthorize("hasRole('ADMIN')")
 	    public ResponseEntity<Department> createDepartment(@Valid @RequestBody Department department, BindingResult result) {
 	    	if (result.hasErrors()) {
 				throw new IllegalArgumentException("Invalid Data Found!!");
@@ -70,6 +70,7 @@ public class DepartmentController {
 
 	   
 	    @PutMapping("/{id}")
+	    @PreAuthorize("hasRole('ADMIN')")
 	    public ResponseEntity<Department> updateDepartment(@PathVariable Long id, @Valid @RequestBody Department updatedDepartment) {
 	    	Department updated = departmentService.updateDepartment(id, updatedDepartment);
 	        return ResponseEntity.status(HttpStatus.OK).body(updated);
@@ -79,6 +80,7 @@ public class DepartmentController {
 
 	 
 	    @DeleteMapping("/{id}")
+	    @PreAuthorize("hasRole('ADMIN')")
 	    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
 	        departmentService.deleteDepartment(id);
 	        log.info("Deartment with ID {} successfully deleted", id);

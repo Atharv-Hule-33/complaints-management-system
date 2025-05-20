@@ -86,7 +86,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
- userId = 8; // Replace with actual user id
+ userId = getUserId(); // Replace with actual user id
 
  departments = [];
  types = [];
@@ -101,7 +101,13 @@ function getStatusClass(status) {
 }
 
 function fetchDepartments() {
-    return fetch('/api/departments')
+    return fetch('/api/departments',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             departments = data;
@@ -126,7 +132,13 @@ function fetchDepartments() {
 }
 
 function fetchTypes() {
-    return fetch('/api/complaint-types')
+    return fetch('/api/complaint-types',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             types = data;
@@ -151,8 +163,14 @@ function fetchTypes() {
 }
 
 function fetchComplaints() {
-    let url = `/api/complaints?userId=${userId}`;
-    return fetch(url)
+    let url = `/api/complaints/user/${userId}`;
+    return fetch(url,{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             complaints = data;
@@ -168,9 +186,9 @@ function renderComplaints() {
 
     let filtered = complaints.filter(c => {
         let match = true;
-        if (status && c.complaintStatus != status) match = false;
-        if (dep && c.department.departmentId != dep) match = false;
-        if (type && c.complaintType.complaintTypeId != type) match = false;
+        if (status && c.complaintStatus !== status) match = false;
+        if (dep && c.department.departmentId !== dep) match = false;
+        if (type && c.complaintType.complaintTypeId !== type) match = false;
         if (search && !c.complaintDescription.toLowerCase().includes(search)) match = false;
         return match;
     });
@@ -235,12 +253,6 @@ function openEditModal(complaintId) {
         if (e.key === 'Enter') renderComplaints();
     });
 
-    // File New Complaint button
-    document.getElementById('fileNewBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-        // Implement navigation to file complaint section/page
-        window.location.href = 'fileComplaint.html';
-    });
 
     // Edit Complaint form submit
     document.getElementById('editComplaintForm').addEventListener('submit', function(e) {
@@ -261,7 +273,9 @@ function openEditModal(complaintId) {
 
     fetch(`/api/complaints/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+			"Authorization": getAuthorization()
+		},
         body: JSON.stringify(payload)
     })
     .then(res => {
@@ -269,7 +283,7 @@ function openEditModal(complaintId) {
         return res.json();
     })
     .then(data => {
-        const idx = complaints.findIndex(c => c.complaintId == id);
+        const idx = complaints.findIndex(c => c.complaintId === id);
         complaints[idx] = data;
         fetchComplaints(); // Refresh the list
         bootstrap.Modal.getInstance(document.getElementById('editComplaintModal')).hide();

@@ -43,7 +43,7 @@ public class AuditLogServiceImp implements AuditLogService {
 			return new AuditLogNotFoundException("No log with ID {}: " + id);
 		});
 	}
-	
+
 	@Override
 	public List<AuditLog> getLogsByComplaintId(Long complaintId) {
 		log.debug("Fetching Audit Logs by complaintID : {}", complaintId);
@@ -65,10 +65,18 @@ public class AuditLogServiceImp implements AuditLogService {
 		log.debug("Fetching Audit Logs between {} and {}", start, end);
 		return auditLogRepository.findLogsBetween(start, end);
 	}
-	
+
 	@Override
 	public List<Object[]> getDailyLogCounts() {
 		log.debug("Fetching daily Audit Logs count");
 		return auditLogRepository.getDailyLogCounts();
 	}
+
+	public List<AuditLog> getFilteredAuditLogs(Long complaintId, Long userId, Long departmentId, Long complaintTypeId,
+			String actionTaken, LocalDateTime startDate, LocalDateTime endDate) {
+
+		return auditLogRepository.findFilteredAuditLogs(complaintId, userId, departmentId, complaintTypeId, actionTaken,
+				startDate, endDate);
+	}
+
 }

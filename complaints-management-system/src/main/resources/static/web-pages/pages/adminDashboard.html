@@ -31,7 +31,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card stat-card bg-warning-gradient">
                 <div class="card-body">
@@ -141,16 +140,21 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/moment"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment"></script>
 
 <script>
     (()=> {
         const apiUrl = "http://localhost:8080/api/dashboard";
 
-        function fetchData() {
-            fetch(`${apiUrl}`)
+        function fetchData(){
+            fetch(`${apiUrl}`,{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getAuthorization()
+                },
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -245,7 +249,6 @@
                 }
             });
         }
-
         fetchData();
     })();
 </script>

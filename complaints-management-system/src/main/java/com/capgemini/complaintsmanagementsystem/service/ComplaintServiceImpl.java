@@ -1,8 +1,11 @@
 package com.capgemini.complaintsmanagementsystem.service;
 
 import com.capgemini.complaintsmanagementsystem.entity.Complaint;
+import com.capgemini.complaintsmanagementsystem.entity.User;
 import com.capgemini.complaintsmanagementsystem.exception.ComplaintNotfoundException;
 import com.capgemini.complaintsmanagementsystem.repository.ComplaintRepository;
+import com.capgemini.complaintsmanagementsystem.repository.UserRepository;
+
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +20,12 @@ import java.util.List;
 public class ComplaintServiceImpl implements ComplaintService{
 
     ComplaintRepository complaintRepository;
+    UserRepository userRepository;
 
     @Autowired
-    public ComplaintServiceImpl(ComplaintRepository complaintRepository) {
+    public ComplaintServiceImpl(ComplaintRepository complaintRepository,UserRepository userRepository) {
         this.complaintRepository = complaintRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -84,6 +89,16 @@ public class ComplaintServiceImpl implements ComplaintService{
 	    if (status != null && !status.isBlank()) {
 	        status = status.trim().toUpperCase().replace("-", "_");
 	    }
+	    System.out.println(status+ departmentId+typeId+ month);
 	    return complaintRepository.findFilteredComplaints(status, departmentId, typeId, start, end);
 	}
+    
+    @Override
+    public List<Complaint> getComplaintsByUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+			log.warn("User not found with ID:{}", userId);
+			return new ComplaintNotfoundException("User not found with id:" + userId);
+		});
+        return complaintRepository.findByUser(user);
+    }
 }

@@ -22,4 +22,23 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long>{
 	@Query("SELECT FUNCTION('DATE', a.auditLogTimestamp), COUNT(a) FROM AuditLog a GROUP BY FUNCTION('DATE', a.auditLogTimestamp)")
 	List<Object[]> getDailyLogCounts();
 	
+	@Query("""
+		    SELECT al
+		    FROM AuditLog al
+		    WHERE (:complaintId IS NULL OR al.complaint.complaintId = :complaintId)
+		      AND (:userId IS NULL OR al.user.userId = :userId)
+		      AND (:departmentId IS NULL OR al.complaint.department.departmentId = :departmentId)
+		      AND (:complaintTypeId IS NULL OR al.complaint.complaintType.complaintTypeId = :complaintTypeId)
+		      AND (:actionTaken IS NULL OR al.actionTaken = :actionTaken)
+		      AND (:startDate IS NULL OR al.auditLogTimestamp >= :startDate)
+		      AND (:endDate IS NULL OR al.auditLogTimestamp <= :endDate)
+		""")
+		List<AuditLog> findFilteredAuditLogs(Long complaintId,
+		                                     Long userId,
+		                                     Long departmentId,
+		                                     Long complaintTypeId,
+		                                     String actionTaken,
+		                                     LocalDateTime startDate,
+		                                     LocalDateTime endDate);
+	
 }

@@ -12,4 +12,5 @@ public interface ComplaintService {
     Complaint updateComplaint(Complaint complaint, Long complaintId);
     void deleteComplaint(Long complaintId);
     public List<Complaint> getFilteredComplaints(String status, Long departmentId, Long typeId, YearMonth month);
+    List<Complaint> getComplaintsByUser(Long userId);
 }

@@ -10,19 +10,113 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
             rel="stylesheet"
     />
-    <link rel="stylesheet" href="pages/css/login.css"/>
 </head>
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container {
+        max-width: 450px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 10vh;
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .login-header h1 {
+        color: #2b5797;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .login-header .logo {
+        width: 80px;
+        margin-bottom: 15px;
+    }
+
+    .login-form label {
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .login-btn {
+        background-color: #2b5797;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 0;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .login-btn:hover {
+        background-color: #1e3c6a;
+    }
+
+    .register-link {
+        text-align: center;
+        margin-top: 20px;
+        color: #6c757d;
+    }
+
+    .register-btn {
+        color: #2b5797;
+        background-color: transparent;
+        border: 1px solid #2b5797;
+        padding: 8px 20px;
+        transition: all 0.3s;
+    }
+
+    .register-btn:hover {
+        background-color: #2b5797;
+        color: white;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: #e9ecef;
+        margin: 25px 0 15px;
+    }
+
+    .form-control:focus {
+        border-color: #2b5797;
+        box-shadow: 0 0 0 0.25rem rgba(43, 87, 151, 0.25);
+    }
+
+    .form-text {
+        font-size: 12px;
+    }
+
+    .hospital-icon {
+        color: #2b5797;
+        margin-right: 10px;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+
+</style>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-12">
             <div class="login-container">
                 <div class="login-header">
-                    <img
-                            src="images/hospital_icon.png"
-                            alt="hospital_icon"
-                            width="85px"
-                    />
                     <h1>Hospital Complaint Management System</h1>
                     <p class="text-muted">Please log in to access the system</p>
                 </div>
@@ -117,6 +211,7 @@
                     else
                         throw new Error("Token Not Found");
 
+                    console.log(getUserType());
                     const userType = getUserType();
                     if (userType === "ADMIN") {
                         window.location.href = "admin.html";

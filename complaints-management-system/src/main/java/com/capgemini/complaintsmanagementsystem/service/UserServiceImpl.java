@@ -3,25 +3,31 @@ package com.capgemini.complaintsmanagementsystem.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.capgemini.complaintsmanagementsystem.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.complaintsmanagementsystem.Dto.UserPasswordUpdateDto;
 import com.capgemini.complaintsmanagementsystem.entity.User;
 import com.capgemini.complaintsmanagementsystem.exception.UserNotFoundException;
 import com.capgemini.complaintsmanagementsystem.repository.UserRepository;
-
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
-	
+	private PasswordEncoder passwordEncoder;
+
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
-		this.userRepository= userRepository;
+	public UserServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		
 	}
+
 	@Override
 	public boolean existsByUserName(String username) {
 		return userRepository.existsByUserName(username);
@@ -31,7 +37,6 @@ public class UserServiceImpl implements UserService{
 	public boolean existsByEmail(String email) {
 		return userRepository.existsByUserEmail(email);
 	}
-	
 
 	@Override
 	public List<User> getAllUsers() {
@@ -42,43 +47,43 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUserById(Long userId) {
 		log.debug("Fetching user by ID: {}", userId);
-		User user = userRepository.findById(userId).orElseThrow(()-> {
+		return userRepository.findById(userId).orElseThrow(() -> {
 			log.warn("User not found with ID: {}", userId);
 			return new UserNotFoundException("User with id " + userId + " is not found");
 		});
-		return user;
 	}
-
 
 	@Override
 	public User addUser(User user) {
+		if (userRepository.existsByUserEmail(user.getUserEmail())) {
+			throw new UserAlreadyExistsException("User already exist try new Email");
+		}
 		log.debug("Saving new user to the repository");
 		return userRepository.save(user);
 	}
 
 	@Override
 	public User updateUser(Long userId, User user) {
-		User existing = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User with id " + userId + " is not found"));
+		User existing = userRepository.findById(userId)
+				.orElseThrow(() -> new UserNotFoundException("User with id " + userId + " is not found"));
 		existing.setUserName(user.getUserName());
 		existing.setUserEmail(user.getUserEmail());
-		existing.setUserPassword(user.getUserPassword());
 		existing.setUserPhone(user.getUserPhone());
 		existing.setUserType(user.getUserType());
 		log.info("Successfully updated user with ID: {}", userId);
-	    log.debug("Updated user details: {}", existing);
+		log.debug("Updated user details: {}", existing);
 		return userRepository.save(existing);
 	}
 
 	@Override
 	public void deleteUser(Long userId) {
-		if(!userRepository.existsById(userId)) {
+		if (!userRepository.existsById(userId)) {
 			throw new UserNotFoundException("User with id " + userId + " is not found");
 		}
 		log.debug("Deleting user by ID: {}", userId);
 		userRepository.deleteById(userId);
-		
-	}
 
+	}
 
 	@Override
 	public User patchUser(Long userId, User user) {
@@ -107,12 +112,24 @@ public class UserServiceImpl implements UserService{
 			existing.setUserType(user.getUserType());
 		}
 		log.info("Successfully patched user with ID: {}", userId);
-	    log.debug("Updated user details after patch: {}", existing);
+		log.debug("Updated user details after patch: {}", existing);
 		return userRepository.save(existing);
 	}
+
 	@Override
 	public User findByUserNameOrEmail(String username, String email) {
 		return userRepository.findByUserNameOrUserEmail(username, email)
-				.orElseThrow(()->new UserNotFoundException("Username or Email not Found !"));
+				.orElseThrow(() -> new UserNotFoundException("Username or Email not Found !"));
+	}
+	
+	@Override
+	public User updateUserPassword(Long userId, UserPasswordUpdateDto dto) {
+	    User existing = userRepository.findById(userId)
+	        .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " is not found"));
+	    if (dto.getCurrentPassword() == null || !passwordEncoder.matches(dto.getCurrentPassword(), existing.getUserPassword())) {
+	        throw new IllegalArgumentException("Current password is incorrect");
+	    }
+	    existing.setUserPassword(passwordEncoder.encode(dto.getNewPassword()));
+	    return userRepository.save(existing);
 	}
 }

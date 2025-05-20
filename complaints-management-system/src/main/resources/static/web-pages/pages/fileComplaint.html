@@ -48,7 +48,13 @@
 </div>
 <script>
     // Example: populate department and type dropdowns from backend
-    fetch('/api/departments')
+    fetch('/api/departments',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             const select = document.getElementById('departmentSelect');
@@ -60,7 +66,13 @@
             });
         });
 
-    fetch('/api/complaint-types')
+    fetch('/api/complaint-types',{
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": getAuthorization()
+		},
+	})
         .then(res => res.json())
         .then(data => {
             const select = document.getElementById('complaintTypeSelect');
@@ -71,38 +83,35 @@
                 select.appendChild(opt);
             });
         });
-    // Set today's date for filed date
     document.getElementById('dateFiled').value = new Date().toISOString().split('T')[0];
 
-    // Handle form submission
     document.getElementById('complaintForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        // Collect data
         const departmentId = document.getElementById('departmentSelect').value;
         const complaintTypeId = document.getElementById('complaintTypeSelect').value;
         const description = document.getElementById('description').value;
-        const userId = 1; // Replace with actual logged-in user ID
+        const userId = getUserId(); 
 
-        // Simple validation
         if (!departmentId || !complaintTypeId || !description.trim()) {
             alert('Please fill all fields.');
             return;
         }
 
-        // Prepare payload as per your Complaint entity
         const payload = {
-            user: { userId: userId },
+            myUser: { userId: userId },
             department: { departmentId: departmentId },
             complaintType: { complaintTypeId: complaintTypeId },
             complaintDescription: description,
             complaintStatus: "FILED",
             complaintFiledDate: new Date().toISOString()
         };
-
+		console.log(payload);
         fetch('/api/complaints', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' ,
+				"Authorization": getAuthorization()
+			},
             body: JSON.stringify(payload)
         })
         .then(res => {
@@ -118,7 +127,6 @@
         });
     });
 
-    // Reset button
     document.getElementById('resetBtn').addEventListener('click', function () {
         document.getElementById('complaintForm').reset();
         document.getElementById('successMessage').style.display = 'none';

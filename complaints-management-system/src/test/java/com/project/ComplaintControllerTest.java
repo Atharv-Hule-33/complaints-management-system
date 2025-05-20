@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -94,7 +93,7 @@ class ComplaintControllerTest {
 
         when(complaintService.updateComplaint(updatedComplaint, complaintId)).thenReturn(updatedComplaint);
 
-        ResponseEntity<Complaint> response = complaintController.uodateComplaint(updatedComplaint, complaintId,bindingResult);
+        ResponseEntity<Complaint> response = complaintController.updateComplaint(updatedComplaint, complaintId,bindingResult);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(updatedComplaint, response.getBody());
