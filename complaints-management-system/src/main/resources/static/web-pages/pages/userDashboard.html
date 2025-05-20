@@ -1,162 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Dashboard</title>
+    <!-- Bootstrap CSS and FontAwesome -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <h2>Welcome <span id="userName"></span></h2>
+          <div class="row">
+            <div class="col-xl-3 col-md-6">
+              <div class="card">
+                <div class="stat-card bg-primary-gradient">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="mb-0">Total Complaints</h6>
+                      <h2 class="mb-0 mt-2" id="totalComplaints">0</h2>
+                    </div>
+                    <div class="stat-icon">
+                      <i class="fas fa-clipboard-list"></i>
+                    </div>
+                  </div>
+                  <div class="mt-2 small">
+                    <span class="text-white">View all your complaints</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card">
+                <div class="stat-card bg-success-gradient">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="mb-0">Resolved</h6>
+                      <h2 class="mb-0 mt-2" id="resolvedComplaints">0</h2>
+                    </div>
+                    <div class="stat-icon">
+                      <i class="fas fa-check-circle"></i>
+                    </div>
+                  </div>
+                  <div class="mt-2 small">
+                    <span class="text-white"
+                      >Successfully resolved complaints</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card">
+                <div class="stat-card bg-warning-gradient">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="mb-0">In Progress</h6>
+                      <h2 class="mb-0 mt-2" id="inProgressComplaints">0</h2>
+                    </div>
+                    <div class="stat-icon">
+                      <i class="fas fa-clock"></i>
+                    </div>
+                  </div>
+                  <div class="mt-2 small">
+                    <span class="text-white">Currently being processed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card">
+                <div class="stat-card bg-info-gradient">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="mb-0">Filed</h6>
+                      <h2 class="mb-0 mt-2" id="filedComplaints">0</h2>
+                    </div>
+                    <div class="stat-icon">
+                      <i class="fas fa-hourglass-half"></i>
+                    </div>
+                  </div>
+                  <div class="mt-2 small">
+                    <span class="text-white">Awaiting initial response</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div class="row mb-4">
-	<div class="col-md-12">
-		<h2>
-			Welcome <span id="userName"></span>
-		</h2>
-		<div class="row">
-			<div class="col-xl-3 col-md-6">
-				<div class="card">
-					<div class="stat-card bg-primary-gradient">
-						<div class="d-flex justify-content-between align-items-center">
-							<div>
-								<h6 class="mb-0">Total Complaints</h6>
-								<h2 class="mb-0 mt-2" id="totalComplaints">0</h2>
-							</div>
-							<div class="stat-icon">
-								<i class="fas fa-clipboard-list"></i>
-							</div>
-						</div>
-						<div class="mt-2 small">
-							<span class="text-white">View all your complaints</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xl-3 col-md-6">
-				<div class="card">
-					<div class="stat-card bg-success-gradient">
-						<div class="d-flex justify-content-between align-items-center">
-							<div>
-								<h6 class="mb-0">Resolved</h6>
-								<h2 class="mb-0 mt-2" id="resolvedComplaints">0</h2>
-							</div>
-							<div class="stat-icon">
-								<i class="fas fa-check-circle"></i>
-							</div>
-						</div>
-						<div class="mt-2 small">
-							<span class="text-white">Successfully resolved complaints</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xl-3 col-md-6">
-				<div class="card">
-					<div class="stat-card bg-warning-gradient">
-						<div class="d-flex justify-content-between align-items-center">
-							<div>
-								<h6 class="mb-0">In Progress</h6>
-								<h2 class="mb-0 mt-2" id="inProgressComplaints">0</h2>
-							</div>
-							<div class="stat-icon">
-								<i class="fas fa-clock"></i>
-							</div>
-						</div>
-						<div class="mt-2 small">
-							<span class="text-white">Currently being processed</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xl-3 col-md-6">
-				<div class="card">
-					<div class="stat-card bg-info-gradient">
-						<div class="d-flex justify-content-between align-items-center">
-							<div>
-								<h6 class="mb-0">Filed</h6>
-								<h2 class="mb-0 mt-2" id="filedComplaints">0</h2>
-							</div>
-							<div class="stat-icon">
-								<i class="fas fa-hourglass-half"></i>
-							</div>
-						</div>
-						<div class="mt-2 small">
-							<span class="text-white">Awaiting initial response</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-lg">
-		<div class="card">
-			<div class="card-header bg-white">
-				<div class="d-flex justify-content-between align-items-center">
-					<h5 class="mb-0">Recent Complaints</h5>
-				</div>
-			</div>
-			<div class="card-body p-0">
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<thead class="table-light">
-							<tr>
-								<th>ID</th>
-								<th>Department</th>
-								<th>Type</th>
-								<th>Filed On</th>
-								<th>Status</th>
-								<th>Chat</th>
-							</tr>
-						</thead>
-						<tbody id="recentComplaintsTable">
-							<!-- Complaints will be injected here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<script>
-		console.log(getUserId());
-    // Replace with actual userId (e.g., from session, JWT, or URL)
-    document.getElementById('userName').textContent = 'User';
-    fetch(`/api/user-dashboard/${getUserId()}`,{
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": getAuthorization()
-		},
-	})
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('totalComplaints').textContent = data.totalComplaints;
-            document.getElementById('resolvedComplaints').textContent = data.resolvedComplaints;
-            document.getElementById('inProgressComplaints').textContent = data.inProgressComplaints;
-            document.getElementById('filedComplaints').textContent = data.filedComplaints;
-
-            const tbody = document.getElementById('recentComplaintsTable');
-            tbody.innerHTML = '';
-            data.recentComplaints.forEach(complaint => {
-            	let badgeClass = 'bg-secondary';
-            	if (complaint.status === 'RESOLVED') badgeClass = 'bg-success';
-            	else if (complaint.status === 'IN_PROGRESS') badgeClass = 'bg-warning text-dark';
-            	else if (complaint.status === 'FILED') badgeClass = 'bg-primary';
-            	else if (complaint.status === 'CLOSED') badgeClass = 'bg-info';
-                const filedOn = new Date(complaint.filedOn).toLocaleDateString('en-US', {
-                    year: 'numeric', month: 'short', day: '2-digit'
-                });
-				console.log(complaint);
-                tbody.innerHTML += `
+      <div class="row">
+        <div class="col-lg">
+          <div class="card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Recent Complaints</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="table-light">
                     <tr>
-                        <td>#${complaint.id}</td>
-                        <td>${complaint.department}</td>
-                        <td>${complaint.type}</td>
-                        <td>${filedOn}</td>
-                        <td><span class="badge ${badgeClass}">${complaint.status}</span></td>
-                        <td><a href="#" class="btn btn-sm btn-outline-secondary" title="Chat">
-                        <i class="fas fa-comments"></i>
-                        </a></td>
+                      <th>ID</th>
+                      <th>Department</th>
+                      <th>Type</th>
+                      <th>Filed On</th>
+                      <th>Status</th>
+                      <th>Chat</th>
                     </tr>
-                `;
-            });
-        })
-        .catch(err => {
-            console.error('Failed to load dashboard data', err);
-        });
-</script>
+                  </thead>
+                  <tbody id="recentComplaintsTable">
+                    <!-- Complaints will be injected here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Chat Modal -->
+    <div
+      class="modal fade"
+      id="chatModal"
+      tabindex="-1"
+      aria-labelledby="chatModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="chatModalLabel">Chat</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div
+            class="modal-body"
+            id="chatMessages"
+            style="max-height: 400px; overflow-y: auto"
+          >
+            <!-- Chat messages will appear here -->
+          </div>
+          <div class="modal-footer">
+            <input
+              type="text"
+              id="chatInput"
+              class="form-control"
+              placeholder="Type your message..."
+              autocomplete="off"
+            />
+            <button type="button" class="btn btn-primary" id="sendChatBtn">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Global variables
+      let socket = null;
+      let currentChatComplaintId = null;
+      const currentUser = "USER"; // or 'ADMIN'
+
+      // Initialize dashboard
+      function initializeDashboard() {
+        document.getElementById("userName").textContent = "User"; // Replace with actual user logic
+        fetchDashboardData();
+      }
+
+      // Fetch dashboard data
+      function fetchDashboardData() {
+        fetch(`/api/user-dashboard/${getUserId()}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: getAuthorization(),
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => populateDashboard(data))
+          .catch((err) => console.error("Failed to load dashboard data", err));
+      }
+
+      // Populate dashboard data
+      function populateDashboard(data) {
+        document.getElementById("totalComplaints").textContent =
+          data.totalComplaints;
+        document.getElementById("resolvedComplaints").textContent =
+          data.resolvedComplaints;
+        document.getElementById("inProgressComplaints").textContent =
+          data.inProgressComplaints;
+        document.getElementById("filedComplaints").textContent =
+          data.filedComplaints;
+
+        const tbody = document.getElementById("recentComplaintsTable");
+        tbody.innerHTML = "";
+        data.recentComplaints.forEach((complaint) => {
+          const badgeClass = getBadgeClass(complaint.status);
+          const filedOn = new Date(complaint.filedOn).toLocaleDateString(
+            "en-US",
+            { year: "numeric", month: "short", day: "2-digit" }
+          );
+          tbody.innerHTML += `
+					<tr>
+						<td>#${complaint.id}</td>
+						<td>${complaint.department}</td>
+						<td>${complaint.type}</td>
+						<td>${filedOn}</td>
+						<td><span class="badge ${badgeClass}">${complaint.status}</span></td>
+						<td>
+							<a href="#" class="btn btn-sm btn-outline-secondary chat-btn" data-complaint-id="${complaint.id}" title="Chat">
+								<i class="fas fa-comments"></i>
+							</a>
+						</td>
+					</tr>
+				`;
+        });
+      }
+
+      // Get badge class based on status
+      function getBadgeClass(status) {
+        switch (status) {
+          case "RESOLVED":
+            return "bg-success";
+          case "IN_PROGRESS":
+            return "bg-warning text-dark";
+          case "FILED":
+            return "bg-primary";
+          case "CLOSED":
+            return "bg-info";
+          default:
+            return "bg-secondary";
+        }
+      }
+
+      // Open chat modal
+      function openChatModal(complaintId) {
+        currentChatComplaintId = complaintId;
+        document.getElementById("chatMessages").innerHTML = "";
+        initializeChat();
+        const chatModal = new bootstrap.Modal(
+          document.getElementById("chatModal")
+        );
+        chatModal.show();
+      }
+
+      // Initialize WebSocket
+      function initializeChat() {
+        if (socket) socket.close();
+        socket = new WebSocket(
+          `ws://localhost:8080/chat?compId=${currentChatComplaintId}`
+        );
+
+        socket.onopen = () => console.log("WebSocket connection established");
+        socket.onmessage = (event) => handleIncomingMessage(event);
+        socket.onclose = () => console.log("WebSocket connection closed");
+        socket.onerror = (error) => console.error("WebSocket error:", error);
+      }
+
+      // Handle incoming WebSocket message
+      function handleIncomingMessage(event) {
+        const message = JSON.parse(event.data);
+        appendChatMessage(
+          message.content,
+          message.from === "USER" ? "right" : "left"
+        );
+      }
+
+      // Append chat message
+      function appendChatMessage(text, side) {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = `d-flex mb-2 ${
+          side === "right" ? "justify-content-end" : "justify-content-start"
+        }`;
+        msgDiv.innerHTML = `
+				<div class="p-2 rounded ${
+          side === "right" ? "bg-primary text-white" : "bg-light text-dark"
+        }" style="max-width: 70%;">
+					${text}
+				</div>
+			`;
+        const chatMessages = document.getElementById("chatMessages");
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Send chat message
+      function sendChatMessage() {
+        const input = document.getElementById("chatInput");
+        const content = input.value.trim();
+        if (content && socket.readyState === WebSocket.OPEN) {
+          const toUser = currentUser === "USER" ? "ADMIN" : "USER";
+          const message = {
+            from: currentUser,
+            to: toUser,
+            content: content,
+            compId: currentChatComplaintId,
+          };
+          socket.send(JSON.stringify(message));
+          input.value = "";
+        }
+      }
+
+      // Event listeners
+      document
+        .getElementById("recentComplaintsTable")
+        .addEventListener("click", (e) => {
+          if (e.target.closest(".chat-btn")) {
+            const complaintId =
+              e.target.closest(".chat-btn").dataset.complaintId;
+            openChatModal(complaintId);
+          }
+        });
+      document
+        .getElementById("sendChatBtn")
+        .addEventListener("click", sendChatMessage);
+      document.getElementById("chatInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendChatMessage();
+      });
+
+      // Initialize the dashboard on page load
+      initializeDashboard();
+    </script>
+  </body>
+</html>
