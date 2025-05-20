@@ -39,7 +39,7 @@ public class DepartmentController {
 	    
 	    
 	    @GetMapping
-		@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+		@PreAuthorize("hasRole('ADMIN')")
 	    public ResponseEntity<List<Department>> getAllDepartments() {
 	        List<Department> departments = departmentService.getAllDepartments();
 	        log.debug("Returning {} departments", departments.size());
@@ -47,6 +47,7 @@ public class DepartmentController {
 	    }
 	    
 	    @GetMapping("/{id}")
+	    @PreAuthorize("hasRole('ADMIN')")
 	    public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
 	    	Department department = departmentService.getDepartmentById(id);
 	    	log.debug("Department fetched: {}", department);

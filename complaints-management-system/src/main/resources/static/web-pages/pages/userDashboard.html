@@ -182,9 +182,10 @@
 
     <script>
       // Global variables
-      let socket = null;
-      let currentChatComplaintId = null;
-      const currentUser = "USER"; // or 'ADMIN'
+      apiUrl="10.30.74.40:8080"
+       socket = null;
+       currentChatComplaintId = null;
+       currentUser = "USER"; // or 'ADMIN'
 
       // Initialize dashboard
       function initializeDashboard() {
@@ -273,7 +274,7 @@
       function initializeChat() {
         if (socket) socket.close();
         socket = new WebSocket(
-          `ws://localhost:8080/chat?compId=${currentChatComplaintId}`
+          `ws://${apiUrl}/chat?compId=${currentChatComplaintId}`
         );
 
         socket.onopen = () => console.log("WebSocket connection established");
