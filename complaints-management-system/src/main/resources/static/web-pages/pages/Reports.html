@@ -1,3 +1,62 @@
+
+<h2 class="mb-4">Reports</h2>
+
+
+  <!-- Filters -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <label for="department-filter" class="form-label">Department:</label>
+      <select class="form-select" id="department-filter">
+        <option value="" selected>All Departments</option>
+      </select>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label for="complaint-type-filter" class="form-label">Complaint Type:</label>
+      <select class="form-select" id="complaint-type-filter">
+        <option value="" selected>All Types</option>
+      </select>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label for="start-date" class="form-label">Start Date:</label>
+      <input type="date" class="form-control" id="start-date">
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label for="end-date" class="form-label">End Date:</label>
+      <input type="date" class="form-control" id="end-date">
+    </div>
+  </div>
+
+  <div class="d-flex mb-4">
+    <button id="apply-filters" class="btn btn-primary me-2">Apply Filters</button>
+    <button id="reset-filters" class="btn btn-outline-secondary me-2">Reset Filters</button>
+
+    
+
+  </div>
+
+  <!-- Audit Log Table -->
+  <h4 class="mb-3">Records</h4>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Complaint ID</th>
+        <th>User</th>
+        <th>Department</th>
+        <th>Complaint Type</th>
+        <th>Action Taken</th>
+        <th>Timestamp</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="audit-log-data">
+      <tr>
+        <td colspan="7" class="text-center">Loading Reports...</td>
+      </tr>
+    </tbody>
+  </table>
 <script>
   function initializeAuditLogsPage() {
     const API = 'http://localhost:8080/api';
