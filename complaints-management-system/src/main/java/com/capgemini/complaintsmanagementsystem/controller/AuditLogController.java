@@ -68,7 +68,9 @@ public class AuditLogController {
 	}
 
 	@GetMapping("/complaint/{complaintId}")
+
 	@PreAuthorize("hasRole('ADMIN')")
+
 	public ResponseEntity<List<AuditLog>> getLogsByComplaintId(@PathVariable("complaintId") Long complaintId) {
 		log.info("Received Request to Get Audit Logs by complaintID : {}", complaintId);
 		List<AuditLog> auditLogs = auditLogService.getLogsByComplaintId(complaintId);
@@ -77,8 +79,10 @@ public class AuditLogController {
 	}
 
 	@GetMapping("/user/{userId}")
+
 	
 	@PreAuthorize("hasRole('ADMIN')")
+
 	public ResponseEntity<List<AuditLog>> getLogsByUserId(@PathVariable("userId") Long userId) {
 		log.info("Received Request to Get Audit Logs by userID : {}", userId);
 		List<AuditLog> auditLogs = auditLogService.getLogsByUserId(userId);
@@ -88,7 +92,9 @@ public class AuditLogController {
 
 	// GET /api/audit-log/between?start=2025-05-01T00:00:00&end=2025-05-14T23:59:59
 	@GetMapping("/between")
+
 	@PreAuthorize("hasRole('ADMIN')")
+
 	public ResponseEntity<List<AuditLog>> getLogsBetween(
 			@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
 			@RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
@@ -99,7 +105,9 @@ public class AuditLogController {
 	}
 
 	@GetMapping("/daily-counts")
+
 	@PreAuthorize("hasRole('ADMIN')")
+
 	public ResponseEntity<List<Object[]>> getDailyLogCounts() {
 		log.info("Received Request to Get Audit Log count by Day");
 		List<Object[]> counts = auditLogService.getDailyLogCounts();
@@ -108,7 +116,9 @@ public class AuditLogController {
 	}
 
 	@GetMapping("/filter")
+
 	@PreAuthorize("hasRole('ADMIN')")
+
 	public ResponseEntity<List<AuditLog>> filterAuditLogs(@RequestParam(required = false) Long complaintId,
 			@RequestParam(required = false) Long userId, @RequestParam(required = false) Long departmentId,
 			@RequestParam(required = false) Long complaintTypeId, @RequestParam(required = false) String actionTaken,
