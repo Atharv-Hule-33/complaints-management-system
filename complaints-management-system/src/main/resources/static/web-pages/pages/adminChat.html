@@ -1,44 +1,16 @@
-<title>Complaints Management</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-    body {
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px;
-    }
-
-
-    .close-button:hover,
-    .close-button:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Complaints Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
 </head>
-
 <body class="container my-5">
 <h2 class="mb-4">Complaints Management</h2>
 
@@ -52,281 +24,228 @@
         <th>Description</th>
         <th>Status</th>
         <th>Filed Date</th>
-        <th>Actions</th>
+        <th>Chats</th>
     </tr>
     </thead>
     <tbody id="complaintsTableBody"></tbody>
 </table>
 
-<div id="editStatusModal" class="modal">
+<!-- Chat Modal -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h3>Edit Complaint Status</h3>
-        <form id="editStatusForm">
-            <input type="hidden" id="editComplaintId">
-            <div class="mb-3">
-                <label for="editComplaintStatus" class="form-label">Status:</label>
-                <select class="form-select" id="editComplaintStatus" required>
-                    <option value="" disabled selected>Select Status</option>
-                    <option value="FILED">FILED</option>
-                    <option value="IN_PROGRESS">IN_PROGRESS</option>
-                    <option value="RESOLVED">RESOLVED</option>
-                    <option value="CLOSED">CLOSED</option>
-                </select>
-                <div class="invalid-feedback">Please select a status.</div>
-            </div>
-            <div class="mb-3">
-                <label for="actionTaken" class="form-label">Action Taken:</label>
-                <textarea class="form-control" id="actionTaken" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Confirm</button>
-            <button type="button" class="btn btn-secondary close-button">Cancel</button>
-        </form>
+      <div class="modal-header">
+        <h5 class="modal-title" id="chatModalLabel">Chat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="chatMessages" style="max-height: 400px; overflow-y: auto">
+        <!-- Chat messages will appear here -->
+      </div>
+      <div class="modal-footer">
+        <input type="text" id="chatInput" class="form-control" placeholder="Type your message..." autocomplete="off" />
+        <button type="button" class="btn btn-primary" id="sendChatBtn">Send</button>
+      </div>
     </div>
+  </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 <script>
-    (() => {
-        const apiUrl = "http://localhost:8080/api";
-        const complaintsTableBody = document.getElementById('complaintsTableBody');
-        const editStatusModal = document.getElementById('editStatusModal');
-        const editStatusForm = document.getElementById('editStatusForm');
-        const editComplaintIdInput = document.getElementById('editComplaintId');
-        const editComplaintStatusSelect = document.getElementById('editComplaintStatus');
-        const actionTakenInput = document.getElementById('actionTaken');
+(() => {
+    const complaintsTableBody = document.getElementById('complaintsTableBody');
+    let complaintDetails = [];
+    let complaintTypesDetails = [];
+    let departmentDetails = [];
+    let userDetails = [];
 
-        let complaintDetails = [];
-        let complaintTypesDetails = [];
-        let departmentDetails = [];
-        let userDetails = [];
+    // Search bar
+    const searchInput = document.createElement("input");
+    searchInput.setAttribute("type", "text");
+    searchInput.setAttribute("placeholder", "Search by User Name...");
+    searchInput.classList.add("form-control", "mb-3");
+    document.querySelector(".table").parentNode.insertBefore(searchInput, document.querySelector(".table"));
+    searchInput.style.backgroundColor = "white";
+    searchInput.style.color = "black";
+    searchInput.style.border = "1px solid black";
 
-        // Search bar
-        const searchInput = document.createElement("input");
-        searchInput.setAttribute("type", "text");
-        searchInput.setAttribute("placeholder", "Search by User Name...",);
-        searchInput.classList.add("form-control", "mb-3");
-        document.querySelector(".table").parentNode.insertBefore(searchInput, document.querySelector(".table"));
-        searchInput.style.backgroundColor = "white";
-        searchInput.style.color = "black";
-        searchInput.style.border = "1px solid black";
+    searchInput.addEventListener("input", () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filtered = complaintDetails.filter(complaint => complaint.myUser.userName.toLowerCase().includes(searchTerm));
+        renderComplaints(filtered);
+    });
 
-        searchInput.addEventListener("input", () => {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filtered = complaintDetails.filter(complaint => complaint.myUser.userName.toLowerCase().includes(searchTerm));
-            renderComplaints(filtered);
+    function fetchAndRenderComplaints() {
+        fetch(`/api/complaints`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": getAuthorization()
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                complaintDetails = data;
+                renderComplaints(data);
+            })
+            .catch(error => {
+                console.error("Failed to fetch complaints:", error);
+            });
+    }
+
+    function fetchComplaintType() {
+        return fetch(`/api/complaint-types`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": getAuthorization()
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                complaintTypesDetails = data;
+            })
+            .catch(error => {
+                console.error("Failed to fetch complaint types:", error);
+            });
+    }
+
+    function fetchDepartment() {
+        return fetch(`/api/departments`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": getAuthorization()
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                departmentDetails = data;
+            })
+            .catch(error => {
+                console.error("Failed to fetch departments:", error);
+            });
+    }
+
+    function fetchUser() {
+        return fetch(`/api/users`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": getAuthorization()
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                userDetails = data;
+            })
+            .catch(error => {
+                console.error("Failed to fetch users:", error);
+            });
+    }
+
+    function renderComplaints(complaints) {
+        complaintsTableBody.innerHTML = "";
+        complaints.forEach(complaint => {
+            const foundUser = userDetails.find(u => u.userId === complaint.myUser.userId);
+            const department = departmentDetails.find(d => d.departmentId === complaint.department.departmentId);
+            const complaintType = complaintTypesDetails.find(ct => ct.complaintTypeId === complaint.complaintType.complaintTypeId);
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${complaint.complaintId}</td>
+                        <td>${foundUser ? foundUser.userName : 'N/A'}</td>
+                        <td>${department ? department.departmentName : 'N/A'}</td>
+                        <td>${complaintType ? complaintType.complaintType : 'N/A'}</td>
+                        <td>${complaint.complaintDescription}</td>
+                        <td>${complaint.complaintStatus}</td>
+                        <td>${complaint.complaintFiledDate}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1 chat-btn" data-id="${complaint.complaintId}">
+                                <i class="fas fa-comments"></i>
+                            </button>
+                        </td>`;
+            complaintsTableBody.appendChild(row);
+        });
+    }
+
+    Promise.all([fetchUser(), fetchDepartment(), fetchComplaintType()])
+        .then(() => {
+            fetchAndRenderComplaints();
         });
 
-        function fetchAndRenderComplaints() {
-            fetch(`${apiUrl}/complaints`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": getAuthorization()
-                },
-            })
-                .then(res => res.json())
-                .then(data => {
-                    complaintDetails = data;
-                    renderComplaints(data);
-                })
-                .catch(error => {
-                    console.error("Failed to fetch complaints:", error);
-                });
+    // --- Chat functionality ---
+    let socket = null;
+    let currentChatComplaintId = null;
+    const currentUser = "ADMIN";
+
+    // Open chat modal
+    document.addEventListener("click", function(e) {
+        if (e.target.closest(".chat-btn")) {
+            const complaintId = e.target.closest(".chat-btn").dataset.id;
+            openChatModal(complaintId);
         }
+    });
 
-        function fetchComplaintType() {
-            return fetch(`${apiUrl}/complaint-types`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": getAuthorization()
-                },
-            })
-                .then(res => res.json())
-                .then(data => {
-                    complaintTypesDetails = data;
-                })
-                .catch(error => {
-                    console.error("Failed to fetch complaint types:", error);
-                });
-        }
+    function openChatModal(complaintId) {
+        currentChatComplaintId = complaintId;
+        document.getElementById("chatMessages").innerHTML = "";
+        initializeChat();
+        const chatModal = new bootstrap.Modal(document.getElementById("chatModal"));
+        chatModal.show();
+    }
 
-        function fetchDepartment() {
-            return fetch(`${apiUrl}/departments`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": getAuthorization()
-                },
-            })
-                .then(res => res.json())
-                .then(data => {
-                    departmentDetails = data;
-                })
-                .catch(error => {
-                    console.error("Failed to fetch departments:", error);
-                });
-        }
+    function initializeChat() {
+        if (socket) socket.close();
+        socket = new WebSocket(`ws://localhost:8080/chat?compId=${currentChatComplaintId}`);
+        socket.onopen = () => console.log("WebSocket connection established");
+        socket.onmessage = (event) => handleIncomingMessage(event);
+        socket.onclose = () => console.log("WebSocket connection closed");
+        socket.onerror = (error) => console.error("WebSocket error:", error);
+    }
 
-        function fetchUser() {
-            return fetch(`${apiUrl}/users`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": getAuthorization()
-                },
-            })
-                .then(res => res.json())
-                .then(data => {
-                    userDetails = data;
-                })
-                .catch(error => {
-                    console.error("Failed to fetch users:", error);
-                });
-        }
+    function handleIncomingMessage(event) {
+        const message = JSON.parse(event.data);
+        appendChatMessage(
+            message.content,
+            message.from === "ADMIN" ? "left" : "right"
+        );
+    }
 
-        function renderComplaints(complaints) {
-            complaintsTableBody.innerHTML = "";
-            complaints.forEach(complaint => {
-                const foundUser = userDetails.find(u => u.userId === complaint.myUser.userId);
-                const department = departmentDetails.find(d => d.departmentId === complaint.department.departmentId);
-                const complaintType = complaintTypesDetails.find(ct => ct.complaintTypeId === complaint.complaintType.complaintTypeId);
-                const row = document.createElement("tr");
-                row.innerHTML = `<td>${complaint.complaintId}</td>
-                            <td>${foundUser ? foundUser.userName : 'N/A'}</td>
-                            <td>${department ? department.departmentName : 'N/A'}</td>
-                            <td>${complaintType ? complaintType.complaintType : 'N/A'}</td>
-                            <td>${complaint.complaintDescription}</td>
-                            <td>${complaint.complaintStatus}</td>
-                            <td>${complaint.complaintFiledDate}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${complaint.complaintId}"> <i class="fas fa-comments"></i></button>
-                            </td>`;
-                complaintsTableBody.appendChild(row);
-            });
+    function appendChatMessage(text, side) {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = `d-flex mb-2 ${side === "left" ? "justify-content-end" : "justify-content-start"}`;
+        msgDiv.innerHTML = `
+            <div class="p-2 rounded ${side === "left" ? "bg-primary text-white" : "bg-light text-dark"}" style="max-width: 70%;">
+                ${text}
+            </div>
+        `;
+        const chatMessages = document.getElementById("chatMessages");
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
-            document.querySelectorAll('.edit-btn').forEach(button => {
-                button.addEventListener('click', openEditStatusModal);
-            });
-        }
-
-        function openEditStatusModal(event) {
-            const complaintId = event.currentTarget.getAttribute('data-id');
-            editComplaintIdInput.value = complaintId;
-
-            fetch(`${apiUrl}/complaints/${complaintId}`,{
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": getAuthorization()
-                },
-            })
-                .then(res => res.json())
-                .then(complaint => {
-                    editComplaintStatusSelect.value = complaint.complaintStatus;
-                    editStatusModal.dataset.complaint = JSON.stringify(complaint);
-                    editStatusModal.style.display = "block";
-                })
-                .catch(error => {
-                    console.error("Error fetching complaint details:", error);
-                });
-        }
-
-        editStatusForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const complaintId = editComplaintIdInput.value;
-            const newStatus = editComplaintStatusSelect.value;
-            const actionTakenDescription = actionTakenInput.value;
-
-            const existingComplaint = JSON.parse(editStatusModal.dataset.complaint);
-            console.log(existingComplaint);
-            const updatedComplaint = {
-                ...existingComplaint,
-                complaintStatus: newStatus
+    function sendChatMessage() {
+        const input = document.getElementById("chatInput");
+        const content = input.value.trim();
+        if (content && socket && socket.readyState === WebSocket.OPEN) {
+            const toUser = currentUser === "ADMIN" ? "USER" : "ADMIN";
+            const message = {
+                from: currentUser,
+                to: toUser,
+                content: content,
+                compId: currentChatComplaintId,
             };
-
-
-            fetch(`${apiUrl}/complaints/${complaintId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": getAuthorization()
-
-                },
-                body: JSON.stringify(updatedComplaint)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errData => {
-                            throw new Error(errData.message || "Failed to update status");
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Complaint status updated:", data);
-                    const timestamp = new Date().toISOString();
-
-                    const log = {
-                        complaint: existingComplaint,
-                        user: existingComplaint.myUser,
-                        actionTaken: actionTakenDescription,
-                        auditLogTimestamp: timestamp
-                    };
-
-                    return fetch(`${apiUrl}/audit-log`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": getAuthorization()
-
-                        },
-                        body: JSON.stringify(log)
-                    });
-                })
-                .then(auditResponse => {
-                    if (!auditResponse.ok) {
-                        return auditResponse.json().then(errData => {
-                            throw new Error(errData.message || "Failed to log audit");
-                        });
-                    }
-                    return auditResponse.json();
-                })
-                .then(auditData => {
-                    console.log("Audit log recorded:", auditData);
-                    alert("Status updated successfully and audit log recorded.");
-                    closeEditStatusModal();
-                    fetchAndRenderComplaints();
-                })
-                .catch(error => {
-                    console.error("Error updating status or logging audit:", error);
-                    alert("Error updating status or logging audit.");
-                });
-        });
-
-        // Close modal when the close button (x) or cancel button is clicked
-        document.querySelectorAll('.close-button').forEach(button => {
-            button.addEventListener('click', closeEditStatusModal);
-        });
-
-        // Close modal if clicked outside the modal
-        window.addEventListener('click', function (event) {
-            if (event.target === editStatusModal) {
-                closeEditStatusModal();
-            }
-        });
-
-        function closeEditStatusModal() {
-            editStatusModal.style.display = "none";
-            // Clear the action taken input when closing the modal
-            actionTakenInput.value = "";
+            socket.send(JSON.stringify(message));
+            input.value = "";
         }
+    }
 
+    document.getElementById("sendChatBtn").addEventListener("click", sendChatMessage);
+    document.getElementById("chatInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendChatMessage();
+    });
 
-        Promise.all([fetchUser(), fetchDepartment(), fetchComplaintType()])
-            .then(() => {
-                fetchAndRenderComplaints();
-            });
-    })();
+   
+})();
 </script>
 </body>
+</html>

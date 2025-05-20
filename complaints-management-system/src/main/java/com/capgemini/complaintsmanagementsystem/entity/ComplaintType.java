@@ -27,7 +27,7 @@ public class ComplaintType {
 
 	@NotBlank(message = "Complaint type name is required")
 	@Column(name = "complaint_type")
-	private String complaintType;
+	private String complaintTypeName;
 
 	@NotNull(message = "Severity level is required")
 	@Enumerated(EnumType.STRING)
@@ -40,14 +40,14 @@ public class ComplaintType {
 	public ComplaintType() {
 	}
 
-	public ComplaintType(Long complaintTypeId, String complaintType, ComplaintSeverity complaintSeverity) {
+	public ComplaintType(Long complaintTypeId, String complaintTypeName, ComplaintSeverity complaintSeverity) {
 		this.complaintTypeId = complaintTypeId;
-		this.complaintType = complaintType;
+		this.complaintTypeName = complaintTypeName;
 		this.complaintSeverity = complaintSeverity;
 	}
 
 	public ComplaintType(String complaintType, ComplaintSeverity complaintSeverity) {
-		this.complaintType = complaintType;
+		this.complaintTypeName = complaintType;
 		this.complaintSeverity = complaintSeverity;
 	}
 
@@ -60,11 +60,11 @@ public class ComplaintType {
 	}
 
 	public String getComplaintType() {
-		return complaintType;
+		return complaintTypeName;
 	}
 
-	public void setComplaintType(String complaintType) {
-		this.complaintType = complaintType;
+	public void setComplaintType(String complaintTypeName) {
+		this.complaintTypeName = complaintTypeName;
 	}
 
 	public ComplaintSeverity getComplaintSeverity() {
@@ -77,7 +77,7 @@ public class ComplaintType {
 
 	@Override
 	public String toString() {
-		return "ComplaintType{" + "complaintTypeId=" + complaintTypeId + ", complaintType='" + complaintType + '\''
+		return "ComplaintType{" + "complaintTypeId=" + complaintTypeId + ", complaintType='" + complaintTypeName + '\''
 				+ ", complaintSeverity=" + complaintSeverity + '}';
 	}
 
